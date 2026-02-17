@@ -9,6 +9,10 @@
       "import": "./dist/neevo-ui.js",
       "require": "./dist/neevo-ui.cjs"
     },
+    "./codeblock": {
+      "import": "./dist/codeblock.js",
+      "require": "./dist/codeblock.cjs"
+    },
     "./style.css": "./dist/neevo-ui.css"
   },
   "files": [
@@ -26,7 +30,13 @@
   },
   "peerDependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-syntax-highlighter": "^15.6.1"
+  },
+  "peerDependenciesMeta": {
+    "react-syntax-highlighter": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -39,6 +49,7 @@
     "globals": "^16.5.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-syntax-highlighter": "^15.6.6",
     "vite": "^7.3.1"
   }
 }

@@ -1,0 +1,30 @@
+.nv-empty-state {
+  border: 1px dashed var(--nv-color-border);
+  border-radius: var(--nv-radius-lg);
+  background: color-mix(in srgb, var(--nv-color-surface-muted) 40%, var(--nv-color-surface));
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+}
+
+.nv-empty-state-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--nv-color-surface);
+  border: 1px solid var(--nv-color-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nv-empty-state-title {
+  margin: 0;
+}
+
+.nv-empty-state-description {
+  margin: 0;
+  max-width: 36ch;
+}

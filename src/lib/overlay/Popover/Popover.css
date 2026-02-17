@@ -1,0 +1,15 @@
+.nv-popover { position: relative; display: inline-block; }
+.nv-popover-content {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  min-width: 220px;
+  border: 1px solid var(--nv-color-border);
+  border-radius: var(--nv-radius-md);
+  background: var(--nv-color-surface);
+  box-shadow: var(--nv-shadow-sm);
+  padding: 0.65rem;
+}
+.nv-popover-content--start { left: 0; }
+.nv-popover-content--center { left: 50%; transform: translateX(-50%); }
+.nv-popover-content--end { right: 0; }

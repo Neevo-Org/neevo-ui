@@ -1,0 +1,47 @@
+.nv-code-block {
+  border: 1px solid var(--nv-color-border, #d9d9df);
+  border-radius: var(--nv-radius-md, 10px);
+  overflow: hidden;
+  background: #0f172a;
+  color: #dbeafe;
+  position: relative;
+  height: 100%;
+}
+
+.nv-code-block code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.nv-code-block pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow: auto;
+}
+
+.nv-code-block__copy {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.45rem;
+  border: 1px solid #334155;
+  background: #0b1328;
+  color: #cbd5e1;
+  border-radius: 8px;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nv-code-block__copy:hover {
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+.nv-code-block__copy--done {
+  border-color: #22c55e;
+  color: #86efac;
+}

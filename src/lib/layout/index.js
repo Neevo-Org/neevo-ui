@@ -8,3 +8,8 @@ export { Grid } from './Grid/index.js'
 export { Row } from './Row/index.js'
 export { Column } from './Column/index.js'
 export { ThemeProvider } from './ThemeProvider/index.js'
+export { Divider } from './Divider/index.js'
+
+export { Breadcrumbs } from './Breadcrumbs/index.js'
+export { Stepper } from './Stepper/index.js'
+

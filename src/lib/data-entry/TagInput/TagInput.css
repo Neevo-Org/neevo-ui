@@ -1,0 +1,53 @@
+.nv-tag-input {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  border: 1px solid var(--nv-color-border);
+  border-radius: var(--nv-radius-md);
+  background: var(--nv-color-surface);
+  padding: 0.35rem;
+}
+.nv-tag-input-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: var(--nv-color-surface-muted);
+  border: 1px solid var(--nv-color-border-muted);
+  border-radius: 999px;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.82rem;
+  line-height: 1;
+}
+.nv-tag-input-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nv-tag-input-remove-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.9rem;
+  height: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  transform: translateY(-0.5px);
+}
+.nv-tag-input-field {
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--nv-color-text);
+  min-width: 120px;
+  flex: 1;
+  padding: 0.2rem;
+}

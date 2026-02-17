@@ -1,0 +1,44 @@
+.nv-skeleton {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--nv-color-surface-muted) 75%, var(--nv-color-border));
+}
+
+.nv-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: nv-skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+.nv-skeleton--still::after {
+  display: none;
+}
+
+.nv-skeleton--text {
+  width: 100%;
+  height: 0.9rem;
+  border-radius: 6px;
+}
+
+.nv-skeleton--rect {
+  border-radius: var(--nv-radius-md);
+}
+
+.nv-skeleton--circle {
+  border-radius: 999px;
+}
+
+@keyframes nv-skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

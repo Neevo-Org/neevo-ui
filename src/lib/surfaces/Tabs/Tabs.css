@@ -1,0 +1,23 @@
+.nv-tabs { display: grid; gap: 0.75rem; }
+.nv-tabs-list {
+  display: inline-flex;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid var(--nv-color-border);
+  background: var(--nv-color-surface);
+  border-radius: var(--nv-radius-md);
+}
+.nv-tabs-trigger {
+  border: 0;
+  background: transparent;
+  color: var(--nv-color-text-muted);
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.nv-tabs-trigger--active {
+  background: var(--nv-color-surface-muted);
+  color: var(--nv-color-text);
+  font-weight: 600;
+}
+.nv-tabs-content { display: grid; gap: 0.6rem; }
