@@ -1,0 +1,99 @@
+.nv-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.nv-switch-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nv-switch-track {
+  width: 46px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid var(--nv-color-border);
+  background: var(--nv-color-surface-muted);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: all 220ms ease;
+}
+
+.nv-switch-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--nv-color-surface);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: var(--nv-color-text);
+  transform: translateX(0);
+  transition: transform 220ms cubic-bezier(0.22, 0.92, 0.24, 1.2), background-color 220ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.nv-switch-thumb-icon {
+  position: absolute;
+  font-size: 15px;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.nv-switch-thumb-icon--on {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.nv-switch-thumb-icon--off {
+  opacity: 0.75;
+  transform: scale(1);
+}
+
+.nv-switch-content {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.nv-switch-input:focus-visible + .nv-switch-track {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 2px;
+}
+
+.nv-switch-input:checked + .nv-switch-track {
+  border-color: var(--nv-color-primary-bg);
+}
+
+.nv-switch-input:checked + .nv-switch-track .nv-switch-thumb {
+  transform: translateX(26px) translateY(-50%);
+  background: var(--nv-color-primary-bg);
+  color: var(--nv-color-primary-fg);
+}
+
+.nv-switch-input:checked + .nv-switch-track .nv-switch-thumb-icon--off {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.nv-switch-input:checked + .nv-switch-track .nv-switch-thumb-icon--on {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.nv-switch-input:checked + .nv-switch-track:hover {
+  border: 1px solid var(--nv-color-border);
+}
+
+.nv-switch-track:hover {
+  border-color: var(--nv-color-primary-bg);
+}
