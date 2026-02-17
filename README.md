@@ -1,8 +1,11 @@
+
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![React][react-src]][react-href]
 [![Vite][vite-src]][vite-href]
+<img src="./public/neevo_ui_dark.svg#gh-dark-mode-only" alt="Neevo UI" width="420" />
+<img src="./public/neevo_ui_light.svg#gh-light-mode-only" alt="Neevo UI" width="420" />
 
 # Neevo UI
 
