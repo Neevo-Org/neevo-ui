@@ -1,0 +1,80 @@
+.nv-text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--nv-color-text);
+}
+
+.nv-text--xs {
+  font-size: 0.75rem;
+}
+
+.nv-text--sm {
+  font-size: 0.875rem;
+}
+
+.nv-text--md {
+  font-size: 1rem;
+}
+
+.nv-text--lg {
+  font-size: 1.125rem;
+}
+
+.nv-text--regular {
+  font-weight: 400;
+}
+
+.nv-text--medium {
+  font-weight: 500;
+}
+
+.nv-text--semibold {
+  font-weight: 600;
+}
+
+.nv-text--bold {
+  font-weight: 700;
+}
+
+.nv-text--default {
+  color: var(--nv-color-text);
+}
+
+.nv-text--muted {
+  color: var(--nv-color-text-muted);
+}
+
+.nv-text--align-left {
+  text-align: left;
+}
+
+.nv-text--align-center {
+  text-align: center;
+}
+
+.nv-text--align-right {
+  text-align: right;
+}
+
+.nv-heading {
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--nv-color-text);
+}
+
+.nv-heading--sm {
+  font-size: 1rem;
+}
+
+.nv-heading--md {
+  font-size: 1.25rem;
+}
+
+.nv-heading--lg {
+  font-size: 1.5rem;
+}
+
+.nv-heading--xl {
+  font-size: 2rem;
+}
