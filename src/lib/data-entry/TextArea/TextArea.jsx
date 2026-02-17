@@ -1,4 +1,4 @@
-import { Text } from '../Text'
+import { Text } from '../../typography/Text'
 import './TextArea.css'
 
 export function TextArea({
@@ -33,3 +33,4 @@ export function TextArea({
     </label>
   )
 }
+

@@ -1,5 +1,5 @@
-import { I } from '../I'
-import { Text } from '../Text'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Switch.css'
 
 export function Switch({
@@ -34,3 +34,4 @@ export function Switch({
     </label>
   )
 }
+

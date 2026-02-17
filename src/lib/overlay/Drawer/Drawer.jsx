@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { I } from '../I'
-import { Text } from '../Text'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Drawer.css'
 
 export function Drawer({
@@ -85,3 +85,4 @@ export function DrawerFooter({ children, className = '' }) {
   const classes = ['nv-drawer-footer', className].filter(Boolean).join(' ')
   return <footer className={classes}>{children}</footer>
 }
+

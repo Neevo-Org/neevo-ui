@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { I } from '../I'
-import { Text } from '../Text'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Modal.css'
 
 export function Modal({
@@ -84,3 +84,4 @@ export function ModalFooter({ children, className = '' }) {
   const classes = ['nv-modal-footer', className].filter(Boolean).join(' ')
   return <footer className={classes}>{children}</footer>
 }
+

@@ -1,5 +1,5 @@
-import { I } from '../I'
-import { Text } from '../Text'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Checkbox.css'
 
 export function Checkbox({ label, description, className = '', ...props }) {
@@ -26,3 +26,4 @@ export function Checkbox({ label, description, className = '', ...props }) {
     </label>
   )
 }
+

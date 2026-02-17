@@ -1,5 +1,5 @@
 import './Card.css'
-import { Text } from '../Text'
+import { Text } from '../../typography/Text'
 
 function buildClassName(baseClass, className = '') {
   return [baseClass, className].filter(Boolean).join(' ')
@@ -48,3 +48,4 @@ export function CardFooter({ children, className = '', ...props }) {
     </footer>
   )
 }
+

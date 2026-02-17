@@ -1,5 +1,5 @@
 import { Children, cloneElement, isValidElement } from 'react'
-import { Text } from '../Text'
+import { Text } from '../../typography/Text'
 import './RadioGroup.css'
 
 export function RadioGroup({
@@ -71,3 +71,4 @@ export function RadioOption({ label, description, className = '', ...props }) {
     </label>
   )
 }
+

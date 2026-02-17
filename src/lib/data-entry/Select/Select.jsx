@@ -1,7 +1,7 @@
-﻿import { Children, isValidElement, useEffect, useMemo, useRef, useState } from 'react'
+import { Children, isValidElement, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '../Button'
-import { I } from '../I'
-import { Text } from '../Text'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Select.css'
 
 export function Options() {
@@ -145,3 +145,4 @@ export function Select({
     </div>
   )
 }
+

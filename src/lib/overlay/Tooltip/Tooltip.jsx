@@ -1,6 +1,6 @@
 import { Children, isValidElement, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Text } from '../Text'
+import { Text } from '../../typography/Text'
 import './Tooltip.css'
 
 function getPlacementPosition(placement, triggerRect, tooltipRect, offset) {
@@ -202,3 +202,5 @@ export function Tooltip({
     </>
   )
 }
+
+

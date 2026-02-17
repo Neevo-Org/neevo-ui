@@ -1,6 +1,6 @@
-﻿import { Children, createContext, isValidElement, useContext, useMemo, useState } from 'react'
-import { I } from '../I'
-import { Text } from '../Text'
+import { Children, createContext, isValidElement, useContext, useMemo, useState } from 'react'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Table.css'
 
 const TableSortContext = createContext(null)
@@ -213,3 +213,4 @@ export function TableCaption({ children, className = '', ...props }) {
     </caption>
   )
 }
+

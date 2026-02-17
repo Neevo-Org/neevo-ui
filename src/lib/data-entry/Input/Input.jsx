@@ -1,5 +1,5 @@
-import { I } from '../I'
-import { Text } from '../Text'
+import { I } from '../../typography/I'
+import { Text } from '../../typography/Text'
 import './Input.css'
 
 function sanitizeInteger(raw) {
@@ -155,3 +155,4 @@ export function Input({
     </label>
   )
 }
+
