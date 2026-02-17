@@ -18,7 +18,7 @@ import {
   Heading,
   I,
   Input,
-  Layout,
+  Page,
   Modal,
   ModalBody,
   ModalFooter,
@@ -39,7 +39,7 @@ import {
   TextArea,
   ThemeProvider,
   Tooltip,
-} from './lib'
+} from '../lib'
 
 const PAGE_LIST = [
   { id: 'button', label: 'Button' },
@@ -621,10 +621,10 @@ function DrawerDocs() {
 function LayoutDocs() {
   return (
     <>
-      <Text tone="muted">Layout system includes shell-level and micro-layout primitives: <code>Layout</code>, <code>Container</code>, <code>Grid</code>, <code>Row</code>, <code>Column</code>.</Text>
+      <Text tone="muted">Layout system includes shell-level and micro-layout primitives: <code>Page</code>, <code>Container</code>, <code>Grid</code>, <code>Row</code>, <code>Column</code>.</Text>
       <Section title="Examples">
-        <Example title="Dashboard Composition" code={`<Layout><Container><Column><Row ... /><Grid ... /></Column></Container></Layout>`}>
-          <Layout>
+        <Example title="Dashboard Composition" code={`<Page><Container><Column><Row ... /><Grid ... /></Column></Container></Page>`}>
+          <Page>
             <Container>
               <Column>
                 <Row justify="space-between"><Text weight="semibold">Portfolio</Text><Button variant="secondary">Refresh</Button></Row>
@@ -635,12 +635,12 @@ function LayoutDocs() {
                 </Grid>
               </Column>
             </Container>
-          </Layout>
+          </Page>
         </Example>
       </Section>
       <Section title="Props Quick Reference">
         <PropsTable rows={[
-          { prop: 'Layout.gap', type: 'number | string', defaultValue: '16', description: 'Vertical stack gap.' },
+          { prop: 'Page', type: 'component', defaultValue: '-', description: 'Top-level shell wrapper with full-height grid behavior.' },
           { prop: 'Container.width', type: 'number | string', defaultValue: '1200', description: 'Max content width.' },
           { prop: 'Grid.min', type: 'number | string', defaultValue: '220', description: 'Min card width in responsive grid.' },
           { prop: 'Row.align / justify / wrap', type: 'flex options', defaultValue: 'center / flex-start / true', description: 'Horizontal layout behavior.' },
