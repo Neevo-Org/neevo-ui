@@ -1,0 +1,75 @@
+.nv-radio-group {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 220px;
+}
+
+.nv-radio-legend {
+  margin-bottom: 0.45rem;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.nv-radio-options {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nv-radio {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  cursor: pointer;
+}
+
+.nv-radio-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nv-radio-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--nv-color-border);
+  background: var(--nv-color-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.nv-radio-dot-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--nv-color-primary-bg);
+  transform: scale(0.2);
+  opacity: 0;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.nv-radio-content {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.nv-radio-input:focus-visible + .nv-radio-dot {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 2px;
+}
+
+.nv-radio-input:checked + .nv-radio-dot {
+  border-color: var(--nv-color-primary-bg);
+}
+
+.nv-radio-input:checked + .nv-radio-dot .nv-radio-dot-inner {
+  transform: scale(1);
+  opacity: 1;
+}
