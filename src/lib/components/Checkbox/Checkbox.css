@@ -1,0 +1,54 @@
+.nv-checkbox {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  cursor: pointer;
+}
+
+.nv-checkbox-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nv-checkbox-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--nv-color-border);
+  background: var(--nv-color-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 140ms ease;
+  margin-top: 1px;
+}
+
+.nv-checkbox-check {
+  font-size: 16px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 130ms ease;
+}
+
+.nv-checkbox-content {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.nv-checkbox-input:focus-visible + .nv-checkbox-box {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 2px;
+}
+
+.nv-checkbox-input:checked + .nv-checkbox-box {
+  background: var(--nv-color-primary-bg);
+  border-color: var(--nv-color-primary-bg);
+  color: var(--nv-color-primary-fg);
+}
+
+.nv-checkbox-input:checked + .nv-checkbox-box .nv-checkbox-check {
+  opacity: 1;
+  transform: scale(1);
+}
