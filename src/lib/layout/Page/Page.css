@@ -1,0 +1,5 @@
+.nv-page {
+  display: grid;
+  min-height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+}

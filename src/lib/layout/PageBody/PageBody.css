@@ -1,0 +1,17 @@
+.nv-page-body {
+  display: grid;
+  gap: var(--nv-page-body-gap, 0px);
+  min-height: 0;
+  grid-template-columns: minmax(0, var(--nv-page-sidebar-width, 280px)) minmax(0, 1fr);
+}
+
+@media (max-width: 900px) {
+  .nv-page-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nv-page-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--nv-color-border, #d9d9df);
+  }
+}

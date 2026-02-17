@@ -1,0 +1,5 @@
+.nv-grid {
+  display: grid;
+  gap: var(--nv-grid-gap);
+  grid-template-columns: repeat(auto-fit, minmax(var(--nv-grid-min), 1fr));
+}

@@ -1,0 +1,6 @@
+.nv-page-sidebar {
+  min-width: 0;
+  padding: 16px;
+  border-right: 1px solid var(--nv-color-border, #d9d9df);
+  background: var(--nv-color-surface, #f8f8fa);
+}

@@ -1,0 +1,7 @@
+.nv-row {
+  display: flex;
+  gap: var(--nv-row-gap);
+  align-items: var(--nv-row-align);
+  justify-content: var(--nv-row-justify);
+  flex-wrap: var(--nv-row-wrap);
+}
