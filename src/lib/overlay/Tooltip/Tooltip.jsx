@@ -1,4 +1,4 @@
-import { Children, isValidElement, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Children, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Text } from '../../typography/Text'
 import './Tooltip.css'
@@ -50,15 +50,18 @@ export function Tooltip({
   maxWidth = 280,
   className = '',
 }) {
-  const child = Children.only(children)
-  if (!isValidElement(child)) {
-    return null
-  }
-
   const triggerModes = useMemo(() => (Array.isArray(trigger) ? trigger : [trigger]), [trigger])
   const isControlled = typeof open === 'boolean'
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const isOpen = isControlled ? open : internalOpen
+
+  const child = useMemo(() => {
+    if (Children.count(children) !== 1) {
+      return null
+    }
+    const onlyChild = Children.only(children)
+    return isValidElement(onlyChild) ? onlyChild : null
+  }, [children])
 
   const triggerRef = useRef(null)
   const tooltipRef = useRef(null)
@@ -67,7 +70,7 @@ export function Tooltip({
   const [position, setPosition] = useState({ top: 0, left: 0, side: 'top', align: 'center' })
   const tooltipId = useId()
 
-  function setOpenState(next) {
+  const setOpenState = useCallback((next) => {
     if (disabled) {
       return
     }
@@ -75,22 +78,22 @@ export function Tooltip({
       setInternalOpen(next)
     }
     onOpenChange?.(next)
-  }
+  }, [disabled, isControlled, onOpenChange])
 
-  function clearTimers() {
+  const clearTimers = useCallback(() => {
     window.clearTimeout(showTimeoutRef.current)
     window.clearTimeout(hideTimeoutRef.current)
-  }
+  }, [])
 
-  function scheduleOpen() {
+  const scheduleOpen = useCallback(() => {
     clearTimers()
     showTimeoutRef.current = window.setTimeout(() => setOpenState(true), showDelay)
-  }
+  }, [clearTimers, setOpenState, showDelay])
 
-  function scheduleClose() {
+  const scheduleClose = useCallback(() => {
     clearTimers()
     hideTimeoutRef.current = window.setTimeout(() => setOpenState(false), hideDelay)
-  }
+  }, [clearTimers, setOpenState, hideDelay])
 
   useLayoutEffect(() => {
     if (!isOpen || !triggerRef.current || !tooltipRef.current) {
@@ -147,26 +150,29 @@ export function Tooltip({
       document.removeEventListener('keydown', onKeyDown)
       document.removeEventListener('mousedown', onPointerDown)
     }
-  }, [interactive, isOpen, offset, placement])
+  }, [interactive, isOpen, offset, placement, setOpenState])
 
-  useEffect(() => () => clearTimers(), [])
+  useEffect(() => () => clearTimers(), [clearTimers])
+
+  if (!child) {
+    return null
+  }
+
+  const onClick = triggerModes.includes('click') ? () => setOpenState(!isOpen) : undefined
+  const onMouseEnter = triggerModes.includes('hover') ? scheduleOpen : undefined
+  const onMouseLeave = triggerModes.includes('hover') ? scheduleClose : undefined
+  const onFocus = triggerModes.includes('focus') ? scheduleOpen : undefined
+  const onBlur = triggerModes.includes('focus') ? scheduleClose : undefined
 
   const anchorProps = {
     ref: triggerRef,
     className: 'nv-tooltip-anchor',
     'aria-describedby': isOpen ? tooltipId : undefined,
-  }
-
-  if (triggerModes.includes('hover')) {
-    anchorProps.onMouseEnter = scheduleOpen
-    anchorProps.onMouseLeave = scheduleClose
-  }
-  if (triggerModes.includes('focus')) {
-    anchorProps.onFocus = scheduleOpen
-    anchorProps.onBlur = scheduleClose
-  }
-  if (triggerModes.includes('click')) {
-    anchorProps.onClick = () => setOpenState(!isOpen)
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+    onFocus,
+    onBlur,
   }
 
   const tooltipClassName = ['nv-tooltip', `nv-tooltip--${position.side}`, `nv-tooltip--align-${position.align}`, className]

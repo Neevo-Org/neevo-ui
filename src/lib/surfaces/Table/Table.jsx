@@ -1,4 +1,4 @@
-import { Children, createContext, isValidElement, useContext, useMemo, useState } from 'react'
+import { Children, createContext, isValidElement, useContext, useState } from 'react'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
 import './Table.css'
@@ -84,11 +84,9 @@ export function TableBody({ children, className = '', ...props }) {
   const classes = ['nv-table-body', className].filter(Boolean).join(' ')
   const sortContext = useContext(TableSortContext)
 
-  const sortedChildren = useMemo(() => {
-    if (!sortContext?.activeSort?.key) {
-      return children
-    }
+  let sortedChildren = children
 
+  if (sortContext?.activeSort?.key) {
     const rows = Children.toArray(children)
     const { key, direction } = sortContext.activeSort
 
@@ -122,8 +120,8 @@ export function TableBody({ children, className = '', ...props }) {
       return direction === 'asc' ? comparison : -comparison
     })
 
-    return prepared.map((item) => item.row)
-  }, [children, sortContext?.activeSort])
+    sortedChildren = prepared.map((item) => item.row)
+  }
 
   return (
     <tbody className={classes} {...props}>
@@ -157,15 +155,18 @@ export function TableCell({
 }) {
   const sortContext = useContext(TableSortContext)
   const isHeader = Tag === 'th'
-  const isActive = isHeader && sortContext?.activeSort?.key === sortKey
+  const resolvedSortKey = sortKey ?? columnKey
+  const isActive = isHeader && sortContext?.activeSort?.key === resolvedSortKey
   const resolvedDirection = sortDirection ?? (isActive ? sortContext?.activeSort?.direction : 'none')
 
   function handleSort() {
     onSort?.()
     if (!onSort) {
-      sortContext?.toggleSort(sortKey)
+      sortContext?.toggleSort(resolvedSortKey)
     }
   }
+
+  const resolvedSortValue = sortValue ?? undefined
 
   const classes = [
     'nv-table-cell',
@@ -181,7 +182,7 @@ export function TableCell({
   const ariaSort = isHeader && resolvedDirection !== 'none' ? (resolvedDirection === 'asc' ? 'ascending' : 'descending') : undefined
 
   return (
-    <Tag className={classes} aria-sort={ariaSort} {...props}>
+    <Tag className={classes} aria-sort={ariaSort} data-sort-value={resolvedSortValue} {...props}>
       {sortable ? (
         <button type="button" className="nv-table-sort-trigger" onClick={handleSort}>
           <span className="nv-table-sort-content">
