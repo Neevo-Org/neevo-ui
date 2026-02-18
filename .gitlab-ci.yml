@@ -1,0 +1,37 @@
+stages:
+  - lint
+  - deploy
+
+lint:
+  image: node:20
+  stage: lint
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm run lint
+  only:
+    - merge_requests
+    - main
+
+pages:
+  image: node:20
+  stage: deploy
+  needs:
+    - lint
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm run build:docs
+    - rm -rf public
+    - mv pages-dist public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
