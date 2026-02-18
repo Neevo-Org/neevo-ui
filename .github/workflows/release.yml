@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish_npm:
+    name: Publish To npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build Package
+        run: npm run build:lib
+
+      - name: Create Tarball
+        run: npm pack
+
+      - name: Publish Package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  trigger_gitlab_pages:
+    name: Trigger GitLab Pages Pipeline
+    runs-on: ubuntu-latest
+    needs: publish_npm
+    steps:
+      - name: Trigger GitLab Pipeline
+        run: |
+          REF="${{ secrets.GITLAB_REF }}"
+          if [ -z "$REF" ]; then REF="main"; fi
+          curl --fail --request POST \
+            --form token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \
+            --form ref=$REF \
+            https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/trigger/pipeline
