@@ -1,15 +1,13 @@
+import { createElement } from 'react'
+
 export function ThemeProvider({
   children,
   mode = 'light',
   className = '',
-  as: Tag = 'div',
+  as = 'div',
   ...props
 }) {
   const classes = ['nv-theme', className].filter(Boolean).join(' ')
 
-  return (
-    <Tag className={classes} data-nv-mode={mode} {...props}>
-      {children}
-    </Tag>
-  )
+  return createElement(as, { className: classes, 'data-nv-mode': mode, ...props }, children)
 }

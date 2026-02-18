@@ -1,0 +1,43 @@
+.nv-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.3rem 0.55rem;
+  white-space: nowrap;
+}
+
+.nv-badge--soft.nv-badge--neutral {
+  background: var(--nv-color-surface-muted);
+  color: var(--nv-color-text);
+  border-color: var(--nv-color-border);
+}
+
+.nv-badge--soft.nv-badge--success {
+  background: color-mix(in srgb, #16a34a 14%, var(--nv-color-surface));
+  color: #166534;
+  border-color: color-mix(in srgb, #16a34a 30%, var(--nv-color-border));
+}
+
+.nv-badge--soft.nv-badge--warning {
+  background: color-mix(in srgb, #f59e0b 14%, var(--nv-color-surface));
+  color: #92400e;
+  border-color: color-mix(in srgb, #f59e0b 30%, var(--nv-color-border));
+}
+
+.nv-badge--soft.nv-badge--danger {
+  background: color-mix(in srgb, #dc2626 12%, var(--nv-color-surface));
+  color: #991b1b;
+  border-color: color-mix(in srgb, #dc2626 25%, var(--nv-color-border));
+}
+
+.nv-badge--outline {
+  background: transparent;
+  color: var(--nv-color-text);
+  border-color: var(--nv-color-border);
+}
+

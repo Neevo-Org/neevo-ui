@@ -1,0 +1,96 @@
+.nv-command-palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: grid;
+  place-items: start center;
+  padding: min(12vh, 5rem) 1rem 1rem;
+  z-index: 90;
+}
+
+.nv-command-palette {
+  width: min(40rem, 100%);
+  background: var(--nv-color-surface);
+  border: 1px solid var(--nv-color-border);
+  border-radius: var(--nv-radius-lg);
+  box-shadow: var(--nv-shadow-sm);
+  overflow: hidden;
+}
+
+.nv-command-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--nv-color-border);
+}
+
+.nv-command-input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--nv-color-text);
+  font: inherit;
+}
+
+.nv-command-input:focus {
+  outline: none;
+}
+
+.nv-command-list {
+  display: grid;
+  gap: 0.2rem;
+  max-height: 20rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0.35rem;
+}
+
+.nv-command-item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  color: var(--nv-color-text);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: center;
+  column-gap: 0.6rem;
+  font: inherit;
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+  width: 100%;
+}
+
+.nv-command-item:hover {
+  background: var(--nv-color-surface-muted);
+}
+
+.nv-command-item--active {
+  background: var(--nv-color-surface-muted);
+}
+
+.nv-command-item:focus-visible {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 1px;
+}
+
+.nv-command-copy {
+  display: grid;
+}
+
+.nv-command-shortcut {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  width: max-content;
+  min-width: 1.5rem;
+  border: 1px solid var(--nv-color-border);
+  border-radius: 6px;
+  color: var(--nv-color-text-muted);
+  font-size: 0.72rem;
+  padding: 0.1rem 0.35rem;
+  white-space: nowrap;
+}

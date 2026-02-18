@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '../Button'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
@@ -53,21 +53,19 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
   const [visibleMonth, setVisibleMonth] = useState(() => selectedDate ?? toSafeDate(new Date()))
   const [yearPickerOpen, setYearPickerOpen] = useState(false)
   const [yearRangeStart, setYearRangeStart] = useState(() => visibleMonth.getFullYear() - 6)
-  const controlledTimestamp = controlledValue?.getTime() ?? null
-
-  useEffect(() => {
-    if (controlledValue) {
-      setVisibleMonth(new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1))
-    }
-  }, [controlledTimestamp])
+  const displayMonth = useMemo(() => (
+    controlledValue
+      ? new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1)
+      : visibleMonth
+  ), [controlledValue, visibleMonth])
 
   const today = useMemo(() => toSafeDate(new Date()), [])
   const monthLabel = useMemo(
-    () => visibleMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' }),
-    [visibleMonth],
+    () => displayMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+    [displayMonth],
   )
   const yearRangeLabel = useMemo(() => `${yearRangeStart} - ${yearRangeStart + 11}`, [yearRangeStart])
-  const days = useMemo(() => buildCalendarDays(visibleMonth), [visibleMonth])
+  const days = useMemo(() => buildCalendarDays(displayMonth), [displayMonth])
 
   function handleSelect(date) {
     if (!controlledValue) {
@@ -86,7 +84,7 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
     setYearPickerOpen((prev) => {
       const next = !prev
       if (next) {
-        setYearRangeStart(visibleMonth.getFullYear() - 6)
+        setYearRangeStart(displayMonth.getFullYear() - 6)
       }
       return next
     })
@@ -144,7 +142,7 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
       {yearPickerOpen ? (
         <div className="nv-calendar-year-grid">
           {Array.from({ length: 12 }, (_, index) => yearRangeStart + index).map((year) => {
-            const isActive = year === visibleMonth.getFullYear()
+            const isActive = year === displayMonth.getFullYear()
             const yearClassName = ['nv-calendar-year', isActive && 'nv-calendar-year--active']
               .filter(Boolean)
               .join(' ')

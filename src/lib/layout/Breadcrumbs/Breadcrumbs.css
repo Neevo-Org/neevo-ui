@@ -1,0 +1,5 @@
+.nv-breadcrumbs-list { display: flex; align-items: center; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
+.nv-breadcrumbs-item { display: inline-flex; align-items: center; gap: 0.35rem; }
+.nv-breadcrumbs-link { color: var(--nv-color-text-muted); text-decoration: none; }
+.nv-breadcrumbs-link:hover { text-decoration: underline; }
+.nv-breadcrumbs-separator { color: var(--nv-color-text-muted); }

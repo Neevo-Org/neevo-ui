@@ -1,3 +1,4 @@
+import { createElement } from 'react'
 import './Text.css'
 
 function buildClassName(parts) {
@@ -5,7 +6,7 @@ function buildClassName(parts) {
 }
 
 export function Text({
-  as: Tag = 'p',
+  as = 'p',
   children,
   size = 'md',
   weight = 'regular',
@@ -23,15 +24,11 @@ export function Text({
     className,
   ])
 
-  return (
-    <Tag className={classes} {...props}>
-      {children}
-    </Tag>
-  )
+  return createElement(as, { className: classes, ...props }, children)
 }
 
 export function Heading({
-  as: Tag = 'h2',
+  as = 'h2',
   children,
   size = 'lg',
   tone = 'default',
@@ -47,9 +44,5 @@ export function Heading({
     className,
   ])
 
-  return (
-    <Tag className={classes} {...props}>
-      {children}
-    </Tag>
-  )
+  return createElement(as, { className: classes, ...props }, children)
 }

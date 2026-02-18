@@ -1,0 +1,23 @@
+.nv-timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }
+.nv-timeline-item { position: relative; display: grid; grid-template-columns: 14px 1fr; gap: 0.55rem; }
+.nv-timeline-item::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 18px;
+  bottom: -10px;
+  width: 2px;
+  background: var(--nv-color-border-muted);
+}
+.nv-timeline-item:last-child::after { display: none; }
+.nv-timeline-dot {
+  display: block;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--nv-color-primary-bg);
+  background: var(--nv-color-surface);
+  margin-top: 2px;
+}
+.nv-timeline-content { display: grid; gap: 0.2rem; }
