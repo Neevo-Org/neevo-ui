@@ -6,7 +6,18 @@ import { fileURLToPath } from 'node:url'
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'inject-main-css-import',
+      generateBundle(_, bundle) {
+        const entry = bundle['neevo-ui.js']
+        if (!entry || entry.type !== 'chunk') return
+        if (entry.code.includes("import './neevo-ui.css'")) return
+        entry.code = `import './neevo-ui.css';\n${entry.code}`
+      },
+    },
+  ],
   publicDir: false,
   build: {
     lib: {
