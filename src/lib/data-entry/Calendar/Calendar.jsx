@@ -51,13 +51,18 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
   const controlledMonth = controlledValue
     ? new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1)
     : null
+  const controlledMonthKey = controlledMonth ? `${controlledMonth.getFullYear()}-${controlledMonth.getMonth()}` : null
   const [internalValue, setInternalValue] = useState(() => toSafeDate(defaultValue))
   const selectedDate = controlledValue ?? internalValue
-  const [visibleMonth, setVisibleMonth] = useState(() => controlledMonth ?? selectedDate ?? toSafeDate(new Date()))
-  const [manualMonthNavigation, setManualMonthNavigation] = useState(false)
+  const [monthViewState, setMonthViewState] = useState(() => ({
+    month: controlledMonth ?? selectedDate ?? toSafeDate(new Date()),
+    manual: false,
+    anchorControlledKey: controlledMonthKey,
+  }))
   const [yearPickerOpen, setYearPickerOpen] = useState(false)
-  const [yearRangeStart, setYearRangeStart] = useState(() => visibleMonth.getFullYear() - 6)
-  const displayMonth = controlledMonth && !manualMonthNavigation ? controlledMonth : visibleMonth
+  const [yearRangeStart, setYearRangeStart] = useState(() => monthViewState.month.getFullYear() - 6)
+  const isManualViewActive = monthViewState.manual && monthViewState.anchorControlledKey === controlledMonthKey
+  const displayMonth = controlledMonth && !isManualViewActive ? controlledMonth : monthViewState.month
 
   const today = useMemo(() => toSafeDate(new Date()), [])
   const monthLabel = useMemo(
@@ -71,15 +76,21 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
     if (!controlledValue) {
       setInternalValue(date)
     }
-    setVisibleMonth(new Date(date.getFullYear(), date.getMonth(), 1))
-    setManualMonthNavigation(false)
+    setMonthViewState({
+      month: new Date(date.getFullYear(), date.getMonth(), 1),
+      manual: false,
+      anchorControlledKey: controlledMonthKey,
+    })
     onChange?.(date)
     setYearPickerOpen(false)
   }
 
   function selectYear(year) {
-    setVisibleMonth((prev) => new Date(year, prev.getMonth(), 1))
-    setManualMonthNavigation(true)
+    setMonthViewState({
+      month: new Date(year, displayMonth.getMonth(), 1),
+      manual: true,
+      anchorControlledKey: controlledMonthKey,
+    })
     setYearPickerOpen(false)
   }
 
@@ -98,8 +109,11 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
       setYearRangeStart((prev) => prev - 12)
       return
     }
-    setManualMonthNavigation(true)
-    setVisibleMonth((prev) => addMonths(prev, -1))
+    setMonthViewState({
+      month: addMonths(displayMonth, -1),
+      manual: true,
+      anchorControlledKey: controlledMonthKey,
+    })
   }
 
   function goNext() {
@@ -107,8 +121,11 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
       setYearRangeStart((prev) => prev + 12)
       return
     }
-    setManualMonthNavigation(true)
-    setVisibleMonth((prev) => addMonths(prev, 1))
+    setMonthViewState({
+      month: addMonths(displayMonth, 1),
+      manual: true,
+      anchorControlledKey: controlledMonthKey,
+    })
   }
 
   const classes = ['nv-calendar', className].filter(Boolean).join(' ')
