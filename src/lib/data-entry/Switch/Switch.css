@@ -3,6 +3,8 @@
   align-items: center;
   gap: 0.6rem;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .nv-switch-input {

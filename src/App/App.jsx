@@ -137,7 +137,7 @@ function App() {
   return (
     <ThemeProvider mode={mode}>
       <Page className="docs-page">
-        <PageHeader sticky className="docs-header">
+        <PageHeader className="docs-header">
           <Row justify="space-between" align="center">
             <Column gap={2}>
               <Text className="docs-eyebrow" as="span" size="xs" weight="semibold" tone="muted">Neevo UI</Text>
@@ -167,7 +167,9 @@ function App() {
           </Sidebar>
 
           <Content className="docs-main" padding={20}>
-            {renderPage(page)}
+            <div className="docs-content-main">
+              {renderPage(page)}
+            </div>
           </Content>
         </PageBody>
       </Page>

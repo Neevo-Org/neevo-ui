@@ -177,6 +177,23 @@ function normalizeLiveRuntimeCode(code) {
   return `${prelude}${runtime}`
 }
 
+function headingText(node) {
+  if (node === null || node === undefined || typeof node === 'boolean') return ''
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(headingText).join('')
+  if (typeof node === 'object' && 'props' in node) return headingText(node.props?.children)
+  return ''
+}
+
+function headingIdFromText(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
 function canRunAsLiveSnippet(code, language) {
   if (language !== 'tsx') return false
   return Boolean(code.trim())
@@ -268,8 +285,16 @@ export const mdxComponents = {
       <div className="docs-mdx-h1-divider" />
     </div>
   ),
-  h2: (props) => <Heading as="h2" size="md" {...props} />,
-  h3: (props) => <Heading as="h3" size="sm" {...props} />,
+  h2: ({ children, id, ...props }) => (
+    <Heading as="h2" size="md" id={id ?? headingIdFromText(headingText(children))} {...props}>
+      {children}
+    </Heading>
+  ),
+  h3: ({ children, id, ...props }) => (
+    <Heading as="h3" size="sm" id={id ?? headingIdFromText(headingText(children))} {...props}>
+      {children}
+    </Heading>
+  ),
   p: (props) => <Text tone="muted" {...props} />,
   ul: (props) => <ul className="docs-list" {...props} />,
   table: (props) => (

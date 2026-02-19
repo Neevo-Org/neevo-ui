@@ -6,6 +6,8 @@
   background: var(--nv-color-surface);
   box-shadow: var(--nv-shadow-sm);
   padding: 0.75rem;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .nv-calendar-header {

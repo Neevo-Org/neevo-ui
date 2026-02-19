@@ -18,7 +18,7 @@ export function CodeBlock({
   language = 'tsx',
   theme = 'auto',
   showLineNumbers = true,
-  wrapLongLines = true,
+  wrapLongLines = false,
   copyable = true,
   className = '',
   style,

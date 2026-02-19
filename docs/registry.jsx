@@ -97,6 +97,46 @@ function extractDescription(raw) {
   return ''
 }
 
+function slugifyHeading(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
+function extractHeadings(raw) {
+  const lines = raw.split(/\r?\n/)
+  const headings = []
+  const slugCounts = new Map()
+  let inCode = false
+
+  lines.forEach((line) => {
+    const value = line.trim()
+    if (value.startsWith('```')) {
+      inCode = !inCode
+      return
+    }
+    if (inCode) return
+
+    const match = value.match(/^(#{2,4})\s+(.+)$/)
+    if (!match) return
+
+    const level = match[1].length
+    const text = match[2].trim()
+    const base = slugifyHeading(text)
+    if (!base) return
+    const count = slugCounts.get(base) ?? 0
+    slugCounts.set(base, count + 1)
+    const id = count === 0 ? base : `${base}-${count + 1}`
+
+    headings.push({ level, text, id })
+  })
+
+  return headings
+}
+
 function getOrder({ folderParts, isSelf, stem }) {
   if (isSelf) {
     const folder = folderParts[folderParts.length - 1] ?? stem
@@ -127,11 +167,13 @@ function buildPageEntries() {
       const raw = typeof docRawModules[modulePath] === 'string' ? docRawModules[modulePath] : ''
       const label = extractHeading(raw, toTitle(id))
       const description = extractDescription(raw)
+      const headings = extractHeadings(raw)
 
       return {
         id,
         label,
         description,
+        headings,
         order: getOrder({ folderParts, isSelf, stem }),
         Content,
         isSelf,
@@ -268,6 +310,10 @@ export function getMdxPageEntry(pageId) {
 
 export function getMdxAncestors(pageId) {
   return MDX_PAGE_ANCESTORS[pageId] ?? []
+}
+
+export function getMdxHeadings(pageId) {
+  return getMdxPageEntry(pageId)?.headings ?? []
 }
 
 export function renderMdxPage(pageId) {
