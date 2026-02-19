@@ -262,7 +262,12 @@ function MdxCode({ children, className }) {
 }
 
 export const mdxComponents = {
-  h1: (props) => <Heading as="h1" size="xl" {...props} />,
+  h1: (props) => (
+    <div className="docs-mdx-h1-wrap">
+      <Heading as="h1" size="xl" {...props} />
+      <div className="docs-mdx-h1-divider" />
+    </div>
+  ),
   h2: (props) => <Heading as="h2" size="md" {...props} />,
   h3: (props) => <Heading as="h3" size="sm" {...props} />,
   p: (props) => <Text tone="muted" {...props} />,

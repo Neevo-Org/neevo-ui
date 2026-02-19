@@ -167,10 +167,6 @@ function App() {
           </Sidebar>
 
           <Content className="docs-main" padding={20}>
-            <Column className="docs-main-header" gap={6}>
-              <Heading as="h1" size="xl">{current.label}</Heading>
-              <Text tone="muted">{current.description || 'Production-ready usage guidelines, API details, and implementation examples.'}</Text>
-            </Column>
             {renderPage(page)}
           </Content>
         </PageBody>
