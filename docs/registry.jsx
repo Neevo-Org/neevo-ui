@@ -232,12 +232,35 @@ const { tree: MDX_NAV_TREE, pageAncestors: MDX_PAGE_ANCESTORS } = buildNavTree(d
 
 export { MDX_NAV_TREE }
 
-export const MDX_PAGE_LIST = docEntries.map(({ id, label, description, order }) => ({
-  id,
-  label,
-  description,
-  order,
-}))
+function buildOrderedPageIdsFromNav(nodes) {
+  const ids = []
+
+  nodes.forEach((node) => {
+    if (node.type === 'folder') {
+      if (node.pageId) ids.push(node.pageId)
+      ids.push(...buildOrderedPageIdsFromNav(node.children))
+      return
+    }
+
+    if (node.type === 'page') {
+      ids.push(node.id)
+    }
+  })
+
+  return ids
+}
+
+const orderedPageIds = buildOrderedPageIdsFromNav(MDX_NAV_TREE)
+
+export const MDX_PAGE_LIST = orderedPageIds
+  .map((id) => DOC_PAGE_MAP[id])
+  .filter(Boolean)
+  .map(({ id, label, description, order }) => ({
+    id,
+    label,
+    description,
+    order,
+  }))
 
 export function getMdxPageEntry(pageId) {
   return DOC_PAGE_MAP[pageId] ?? null
