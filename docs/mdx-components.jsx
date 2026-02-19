@@ -178,14 +178,14 @@ function normalizeLiveRuntimeCode(code) {
 }
 
 function canRunAsLiveSnippet(code, language) {
-  if (language !== 'tsx' && language !== 'jsx') return false
+  if (language !== 'tsx') return false
   return Boolean(code.trim())
 }
 
 function MarkdownExample({ code, language }) {
   const liveCode = useMemo(() => normalizeLiveCode(code), [code])
   const runtimeCode = useMemo(() => normalizeLiveRuntimeCode(code), [code])
-  const isTsxLike = language === 'tsx' || language === 'jsx'
+  const isTsxLike = language === 'tsx'
   const isRenderable = canRunAsLiveSnippet(code, language)
   const prefersRuntime =
     /\b(import|export)\b/.test(code) ||

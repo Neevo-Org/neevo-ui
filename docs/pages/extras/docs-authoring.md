@@ -6,7 +6,7 @@ Use one MDX file per component or guide inside `docs/pages`.
 
 Each page should export:
 
-```tsx
+```js
 export const meta = {
   id: 'unique-id',
   label: 'Sidebar Label',
