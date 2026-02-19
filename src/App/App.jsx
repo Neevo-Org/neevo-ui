@@ -15,6 +15,7 @@ import {
   Column,
 } from '../lib'
 import { PAGE_LIST, getPageFromHash, renderPage } from './Pages'
+import { MDX_NAV_TREE, getMdxAncestors } from '../../docs/registry'
 
 function getInitialMode() {
   if (typeof window === 'undefined') {
@@ -33,13 +34,39 @@ function getInitialMode() {
   return 'light'
 }
 
+function collectFolderKeys(nodes, output = []) {
+  nodes.forEach((node) => {
+    if (node.type === 'folder') {
+      output.push(node.key)
+      collectFolderKeys(node.children, output)
+    }
+  })
+  return output
+}
+
+const ALL_FOLDER_KEYS = collectFolderKeys(MDX_NAV_TREE)
+
 function App() {
   const [page, setPage] = useState(getPageFromHash())
   const [mode, setMode] = useState(getInitialMode)
+  const [openFolders, setOpenFolders] = useState(
+    Object.fromEntries(ALL_FOLDER_KEYS.map((key) => [key, true])),
+  )
 
   useEffect(() => {
     function onHashChange() {
-      setPage(getPageFromHash())
+      const nextPage = getPageFromHash()
+      setPage(nextPage)
+      const ancestors = getMdxAncestors(nextPage)
+      if (!ancestors.length) return
+
+      setOpenFolders((prev) => {
+        const next = { ...prev }
+        ancestors.forEach((key) => {
+          next[key] = true
+        })
+        return next
+      })
     }
 
     window.addEventListener('hashchange', onHashChange)
@@ -51,6 +78,61 @@ function App() {
   }, [mode])
 
   const current = PAGE_LIST.find((p) => p.id === page) ?? PAGE_LIST[0]
+
+  function toggleFolder(key) {
+    setOpenFolders((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }))
+  }
+
+  function renderNavNode(node, depth = 0) {
+    if (node.type === 'page') {
+      return (
+        <a
+          key={node.id}
+          href={`#/${node.id}`}
+          className={node.id === page ? 'docs-nav-link docs-nav-link--active docs-nav-link--nested' : 'docs-nav-link docs-nav-link--nested'}
+          style={{ '--docs-nav-depth': depth }}
+        >
+          {node.label}
+        </a>
+      )
+    }
+
+    const hasChildren = node.children.length > 0
+    const isOpen = openFolders[node.key] ?? true
+    const folderLinkClasses = node.pageId === page
+      ? 'docs-nav-link docs-nav-link--active docs-nav-link--folder'
+      : 'docs-nav-link docs-nav-link--folder'
+
+    return (
+      <section key={node.key} className="docs-nav-folder" style={{ '--docs-nav-depth': depth }}>
+        <div className="docs-nav-folder-row">
+          {node.pageId ? (
+            <a href={`#/${node.pageId}`} className={folderLinkClasses}>{node.label}</a>
+          ) : (
+            <Text as="span" size="sm" weight="semibold" tone="muted" className="docs-nav-folder-label">{node.label}</Text>
+          )}
+          {hasChildren ? (
+            <button
+              type="button"
+              className={isOpen ? 'docs-nav-chevron docs-nav-chevron--open' : 'docs-nav-chevron'}
+              aria-label={isOpen ? `Collapse ${node.label}` : `Expand ${node.label}`}
+              onClick={() => toggleFolder(node.key)}
+            >
+              <I>expand_more</I>
+            </button>
+          ) : null}
+        </div>
+        {hasChildren && isOpen ? (
+          <div className="docs-nav-children">
+            {node.children.map((child) => renderNavNode(child, depth + 1))}
+          </div>
+        ) : null}
+      </section>
+    )
+  }
 
   return (
     <ThemeProvider mode={mode}>
@@ -80,18 +162,14 @@ function App() {
           <Sidebar className="docs-sidebar">
             <Text size="sm" tone="muted">Use the navigation to explore each component module.</Text>
             <nav className="docs-nav">
-              {PAGE_LIST.map((item) => (
-                <a key={item.id} href={`#/${item.id}`} className={item.id === page ? 'docs-nav-link docs-nav-link--active' : 'docs-nav-link'}>
-                  {item.label}
-                </a>
-              ))}
+              {MDX_NAV_TREE.map((node) => renderNavNode(node))}
             </nav>
           </Sidebar>
 
           <Content className="docs-main" padding={20}>
             <Column className="docs-main-header" gap={6}>
               <Heading as="h1" size="xl">{current.label}</Heading>
-              <Text tone="muted">Production-ready usage guidelines, API details, and implementation examples.</Text>
+              <Text tone="muted">{current.description || 'Production-ready usage guidelines, API details, and implementation examples.'}</Text>
             </Column>
             {renderPage(page)}
           </Content>
