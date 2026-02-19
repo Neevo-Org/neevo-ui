@@ -1,5 +1,4 @@
 import './theme.css'
-import '@fontsource/material-symbols-outlined'
 
 export { Button } from './data-entry/Button/index.js'
 export { Calendar } from './data-entry/Calendar/index.js'

@@ -23,6 +23,28 @@ export function Example() {
 }
 ```
 
+## Fonts and Icons
+
+Neevo UI does not bundle Google fonts/icons by default. Add the fonts/icons you want in your app.
+
+### Option A: in `index.html`
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined&display=swap"
+/>
+```
+
+### Option B: in your app CSS
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap');
+```
+
 ## Why MDX Here
 
 - Docs are stored as local files in the repo.
