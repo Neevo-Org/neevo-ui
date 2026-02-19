@@ -8,10 +8,21 @@ export function Options() {
   return null
 }
 
-function getOptionLabel(option) {
-  if (typeof option.props.children === 'string') {
-    return option.props.children
+function readTextContent(node) {
+  if (node === null || node === undefined || typeof node === 'boolean') return ''
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) {
+    return node.map(readTextContent).join('')
   }
+  if (isValidElement(node)) {
+    return readTextContent(node.props?.children)
+  }
+  return ''
+}
+
+function getOptionLabel(option) {
+  const childText = readTextContent(option.props.children).trim()
+  if (childText) return childText
   return option.props.label ?? ''
 }
 

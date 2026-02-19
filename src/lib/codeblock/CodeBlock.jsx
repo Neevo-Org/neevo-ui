@@ -61,6 +61,11 @@ export function CodeBlock({
         style={highlighterStyle}
         showLineNumbers={showLineNumbers}
         wrapLongLines={wrapLongLines}
+        codeTagProps={{
+          style: {
+            background: 'transparent',
+          },
+        }}
         customStyle={{
           margin: 0,
           background: '#0f172a',
