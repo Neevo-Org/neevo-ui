@@ -15,7 +15,7 @@ import {
   TableRow,
   Text,
 } from '../src/lib'
-import { CodeBlock } from '../src/lib/codeblock'
+import { CodeBlock as NeevoCodeBlock } from '../src/lib/codeblock'
 
 function isSafeScopeKey(key) {
   return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) && key !== 'default'
@@ -36,6 +36,7 @@ const LIVE_SCOPE = mergeSafeScope(
   { React: ReactRuntime },
   ReactRuntime,
   NeevoUi,
+  { CodeBlock: NeevoCodeBlock, codeblock: NeevoCodeBlock },
 )
 
 const noop = () => {}
@@ -215,7 +216,7 @@ function MarkdownExample({ code, language }) {
   )
 
   if (!isTsxLike) {
-    return <CodeBlock code={code} language={language} showLineNumbers />
+    return <NeevoCodeBlock code={code} language={language} showLineNumbers />
   }
 
   return (
@@ -261,7 +262,7 @@ function MarkdownExample({ code, language }) {
           )}
           {liveError ? <Text className="docs-live-fallback" size="sm">Preview failed: {liveError}</Text> : null}
         </div>
-        <CodeBlock code={code} language={language} showLineNumbers />
+        <NeevoCodeBlock code={code} language={language} showLineNumbers />
       </CardBody>
     </Card>
   )
@@ -309,4 +310,6 @@ export const mdxComponents = {
   td: (props) => <TableCell {...props} />,
   pre: (props) => <>{props.children}</>,
   code: (props) => <MdxCode {...props} />,
+  CodeBlock: (props) => <NeevoCodeBlock {...props} />,
+  codeblock: (props) => <NeevoCodeBlock {...props} />,
 }
