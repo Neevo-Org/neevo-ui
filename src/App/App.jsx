@@ -49,6 +49,7 @@ const ALL_FOLDER_KEYS = collectFolderKeys(MDX_NAV_TREE)
 function App() {
   const [page, setPage] = useState(getPageFromHash())
   const [mode, setMode] = useState(getInitialMode)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [openFolders, setOpenFolders] = useState(
     Object.fromEntries(ALL_FOLDER_KEYS.map((key) => [key, true])),
   )
@@ -57,6 +58,7 @@ function App() {
     function onHashChange() {
       const nextPage = getPageFromHash()
       setPage(nextPage)
+      setMobileNavOpen(false)
       const ancestors = getMdxAncestors(nextPage)
       if (!ancestors.length) return
 
@@ -75,6 +77,15 @@ function App() {
 
   useEffect(() => {
     window.localStorage.setItem('nv-docs-mode', mode)
+    const docsPage = document.querySelector('.docs-page')
+    const themedBackground = docsPage
+      ? getComputedStyle(docsPage).getPropertyValue('--nv-color-bg').trim()
+      : ''
+    document.body.style.background = themedBackground || (mode === 'dark' ? '#111827' : '#f9fafb')
+
+    return () => {
+      document.body.style.background = ''
+    }
   }, [mode])
 
   const current = PAGE_LIST.find((p) => p.id === page) ?? PAGE_LIST[0]
@@ -138,12 +149,21 @@ function App() {
     <ThemeProvider mode={mode}>
       <Page className="docs-page">
         <PageHeader className="docs-header">
-          <Row justify="space-between" align="center">
+          <Row justify="space-between" align="center" className="docs-header-row">
             <Column gap={2}>
               <Text className="docs-eyebrow" as="span" size="xs" weight="semibold" tone="muted">Neevo UI</Text>
               <Heading as="h1" size="md">Component Showcase</Heading>
             </Column>
-            <Row align="center">
+            <Row align="center" className="docs-header-actions">
+              <button
+                type="button"
+                className="docs-mobile-nav-toggle"
+                aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={mobileNavOpen}
+                onClick={() => setMobileNavOpen((prev) => !prev)}
+              >
+                <I>{mobileNavOpen ? 'close' : 'menu'}</I>
+              </button>
               <Text size="sm" tone="muted">{current.label}</Text>
               <Button
                 variant="secondary"
@@ -159,7 +179,7 @@ function App() {
         </PageHeader>
 
         <PageBody sidebarWidth={300}>
-          <Sidebar className="docs-sidebar">
+          <Sidebar className={mobileNavOpen ? 'docs-sidebar' : 'docs-sidebar docs-sidebar--mobile-closed'}>
             <Text size="sm" tone="muted">Use the navigation to explore each component module.</Text>
             <nav className="docs-nav">
               {MDX_NAV_TREE.map((node) => renderNavNode(node))}

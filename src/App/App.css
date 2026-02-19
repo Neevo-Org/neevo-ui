@@ -59,6 +59,23 @@
   min-width: 90px;
 }
 
+.docs-mobile-nav-toggle {
+  display: none;
+  border: 1px solid var(--nv-color-border);
+  background: var(--nv-color-surface);
+  color: var(--nv-color-text);
+  border-radius: 8px;
+  width: 2.2rem;
+  height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.docs-mobile-nav-toggle:hover {
+  background: var(--nv-color-surface-muted);
+}
+
 .docs-eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -174,6 +191,7 @@
   height: 100%;
   min-height: 0;
   overflow: auto;
+  min-width: 0;
 }
 
 .docs-page .nv-page-body {
@@ -192,7 +210,8 @@
   min-width: 0;
   height: auto;
   min-height: auto;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
   padding-right: 0.35rem;
 }
 
@@ -230,6 +249,7 @@
   border: 1px solid var(--nv-color-border);
   border-radius: var(--nv-radius-lg);
   background: var(--nv-color-surface);
+  overflow: auto;
 }
 
 .docs-table {
@@ -293,15 +313,51 @@
 }
 
 @media (max-width: 980px) {
+  .docs-page {
+    height: auto;
+    min-height: 100dvh;
+    overflow: auto;
+  }
+
+  .docs-page .nv-page-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: auto;
+    overflow: visible;
+  }
+
+  .docs-page .nv-page-content {
+    display: block;
+    height: auto;
+  }
+
+  .docs-main {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
   .docs-mode-toggle {
     min-width: 0;
   }
 
+  .docs-mobile-nav-toggle {
+    display: inline-flex;
+  }
+
   .docs-sidebar {
+    height: auto;
+    align-self: stretch;
     max-height: none;
     overflow: visible;
+    margin-bottom: 0.25rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+  }
+
+  .docs-sidebar--mobile-closed {
+    display: none;
   }
 
   .docs-example-card .nv-card-body {
