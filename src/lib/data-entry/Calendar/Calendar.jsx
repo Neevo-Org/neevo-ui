@@ -48,16 +48,16 @@ function buildCalendarDays(monthDate) {
 
 export function Calendar({ value, defaultValue, onChange, className = '', ...props }) {
   const controlledValue = toSafeDate(value)
+  const controlledMonth = controlledValue
+    ? new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1)
+    : null
   const [internalValue, setInternalValue] = useState(() => toSafeDate(defaultValue))
   const selectedDate = controlledValue ?? internalValue
-  const [visibleMonth, setVisibleMonth] = useState(() => selectedDate ?? toSafeDate(new Date()))
+  const [visibleMonth, setVisibleMonth] = useState(() => controlledMonth ?? selectedDate ?? toSafeDate(new Date()))
+  const [manualMonthNavigation, setManualMonthNavigation] = useState(false)
   const [yearPickerOpen, setYearPickerOpen] = useState(false)
   const [yearRangeStart, setYearRangeStart] = useState(() => visibleMonth.getFullYear() - 6)
-  const displayMonth = useMemo(() => (
-    controlledValue
-      ? new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1)
-      : visibleMonth
-  ), [controlledValue, visibleMonth])
+  const displayMonth = controlledMonth && !manualMonthNavigation ? controlledMonth : visibleMonth
 
   const today = useMemo(() => toSafeDate(new Date()), [])
   const monthLabel = useMemo(
@@ -71,12 +71,15 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
     if (!controlledValue) {
       setInternalValue(date)
     }
+    setVisibleMonth(new Date(date.getFullYear(), date.getMonth(), 1))
+    setManualMonthNavigation(false)
     onChange?.(date)
     setYearPickerOpen(false)
   }
 
   function selectYear(year) {
     setVisibleMonth((prev) => new Date(year, prev.getMonth(), 1))
+    setManualMonthNavigation(true)
     setYearPickerOpen(false)
   }
 
@@ -95,6 +98,7 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
       setYearRangeStart((prev) => prev - 12)
       return
     }
+    setManualMonthNavigation(true)
     setVisibleMonth((prev) => addMonths(prev, -1))
   }
 
@@ -103,6 +107,7 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
       setYearRangeStart((prev) => prev + 12)
       return
     }
+    setManualMonthNavigation(true)
     setVisibleMonth((prev) => addMonths(prev, 1))
   }
 
