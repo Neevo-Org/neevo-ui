@@ -53,6 +53,14 @@ function stripMetaBlock(content) {
     .trim()
 }
 
+function escapeMarkdownTableCell(value) {
+  return String(value ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/\|/g, '\\|')
+    .replace(/\r?\n/g, '<br/>')
+    .replace(/\t/g, '    ')
+}
+
 function parseReactDocToMarkdown(source, label, description) {
   const lines = []
   lines.push(`# ${label}`)
@@ -108,8 +116,7 @@ function parseReactDocToMarkdown(source, label, description) {
         lines.push('| Prop | Type | Default | Description |')
         lines.push('| --- | --- | --- | --- |')
         rows.forEach((row) => {
-          const safe = (value) => value.replace(/\|/g, '\\|')
-          lines.push(`| ${safe(row.prop)} | ${safe(row.type)} | ${safe(row.defaultValue)} | ${safe(row.description)} |`)
+          lines.push(`| ${escapeMarkdownTableCell(row.prop)} | ${escapeMarkdownTableCell(row.type)} | ${escapeMarkdownTableCell(row.defaultValue)} | ${escapeMarkdownTableCell(row.description)} |`)
         })
         lines.push('')
       }
