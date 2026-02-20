@@ -1,0 +1,7 @@
+.nv-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nv-column-gap);
+  align-items: var(--nv-column-align);
+  justify-content: var(--nv-column-justify);
+}

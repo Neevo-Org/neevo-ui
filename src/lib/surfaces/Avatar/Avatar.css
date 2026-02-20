@@ -1,0 +1,39 @@
+.nv-avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--nv-color-border);
+  background: var(--nv-color-surface-muted);
+  color: var(--nv-color-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  overflow: hidden;
+  user-select: none;
+}
+
+.nv-avatar--sm {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.7rem;
+}
+
+.nv-avatar--md {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.nv-avatar--lg {
+  width: 3rem;
+  height: 3rem;
+  font-size: 0.95rem;
+}
+
+.nv-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+

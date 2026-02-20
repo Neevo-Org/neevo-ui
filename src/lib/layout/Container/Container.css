@@ -1,0 +1,7 @@
+.nv-container {
+  width: 100%;
+  max-width: var(--nv-container-width);
+  margin-inline: auto;
+  padding-inline: var(--nv-container-padding);
+  box-sizing: border-box;
+}

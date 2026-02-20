@@ -1,0 +1,42 @@
+.nv-button {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--nv-radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.65rem 1rem;
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.nv-button:active {
+  transform: translateY(1px);
+}
+
+.nv-button:focus-visible {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 2px;
+}
+
+.nv-button--primary {
+  background: var(--nv-color-primary-bg);
+  color: var(--nv-color-primary-fg);
+}
+
+.nv-button--primary:hover {
+  background: var(--nv-color-primary-bg-hover);
+}
+
+.nv-button--secondary {
+  background: var(--nv-color-secondary-bg);
+  border-color: var(--nv-color-border);
+  color: var(--nv-color-secondary-fg);
+}
+
+.nv-button--secondary:hover {
+  background: var(--nv-color-secondary-bg-hover);
+}

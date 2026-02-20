@@ -1,0 +1,79 @@
+.nv-tooltip-anchor {
+  display: inline-flex;
+}
+
+.nv-tooltip {
+  position: fixed;
+  z-index: 70;
+  background: var(--nv-color-text);
+  color: var(--nv-color-surface);
+  border: 1px solid var(--nv-color-border);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+  box-shadow: var(--nv-shadow-sm);
+  pointer-events: auto;
+}
+
+.nv-tooltip .nv-text {
+  color: inherit;
+}
+
+.nv-tooltip-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: inherit;
+  border-left: 1px solid var(--nv-color-border);
+  border-top: 1px solid var(--nv-color-border);
+  transform: rotate(45deg);
+}
+
+.nv-tooltip--top.nv-tooltip--align-center .nv-tooltip-arrow,
+.nv-tooltip--bottom.nv-tooltip--align-center .nv-tooltip-arrow {
+  left: calc(50% - 5px);
+}
+
+.nv-tooltip--top.nv-tooltip--align-start .nv-tooltip-arrow,
+.nv-tooltip--bottom.nv-tooltip--align-start .nv-tooltip-arrow {
+  left: 14px;
+}
+
+.nv-tooltip--top.nv-tooltip--align-end .nv-tooltip-arrow,
+.nv-tooltip--bottom.nv-tooltip--align-end .nv-tooltip-arrow {
+  right: 14px;
+}
+
+.nv-tooltip--left.nv-tooltip--align-center .nv-tooltip-arrow,
+.nv-tooltip--right.nv-tooltip--align-center .nv-tooltip-arrow {
+  top: calc(50% - 5px);
+}
+
+.nv-tooltip--left.nv-tooltip--align-start .nv-tooltip-arrow,
+.nv-tooltip--right.nv-tooltip--align-start .nv-tooltip-arrow {
+  top: 10px;
+}
+
+.nv-tooltip--left.nv-tooltip--align-end .nv-tooltip-arrow,
+.nv-tooltip--right.nv-tooltip--align-end .nv-tooltip-arrow {
+  bottom: 10px;
+}
+
+.nv-tooltip--top .nv-tooltip-arrow {
+  bottom: -6px;
+  transform: rotate(225deg);
+}
+
+.nv-tooltip--bottom .nv-tooltip-arrow {
+  top: -6px;
+  transform: rotate(45deg);
+}
+
+.nv-tooltip--left .nv-tooltip-arrow {
+  right: -6px;
+  transform: rotate(135deg);
+}
+
+.nv-tooltip--right .nv-tooltip-arrow {
+  left: -6px;
+  transform: rotate(-45deg);
+}

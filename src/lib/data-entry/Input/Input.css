@@ -1,0 +1,67 @@
+.nv-field {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 220px;
+}
+
+.nv-field-label {
+  color: var(--nv-color-text);
+}
+
+.nv-input-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--nv-color-border);
+  border-radius: var(--nv-radius-md);
+  background: var(--nv-color-surface);
+  padding: 0.45rem 0.65rem;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.nv-input-control:focus-within {
+  border-color: var(--nv-color-text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--nv-color-text) 14%, transparent);
+  transform: translateY(-1px);
+}
+
+.nv-input-control--error {
+  border-color: #dc2626;
+}
+
+.nv-input-control--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.nv-input-control--disabled .nv-input-element {
+  cursor: not-allowed;
+}
+
+.nv-input-element {
+  border: 0;
+  background: transparent;
+  color: var(--nv-color-text);
+  width: 100%;
+  min-height: 28px;
+  font: inherit;
+}
+
+.nv-input-element:focus {
+  outline: none;
+}
+
+.nv-input-element::placeholder {
+  color: var(--nv-color-text-muted);
+}
+
+.nv-input-icon {
+  color: var(--nv-color-text-muted);
+  display: inline-flex;
+  align-items: center;
+}
+
+.nv-field-error {
+  color: #dc2626;
+}

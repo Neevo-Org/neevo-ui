@@ -1,0 +1,4 @@
+.nv-page-content {
+  min-width: 0;
+  padding: var(--nv-page-content-padding, 24px);
+}

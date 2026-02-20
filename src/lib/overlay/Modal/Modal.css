@@ -1,0 +1,79 @@
+.nv-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.42);
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  z-index: 80;
+}
+
+.nv-modal {
+  width: min(560px, 100%);
+  background: var(--nv-color-surface);
+  border: 1px solid var(--nv-color-border);
+  border-radius: var(--nv-radius-lg);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22);
+  overflow: hidden;
+  animation: nv-modal-in 180ms ease-out;
+}
+
+.nv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--nv-color-border-muted);
+}
+
+.nv-modal-title-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.nv-modal-close {
+  border: 0;
+  background: transparent;
+  color: var(--nv-color-text);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nv-modal-close:hover {
+  background: var(--nv-color-surface-muted);
+}
+
+.nv-modal-close:focus-visible {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 2px;
+}
+
+.nv-modal-body {
+  padding: 1rem;
+}
+
+.nv-modal-footer {
+  padding: 0.8rem 1rem 1rem;
+  border-top: 1px solid var(--nv-color-border-muted);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+@keyframes nv-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -1,0 +1,63 @@
+:root {
+  --nv-color-bg: #f9fafb;
+  --nv-color-surface: #ffffff;
+  --nv-color-surface-muted: #f3f4f6;
+  --nv-color-text: #111827;
+  --nv-color-text-muted: #4b5563;
+  --nv-color-border: #e5e7eb;
+  --nv-color-border-muted: #f3f4f6;
+  --nv-color-focus: #111827;
+  --nv-color-primary-bg: #111827;
+  --nv-color-primary-bg-hover: #0b1220;
+  --nv-color-primary-fg: #ffffff;
+  --nv-color-secondary-bg: #ffffff;
+  --nv-color-secondary-bg-hover: #f9fafb;
+  --nv-color-secondary-fg: #111827;
+  --nv-shadow-sm: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --nv-radius-md: 10px;
+  --nv-radius-lg: 14px;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.nv-icon-filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.nv-theme {
+  color: var(--nv-color-text);
+}
+
+.nv-theme[data-nv-mode='dark'] {
+  --nv-color-bg: #111827;
+  --nv-color-surface: #1f2937;
+  --nv-color-surface-muted: #111827;
+  --nv-color-text: #f9fafb;
+  --nv-color-text-muted: #d1d5db;
+  --nv-color-border: #374151;
+  --nv-color-border-muted: #374151;
+  --nv-color-focus: #f9fafb;
+  --nv-color-primary-bg: #f9fafb;
+  --nv-color-primary-bg-hover: #e5e7eb;
+  --nv-color-primary-fg: #111827;
+  --nv-color-secondary-bg: #1f2937;
+  --nv-color-secondary-bg-hover: #111827;
+  --nv-color-secondary-fg: #f9fafb;
+  --nv-shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.35);
+}

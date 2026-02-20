@@ -1,0 +1,74 @@
+{
+  "name": "neevo-ui",
+  "version": "0.1.0",
+  "description": "A modular React UI component library with an integrated docs showcase app.",
+  "license": "GPL-3.0-only",
+  "keywords": [
+    "react",
+    "ui",
+    "component-library",
+    "design-system",
+    "vite",
+    "neevo-ui"
+  ],
+  "type": "module",
+  "main": "./dist/neevo-ui.cjs",
+  "module": "./dist/neevo-ui.js",
+  "exports": {
+    ".": {
+      "import": "./dist/neevo-ui.js",
+      "require": "./dist/neevo-ui.cjs"
+    },
+    "./codeblock": {
+      "import": "./dist/codeblock.js",
+      "require": "./dist/codeblock.cjs"
+    },
+    "./style.css": "./dist/neevo-ui.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "generate:raw-docs": "node scripts/generate-raw-docs.mjs",
+    "dev": "npm run generate:raw-docs && vite",
+    "build:lib": "vite build",
+    "build:docs": "npm run generate:raw-docs && vite build --config vite.docs.config.js",
+    "build": "vite build",
+    "check:size": "node scripts/check-bundle-size.mjs",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-syntax-highlighter": "^15.6.1"
+  },
+  "peerDependenciesMeta": {
+    "react-syntax-highlighter": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@mdx-js/react": "^3.1.1",
+    "@mdx-js/rollup": "^3.1.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-jsx-parser": "^2.4.1",
+    "react-live": "^4.1.8",
+    "react-syntax-highlighter": "^15.6.6",
+    "remark-gfm": "^4.0.1",
+    "vite": "^7.3.1"
+  }
+}

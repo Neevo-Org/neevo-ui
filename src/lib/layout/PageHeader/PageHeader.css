@@ -1,0 +1,14 @@
+.nv-page-header {
+  padding: var(--nv-page-header-padding, 16px);
+  background: var(--nv-color-bg, #fff);
+}
+
+.nv-page-header--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.nv-page-header--bordered {
+  border-bottom: 1px solid var(--nv-color-border, #d9d9df);
+}
