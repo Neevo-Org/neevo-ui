@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
+import { useBodyScrollLock } from '../shared/useBodyScrollLock'
 import './CommandPalette.css'
 
 export function CommandPalette({
@@ -25,6 +26,9 @@ export function CommandPalette({
 
   const setOpen = useCallback((next) => {
     if (open === undefined) setInternalOpen(next)
+    if (!next) {
+      setQuery('')
+    }
     onOpenChange?.(next)
   }, [open, onOpenChange])
 
@@ -67,15 +71,7 @@ export function CommandPalette({
     })
   }, [items, query])
 
-  useEffect(() => {
-    if (!isOpen) return undefined
-    const previous = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previous
-      setQuery('')
-    }
-  }, [isOpen])
+  useBodyScrollLock(isOpen)
 
   function selectAt(index) {
     const item = filtered[index]

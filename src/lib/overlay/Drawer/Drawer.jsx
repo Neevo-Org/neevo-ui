@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
+import { useBodyScrollLock } from '../shared/useBodyScrollLock'
 import './Drawer.css'
 
 export function Drawer({
@@ -28,16 +29,7 @@ export function Drawer({
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [closeOnEscape, onClose, open])
 
-  useEffect(() => {
-    if (!open) {
-      return
-    }
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previousOverflow
-    }
-  }, [open])
+  useBodyScrollLock(open)
 
   if (!open) {
     return null

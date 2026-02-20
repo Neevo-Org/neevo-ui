@@ -47,13 +47,14 @@ function buildCalendarDays(monthDate) {
 }
 
 export function Calendar({ value, defaultValue, onChange, className = '', ...props }) {
+  const isControlled = value !== undefined
   const controlledValue = toSafeDate(value)
   const controlledMonth = controlledValue
     ? new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1)
     : null
   const controlledMonthKey = controlledMonth ? `${controlledMonth.getFullYear()}-${controlledMonth.getMonth()}` : null
   const [internalValue, setInternalValue] = useState(() => toSafeDate(defaultValue))
-  const selectedDate = controlledValue ?? internalValue
+  const selectedDate = isControlled ? controlledValue : internalValue
   const [monthViewState, setMonthViewState] = useState(() => ({
     month: controlledMonth ?? selectedDate ?? toSafeDate(new Date()),
     manual: false,
@@ -73,7 +74,7 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
   const days = useMemo(() => buildCalendarDays(displayMonth), [displayMonth])
 
   function handleSelect(date) {
-    if (!controlledValue) {
+    if (!isControlled) {
       setInternalValue(date)
     }
     setMonthViewState({
