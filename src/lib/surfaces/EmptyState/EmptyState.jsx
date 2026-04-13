@@ -1,4 +1,4 @@
-import { Button } from '../../data-entry/Button'
+﻿import { Button } from '../../data-entry/Button'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
 import './EmptyState.css'
@@ -21,10 +21,10 @@ export function EmptyState({
       <span className="nv-empty-state-icon" aria-hidden="true">
         <I>{icon}</I>
       </span>
-      <Text as="h3" weight="semibold" className="nv-empty-state-title">
+      <Text as="h3" weight="semibold" align="center" className="nv-empty-state-title">
         {title}
       </Text>
-      <Text tone="muted" className="nv-empty-state-description">
+      <Text tone="muted" align="center" className="nv-empty-state-description">
         {description}
       </Text>
       {action ?? (actionLabel ? <Button onClick={onAction}>{actionLabel}</Button> : null)}
@@ -32,3 +32,4 @@ export function EmptyState({
     </section>
   )
 }
+

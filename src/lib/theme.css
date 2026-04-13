@@ -1,12 +1,24 @@
 :root {
   --nv-color-bg: #f9fafb;
+  --nv-color-bg-elevated: #f3f4f6;
   --nv-color-surface: #ffffff;
   --nv-color-surface-muted: #f3f4f6;
+  --nv-color-surface-soft: #f8fafc;
   --nv-color-text: #111827;
   --nv-color-text-muted: #4b5563;
+  --nv-color-text-strong: #07161a;
   --nv-color-border: #e5e7eb;
   --nv-color-border-muted: #f3f4f6;
+  --nv-color-border-soft: #eef2f7;
   --nv-color-focus: #111827;
+  --nv-color-primary: #4f7cff;
+  --nv-color-primary-soft: #e8eeff;
+  --nv-color-success: #16a34a;
+  --nv-color-success-soft: #dcfce7;
+  --nv-color-danger: #dc2626;
+  --nv-color-danger-soft: #fee2e2;
+  --nv-color-warning: #d97706;
+  --nv-color-warning-soft: #fef3c7;
   --nv-color-primary-bg: #111827;
   --nv-color-primary-bg-hover: #0b1220;
   --nv-color-primary-fg: #ffffff;
@@ -14,8 +26,22 @@
   --nv-color-secondary-bg-hover: #f9fafb;
   --nv-color-secondary-fg: #111827;
   --nv-shadow-sm: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --nv-shadow-md: 0 18px 42px rgba(17, 24, 39, 0.1);
   --nv-radius-md: 10px;
   --nv-radius-lg: 14px;
+  --nv-radius-xl: 24px;
+  --nv-gradient-app-bg: linear-gradient(180deg, #f6f8fb 0%, #eef2f7 100%);
+  --nv-gradient-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02));
+  --nv-gradient-accent: linear-gradient(135deg, rgba(225, 255, 246, 0.92), rgba(189, 241, 228, 0.92));
+  --nv-gradient-card-radial: radial-gradient(circle at 12% 10%, rgba(203, 245, 235, 0.6), transparent 46%);
+  --nv-gradient-card-linear: linear-gradient(140deg, rgba(239, 255, 252, 0.9), rgba(224, 245, 239, 0.82));
+  --nv-gradient-accent-border: rgba(124, 191, 180, 0.85);
+  --nv-color-theme: rgba(124, 191, 180, 0.85);
+  --nv-color-theme-soft: color-mix(in srgb, var(--nv-color-theme) 16%, transparent);
+  --nv-scrollbar-track: rgba(214, 233, 229, 0.6);
+  --nv-scrollbar-thumb: linear-gradient(180deg, rgba(92, 175, 161, 0.92), rgba(70, 150, 138, 0.92));
+  --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(77, 164, 149, 0.96), rgba(56, 133, 121, 0.96));
+  --nv-scrollbar-thumb-border: rgba(214, 233, 229, 0.75);
 }
 
 .material-symbols-outlined {
@@ -44,15 +70,55 @@
   color: var(--nv-color-text);
 }
 
-.nv-theme[data-nv-mode='dark'] {
+.nv-theme[data-nv-mode='light'],
+body[data-nv-mode='light'] {
+  --nv-color-bg: #e7edf3;
+  --nv-color-bg-elevated: #edf4f3;
+  --nv-color-surface: #fbfffe;
+  --nv-color-surface-muted: #f2f8f6;
+  --nv-color-surface-soft: #f2f8f6;
+  --nv-color-text: #0e2025;
+  --nv-color-text-muted: #456266;
+  --nv-color-text-strong: #07161a;
+  --nv-color-border: rgba(178, 213, 206, 0.62);
+  --nv-color-border-muted: rgba(200, 229, 223, 0.48);
+  --nv-color-border-soft: rgba(200, 229, 223, 0.48);
+  --nv-color-focus: #07161a;
+  --nv-shadow-sm: 0 8px 20px rgba(20, 53, 58, 0.1);
+  --nv-shadow-md: 0 14px 30px rgba(18, 47, 53, 0.14);
+  --nv-scrollbar-track: rgba(214, 233, 229, 0.6);
+  --nv-scrollbar-thumb-border: rgba(214, 233, 229, 0.75);
+  --nv-gradient-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02));
+  --nv-color-primary-bg: color-mix(in srgb, var(--nv-color-text-strong) 90%, #0b1114);
+  --nv-color-primary-bg-hover: color-mix(in srgb, var(--nv-color-text-strong) 80%, #0b1114);
+  --nv-color-primary-fg: var(--nv-color-bg-elevated);
+  --nv-color-secondary-bg: color-mix(in srgb, var(--nv-color-surface) 92%, transparent);
+  --nv-color-secondary-bg-hover: color-mix(in srgb, var(--nv-color-surface-soft) 94%, transparent);
+  --nv-color-secondary-fg: var(--nv-color-text);
+}
+
+.nv-theme[data-nv-mode='dark'],
+body[data-nv-mode='dark'] {
   --nv-color-bg: #111827;
+  --nv-color-bg-elevated: #0f1720;
   --nv-color-surface: #1f2937;
   --nv-color-surface-muted: #111827;
+  --nv-color-surface-soft: #243041;
   --nv-color-text: #f9fafb;
   --nv-color-text-muted: #d1d5db;
+  --nv-color-text-strong: #ffffff;
   --nv-color-border: #374151;
   --nv-color-border-muted: #374151;
+  --nv-color-border-soft: rgba(58, 79, 99, 0.5);
   --nv-color-focus: #f9fafb;
+  --nv-color-primary: #7ea2ff;
+  --nv-color-primary-soft: #24355c;
+  --nv-color-success: #4ade80;
+  --nv-color-success-soft: #153226;
+  --nv-color-danger: #fb7185;
+  --nv-color-danger-soft: #48212b;
+  --nv-color-warning: #fbbf24;
+  --nv-color-warning-soft: #48391b;
   --nv-color-primary-bg: #f9fafb;
   --nv-color-primary-bg-hover: #e5e7eb;
   --nv-color-primary-fg: #111827;
@@ -60,4 +126,62 @@
   --nv-color-secondary-bg-hover: #111827;
   --nv-color-secondary-fg: #f9fafb;
   --nv-shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --nv-shadow-md: 0 18px 44px rgba(0, 0, 0, 0.42);
+  --nv-scrollbar-track: rgba(24, 37, 51, 0.7);
+  --nv-scrollbar-thumb-border: rgba(24, 37, 51, 0.82);
+  --nv-gradient-overlay: linear-gradient(180deg, rgba(8, 13, 20, 0.72), rgba(10, 16, 25, 0.78));
+}
+
+.nv-theme[data-nv-theme='mint'],
+body[data-nv-theme='mint'] {
+  --nv-gradient-app-bg:
+    radial-gradient(circle at 12% 10%, rgba(191, 242, 232, 0.44), transparent 40%),
+    radial-gradient(circle at 86% 9%, rgba(196, 226, 252, 0.42), transparent 36%),
+    linear-gradient(180deg, #edf4f3 0%, #e7edf3 100%);
+  --nv-gradient-accent: linear-gradient(135deg, rgba(225, 255, 246, 0.92), rgba(189, 241, 228, 0.92));
+  --nv-gradient-card-radial: radial-gradient(circle at 12% 10%, rgba(203, 245, 235, 0.6), transparent 46%);
+  --nv-gradient-card-linear: linear-gradient(140deg, rgba(239, 255, 252, 0.9), rgba(224, 245, 239, 0.82));
+  --nv-gradient-accent-border: rgba(124, 191, 180, 0.85);
+  --nv-color-theme: rgba(124, 191, 180, 0.85);
+  --nv-color-theme-soft: color-mix(in srgb, var(--nv-color-theme) 16%, transparent);
+  --nv-color-primary: color-mix(in srgb, #58a89a 72%, var(--nv-color-text) 28%);
+  --nv-color-primary-soft: color-mix(in srgb, var(--nv-color-primary) 18%, transparent);
+  --nv-scrollbar-thumb: linear-gradient(180deg, rgba(92, 175, 161, 0.92), rgba(70, 150, 138, 0.92));
+  --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(77, 164, 149, 0.96), rgba(56, 133, 121, 0.96));
+}
+
+.nv-theme[data-nv-theme='ocean'],
+body[data-nv-theme='ocean'] {
+  --nv-gradient-app-bg:
+    radial-gradient(circle at 14% 12%, rgba(181, 218, 249, 0.5), transparent 42%),
+    radial-gradient(circle at 84% 8%, rgba(190, 228, 248, 0.44), transparent 38%),
+    linear-gradient(180deg, #edf3fb 0%, #e8eef7 100%);
+  --nv-gradient-accent: linear-gradient(135deg, rgba(213, 238, 255, 0.94), rgba(176, 218, 247, 0.92));
+  --nv-gradient-card-radial: radial-gradient(circle at 12% 10%, rgba(181, 218, 249, 0.58), transparent 46%);
+  --nv-gradient-card-linear: linear-gradient(140deg, rgba(241, 250, 255, 0.92), rgba(224, 238, 250, 0.84));
+  --nv-gradient-accent-border: rgba(104, 153, 196, 0.88);
+  --nv-color-theme: rgba(104, 153, 196, 0.88);
+  --nv-color-theme-soft: color-mix(in srgb, var(--nv-color-theme) 16%, transparent);
+  --nv-color-primary: color-mix(in srgb, #5f95cf 72%, var(--nv-color-text) 28%);
+  --nv-color-primary-soft: color-mix(in srgb, var(--nv-color-primary) 18%, transparent);
+  --nv-scrollbar-thumb: linear-gradient(180deg, rgba(97, 150, 197, 0.92), rgba(78, 128, 171, 0.92));
+  --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(88, 144, 192, 0.96), rgba(67, 118, 162, 0.96));
+}
+
+.nv-theme[data-nv-theme='sunset'],
+body[data-nv-theme='sunset'] {
+  --nv-gradient-app-bg:
+    radial-gradient(circle at 12% 10%, rgba(255, 207, 182, 0.44), transparent 40%),
+    radial-gradient(circle at 86% 9%, rgba(255, 225, 184, 0.4), transparent 36%),
+    linear-gradient(180deg, #f8f0ea 0%, #f4ece7 100%);
+  --nv-gradient-accent: linear-gradient(135deg, rgba(255, 229, 206, 0.94), rgba(248, 194, 156, 0.92));
+  --nv-gradient-card-radial: radial-gradient(circle at 12% 10%, rgba(255, 213, 187, 0.58), transparent 46%);
+  --nv-gradient-card-linear: linear-gradient(140deg, rgba(255, 247, 241, 0.92), rgba(250, 234, 222, 0.84));
+  --nv-gradient-accent-border: rgba(196, 129, 95, 0.9);
+  --nv-color-theme: rgba(196, 129, 95, 0.9);
+  --nv-color-theme-soft: color-mix(in srgb, var(--nv-color-theme) 16%, transparent);
+  --nv-color-primary: color-mix(in srgb, #cb835e 72%, var(--nv-color-text) 28%);
+  --nv-color-primary-soft: color-mix(in srgb, var(--nv-color-primary) 18%, transparent);
+  --nv-scrollbar-thumb: linear-gradient(180deg, rgba(210, 144, 107, 0.92), rgba(188, 122, 85, 0.92));
+  --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(201, 136, 100, 0.96), rgba(176, 112, 77, 0.96));
 }

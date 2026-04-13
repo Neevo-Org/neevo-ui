@@ -1,7 +1,7 @@
-.nv-switch {
+﻿.nv-switch {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
@@ -14,50 +14,76 @@
 }
 
 .nv-switch-track {
-  width: 46px;
-  height: 18px;
+  width: 54px;
+  height: 30px;
   border-radius: 999px;
-  border: 1px solid var(--nv-color-border);
-  background: var(--nv-color-surface-muted);
+  border: 1px solid color-mix(in srgb, var(--nv-color-border) 88%, transparent);
+  background:
+    radial-gradient(circle at 24% 30%, color-mix(in srgb, white 18%, transparent), transparent 46%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-surface-muted) 92%, var(--nv-color-surface)),
+      color-mix(in srgb, var(--nv-color-border-muted) 44%, var(--nv-color-surface-muted))
+    );
   display: inline-flex;
   align-items: center;
-  padding: 2px;
+  padding: 3px;
   position: relative;
   overflow: hidden;
-  transition: all 220ms ease;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 24%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 6%, transparent);
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease;
 }
 
 .nv-switch-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--nv-color-surface);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  color: var(--nv-color-text);
-  transform: translateX(0);
-  transition: transform 220ms cubic-bezier(0.22, 0.92, 0.24, 1.2), background-color 220ms ease;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 32% 28%, color-mix(in srgb, white 86%, transparent), transparent 44%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-surface) 100%, transparent),
+      color-mix(in srgb, var(--nv-color-surface-muted) 80%, var(--nv-color-surface))
+    );
+  border: 1px solid color-mix(in srgb, var(--nv-color-border) 70%, transparent);
+  box-shadow:
+    0 6px 14px color-mix(in srgb, black 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 55%, transparent);
+  color: var(--nv-color-text-muted);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  left: 2px;
+  left: 3px;
   top: 50%;
   transform: translateY(-50%);
+  transition:
+    transform 240ms cubic-bezier(0.22, 0.92, 0.24, 1.16),
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .nv-switch-thumb-icon {
   position: absolute;
-  font-size: 15px;
+  font-size: 14px;
   transition: opacity 180ms ease, transform 180ms ease;
 }
 
 .nv-switch-thumb-icon--on {
   opacity: 0;
-  transform: scale(0.6);
+  transform: scale(0.6) rotate(-8deg);
 }
 
 .nv-switch-thumb-icon--off {
-  opacity: 0.75;
+  opacity: 0.7;
   transform: scale(1);
 }
 
@@ -72,30 +98,54 @@
   outline-offset: 2px;
 }
 
+.nv-switch:hover .nv-switch-track {
+  border-color: color-mix(in srgb, var(--nv-color-primary-bg) 26%, var(--nv-color-border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 24%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 6%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--nv-color-primary-bg) 8%, transparent);
+}
+
 .nv-switch-input:checked + .nv-switch-track {
-  border-color: var(--nv-color-primary-bg);
+  border-color: color-mix(in srgb, var(--nv-color-primary-bg) 64%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at 18% 24%, color-mix(in srgb, white 18%, transparent), transparent 42%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-primary-bg) 70%, var(--nv-color-surface)),
+      color-mix(in srgb, var(--nv-color-primary-bg) 88%, black 12%)
+    );
 }
 
 .nv-switch-input:checked + .nv-switch-track .nv-switch-thumb {
-  transform: translateX(26px) translateY(-50%);
-  background: var(--nv-color-primary-bg);
-  color: var(--nv-color-primary-fg);
+  transform: translate(24px, -50%);
+  background:
+    radial-gradient(circle at 32% 28%, color-mix(in srgb, white 72%, transparent), transparent 44%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-primary-fg) 100%, transparent),
+      color-mix(in srgb, var(--nv-color-primary-fg) 82%, var(--nv-color-surface))
+    );
+  border-color: color-mix(in srgb, var(--nv-color-primary-fg) 24%, var(--nv-color-border));
+  color: var(--nv-color-primary-bg);
+  box-shadow:
+    0 7px 16px color-mix(in srgb, var(--nv-color-primary-bg) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 60%, transparent);
 }
 
 .nv-switch-input:checked + .nv-switch-track .nv-switch-thumb-icon--off {
   opacity: 0;
-  transform: scale(0.6);
+  transform: scale(0.6) rotate(8deg);
 }
 
 .nv-switch-input:checked + .nv-switch-track .nv-switch-thumb-icon--on {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) rotate(0deg);
 }
 
 .nv-switch-input:checked + .nv-switch-track:hover {
-  border: 1px solid var(--nv-color-border);
-}
-
-.nv-switch-track:hover {
-  border-color: var(--nv-color-primary-bg);
+  border-color: color-mix(in srgb, var(--nv-color-primary-bg) 80%, var(--nv-color-border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--nv-color-primary-bg) 12%, transparent);
 }

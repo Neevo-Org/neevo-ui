@@ -1,19 +1,33 @@
 .nv-button {
   appearance: none;
   border: 1px solid transparent;
-  border-radius: var(--nv-radius-md);
+  border-radius: 12px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   font: inherit;
-  font-weight: 600;
+  font-weight: 650;
+  font-size: 0.93rem;
+  letter-spacing: -0.015em;
   line-height: 1;
-  padding: 0.65rem 1rem;
-  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  min-height: 40px;
+  padding: 0.68rem 1.28rem;
+  box-sizing: border-box;
+  transition:
+    transform 140ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
-.nv-button:active {
+.nv-button--full-width {
+  width: 100%;
+}
+
+.nv-button:active:not(:disabled) {
   transform: translateY(1px);
 }
 
@@ -22,21 +36,73 @@
   outline-offset: 2px;
 }
 
-.nv-button--primary {
-  background: var(--nv-color-primary-bg);
-  color: var(--nv-color-primary-fg);
+.nv-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-.nv-button--primary:hover {
-  background: var(--nv-color-primary-bg-hover);
+.nv-button--sm {
+  min-height: 34px;
+  padding: 0.48rem 0.98rem;
+  border-radius: 10px;
+  font-size: 0.84rem;
+}
+
+.nv-button--lg {
+  min-height: 46px;
+  padding: 0.82rem 1.5rem;
+  border-radius: 13px;
+  font-size: 0.98rem;
+}
+
+.nv-button--primary {
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 72%, var(--nv-color-surface-soft));
+  color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 84%, var(--nv-color-text));
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 26%, var(--nv-color-border));
+  box-shadow: none;
+}
+
+.nv-button--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 84%, var(--nv-color-surface-soft));
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 8%, transparent);
 }
 
 .nv-button--secondary {
-  background: var(--nv-color-secondary-bg);
-  border-color: var(--nv-color-border);
-  color: var(--nv-color-secondary-fg);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 26%, transparent), transparent 44%),
+    color-mix(in srgb, var(--nv-color-surface) 96%, transparent);
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, var(--nv-color-border));
+  color: var(--nv-color-text);
 }
 
-.nv-button--secondary:hover {
-  background: var(--nv-color-secondary-bg-hover);
+.nv-button--secondary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 34%, transparent), transparent 44%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+}
+
+.nv-button--ghost {
+  background: transparent;
+  color: var(--nv-color-text);
+}
+
+.nv-button--ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-surface-soft));
+}
+
+.nv-button--danger {
+  background: color-mix(in srgb, var(--nv-color-danger-soft) 72%, var(--nv-color-surface-soft));
+  color: color-mix(in srgb, var(--nv-color-danger) 84%, var(--nv-color-text));
+  border-color: color-mix(in srgb, var(--nv-color-danger) 24%, var(--nv-color-border));
+  box-shadow: none;
+}
+
+.nv-button--danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--nv-color-danger-soft) 84%, var(--nv-color-surface-soft));
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--nv-color-danger) 8%, transparent);
 }

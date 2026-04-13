@@ -2,7 +2,8 @@
   display: inline-flex;
   flex-direction: column;
   gap: 0.35rem;
-  min-width: 220px;
+  min-width: 0;
+  width: 100%;
 }
 
 .nv-field-label {
@@ -12,21 +13,46 @@
 .nv-textarea-control {
   display: inline-flex;
   align-items: stretch;
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-md);
-  background: var(--nv-color-surface);
-  padding: 0.45rem 0.65rem;
-  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 12% 16%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 54%, transparent), transparent 36%),
+    color-mix(in srgb, var(--nv-color-surface) 94%, transparent);
+  padding: 0.5rem 0.7rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 180ms ease;
 }
 
 .nv-textarea-control:focus-within {
-  border-color: var(--nv-color-text);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--nv-color-text) 14%, transparent);
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 46%, var(--nv-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nv-color-theme-soft, transparent) 28%, transparent);
   transform: translateY(-1px);
 }
 
 .nv-textarea-control--error {
-  border-color: #dc2626;
+  border-color: var(--nv-color-danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nv-color-danger-soft) 34%, transparent);
+}
+
+.nv-textarea-control--subtle {
+  background: color-mix(in srgb, var(--nv-color-surface-soft) 92%, transparent);
+}
+
+.nv-textarea-control--shell {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  padding: 0;
+}
+
+.nv-textarea-control--shell:focus-within {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
 .nv-textarea-element {
@@ -34,6 +60,8 @@
   background: transparent;
   color: var(--nv-color-text);
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   min-height: 84px;
   font: inherit;
   resize: vertical;
@@ -48,5 +76,5 @@
 }
 
 .nv-field-error {
-  color: #dc2626;
+  color: var(--nv-color-danger);
 }

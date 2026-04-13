@@ -16,8 +16,25 @@ function withTextFallback(children, textProps) {
   return children
 }
 
-export function Card({ children, className = '', elevated = true, ...props }) {
-  const classes = ['nv-card', !elevated && 'nv-card--flat', className].filter(Boolean).join(' ')
+export function Card({
+  children,
+  className = '',
+  elevated = true,
+  surface = 'default',
+  tone = 'neutral',
+  interactive = false,
+  ...props
+}) {
+  const classes = [
+    'nv-card',
+    !elevated && 'nv-card--flat',
+    surface !== 'default' && `nv-card--${surface}`,
+    tone !== 'neutral' && `nv-card--${tone}`,
+    interactive && 'nv-card--interactive',
+    className
+  ]
+    .filter(Boolean)
+    .join(' ')
   return (
     <article className={classes} {...props}>
       {children}

@@ -1,33 +1,85 @@
 .nv-accordion {
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-lg);
+  --nv-accordion-accent: var(--nv-color-primary);
+  --nv-accordion-accent-soft: var(--nv-color-primary-soft);
+  border: 1px solid color-mix(in srgb, var(--nv-accordion-accent) 10%, var(--nv-color-border));
+  border-radius: var(--nv-radius-xl);
   overflow: clip;
-  background: var(--nv-color-surface);
+  background:
+    radial-gradient(circle at 10% 12%, color-mix(in srgb, var(--nv-accordion-accent-soft) 60%, transparent), transparent 28%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 95%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 99%, transparent)
+    );
   box-shadow: var(--nv-shadow-sm);
 }
 
+.nv-accordion--soft {
+  background:
+    radial-gradient(circle at 10% 12%, color-mix(in srgb, var(--nv-accordion-accent-soft) 88%, transparent), transparent 34%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 98%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 100%, transparent)
+    );
+}
+
+.nv-accordion--tint {
+  background:
+    radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--nv-accordion-accent-soft) 100%, transparent), transparent 36%),
+    radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--nv-accordion-accent) 16%, transparent), transparent 24%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-accordion-accent) 7%, var(--nv-color-surface)),
+      color-mix(in srgb, var(--nv-color-surface-soft) 94%, transparent)
+    );
+  border-color: color-mix(in srgb, var(--nv-accordion-accent) 18%, var(--nv-color-border));
+}
+
+.nv-accordion--primary {
+  --nv-accordion-accent: var(--nv-color-primary);
+  --nv-accordion-accent-soft: var(--nv-color-primary-soft);
+}
+
+.nv-accordion--success {
+  --nv-accordion-accent: var(--nv-color-success);
+  --nv-accordion-accent-soft: var(--nv-color-success-soft);
+}
+
+.nv-accordion--danger {
+  --nv-accordion-accent: var(--nv-color-danger);
+  --nv-accordion-accent-soft: var(--nv-color-danger-soft);
+}
+
+.nv-accordion--warning {
+  --nv-accordion-accent: var(--nv-color-warning);
+  --nv-accordion-accent-soft: var(--nv-color-warning-soft);
+}
+
 .nv-accordion-item + .nv-accordion-item {
-  border-top: 1px solid var(--nv-color-border-muted);
+  border-top: 1px solid color-mix(in srgb, var(--nv-accordion-accent) 8%, var(--nv-color-border-muted));
 }
 
 .nv-accordion-trigger {
   width: 100%;
   border: 0;
-  background: color-mix(in srgb, var(--nv-color-surface-muted) 64%, var(--nv-color-surface));
+  background: color-mix(in srgb, var(--nv-color-surface-soft) 68%, transparent);
   color: var(--nv-color-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.95rem 1rem;
+  padding: 1rem 1.125rem;
   text-align: left;
   cursor: pointer;
-  transition: background-color 160ms ease;
-  border-bottom: 1px solid var(--nv-color-border);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+  border-bottom: 1px solid color-mix(in srgb, var(--nv-accordion-accent) 8%, var(--nv-color-border));
 }
 
 .nv-accordion-trigger:hover {
-  background: color-mix(in srgb, var(--nv-color-surface-muted) 78%, var(--nv-color-surface));
+  background: color-mix(in srgb, var(--nv-accordion-accent-soft) 48%, var(--nv-color-surface-soft));
 }
 
 .nv-accordion-trigger:focus-visible {
@@ -63,8 +115,8 @@
   overflow: hidden;
   display: grid;
   gap: 0.5rem;
-  background: var(--nv-color-surface);
-  padding: 0 1rem;
+  background: transparent;
+  padding: 0 1.125rem;
   opacity: 0;
   transition: padding 340ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 260ms ease;
   will-change: grid-template-rows, opacity;
@@ -72,13 +124,37 @@
 
 .nv-accordion-panel--open .nv-accordion-content {
   margin-top: 1rem;
-  padding: 0 1rem 1rem;
+  padding: 0 1.125rem 1.125rem;
   opacity: 1;
   animation: nv-accordion-content-in 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .nv-accordion-trigger[aria-expanded='true'] {
-  background: color-mix(in srgb, var(--nv-color-surface-muted) 82%, var(--nv-color-surface));
+  background: color-mix(in srgb, var(--nv-accordion-accent-soft) 62%, var(--nv-color-surface-soft));
+}
+
+.nv-accordion--compact .nv-accordion-trigger {
+  min-height: 52px;
+  padding: 0.825rem 1rem;
+}
+
+.nv-accordion--compact .nv-accordion-panel--open .nv-accordion-content {
+  margin-top: 0.75rem;
+  padding: 0 1rem 1rem;
+}
+
+.nv-accordion--flush {
+  background: transparent;
+  box-shadow: none;
+}
+
+.nv-accordion--flush .nv-accordion-trigger {
+  background: transparent;
+}
+
+.nv-accordion--flush .nv-accordion-trigger:hover,
+.nv-accordion--flush .nv-accordion-trigger[aria-expanded='true'] {
+  background: color-mix(in srgb, var(--nv-accordion-accent-soft) 34%, transparent);
 }
 
 @keyframes nv-accordion-content-in {

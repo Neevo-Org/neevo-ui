@@ -1,28 +1,27 @@
 .nv-pagination {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
   animation: nv-pagination-fade-in 220ms ease;
 }
 
 .nv-pagination .nv-button {
-  transition: transform 180ms ease, box-shadow 180ms ease;
-}
-
-.nv-pagination .nv-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
-}
-
-.nv-pagination .nv-button:active:not(:disabled) {
-  transform: translateY(0);
+  transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
 .nv-pagination-ellipsis {
   color: var(--nv-color-text-muted);
   padding: 0 0.15rem;
   letter-spacing: 0.08em;
+}
+
+.nv-pagination--sm {
+  gap: 0.3rem;
+}
+
+.nv-pagination--lg {
+  gap: 0.5rem;
 }
 
 @keyframes nv-pagination-fade-in {

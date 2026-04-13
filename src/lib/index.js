@@ -5,11 +5,21 @@ export { Calendar } from './data-entry/Calendar/index.js'
 export { Accordion, AccordionItem } from './surfaces/Accordion/index.js'
 export { Card, CardHeader, CardBody, CardFooter } from './surfaces/Card/index.js'
 export { Checkbox } from './data-entry/Checkbox/index.js'
-export { Drawer, DrawerHeader, DrawerBody, DrawerFooter } from './overlay/Drawer/index.js'
+export { Drawer, DrawerHeader, DrawerBody, DrawerSection, DrawerFooter } from './overlay/Drawer/index.js'
 export { I } from './typography/I/index.js'
 export { Input } from './data-entry/Input/index.js'
 export { Page, PageHeader, PageBody, Sidebar, Content, Container, Grid, Row, Column } from './layout/index.js'
-export { Modal, ModalHeader, ModalBody, ModalFooter } from './overlay/Modal/index.js'
+export {
+  AppShell,
+  AppSidebar,
+  AppSidebarBrand,
+  AppSidebarNav,
+  AppSidebarGroup,
+  AppNavItem,
+  AppStage,
+  AppStageHeader,
+} from './layout/index.js'
+export { Modal, ModalHeader, ModalBody, ModalSection, ModalFooter } from './overlay/Modal/index.js'
 export { RadioGroup, RadioOption } from './data-entry/RadioGroup/index.js'
 export { Select, Options } from './data-entry/Select/index.js'
 export { Skeleton } from './surfaces/Skeleton/index.js'

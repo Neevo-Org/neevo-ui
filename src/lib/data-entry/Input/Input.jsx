@@ -56,6 +56,8 @@ export function Input({
   error,
   leadingIcon,
   trailingIcon,
+  variant = 'default',
+  shell = false,
   mode = 'text',
   min,
   max,
@@ -110,8 +112,15 @@ export function Input({
     onBlur?.(event)
   }
 
-  const wrapperClass = ['nv-field', className].filter(Boolean).join(' ')
-  const controlClass = ['nv-input-control', error && 'nv-input-control--error', resolvedDisabled && 'nv-input-control--disabled', inputClassName]
+  const wrapperClass = ['nv-field', variant !== 'default' && `nv-field--${variant}`, className].filter(Boolean).join(' ')
+  const controlClass = [
+    'nv-input-control',
+    variant !== 'default' && `nv-input-control--${variant}`,
+    shell && 'nv-input-control--shell',
+    error && 'nv-input-control--error',
+    resolvedDisabled && 'nv-input-control--disabled',
+    inputClassName
+  ]
     .filter(Boolean)
     .join(' ')
 

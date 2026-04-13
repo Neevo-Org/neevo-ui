@@ -1,66 +1,55 @@
 .nv-calendar {
-  width: 100%;
-  max-width: 320px;
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-lg);
-  background: var(--nv-color-surface);
-  box-shadow: var(--nv-shadow-sm);
-  padding: 0.75rem;
+  width: min(100%, 340px);
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, var(--nv-color-border));
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 34%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface) 96%, transparent);
+  box-shadow:
+    0 18px 42px color-mix(in srgb, var(--nv-color-bg) 20%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+  padding: 0.9rem;
   user-select: none;
   -webkit-user-select: none;
 }
 
+.nv-calendar--surface-soft {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 38%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+}
+
+.nv-calendar--surface-tint {
+  background:
+    radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 62%, transparent), transparent 38%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 14%, var(--nv-color-bg-elevated)),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
 .nv-calendar-header {
   display: grid;
-  grid-template-columns: 32px 1fr 32px;
+  grid-template-columns: 38px 1fr 38px;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
+  gap: 0.35rem;
 }
 
 .nv-calendar-label {
   margin: 0;
   text-align: center;
   font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--nv-color-text);
+  color: var(--nv-color-text-strong);
 }
 
-.nv-calendar-label-button {
-  border: 0;
-  background: transparent;
-  border-radius: 8px;
-  padding: 0.25rem;
-  cursor: pointer;
-}
-
-.nv-calendar-label-button:hover {
-  background: var(--nv-color-surface-muted);
-}
-
-.nv-calendar-label-button:focus-visible {
-  outline: 2px solid var(--nv-color-focus);
-  outline-offset: 2px;
-}
-
+.nv-calendar-label-button,
 .nv-calendar-nav {
-  border: 0;
-  background: transparent;
-  color: var(--nv-color-text);
-  border-radius: 8px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-}
-
-.nv-calendar-nav:hover {
-  background: var(--nv-color-surface-muted);
-}
-
-.nv-calendar-nav:focus-visible {
-  outline: 2px solid var(--nv-color-focus);
-  outline-offset: 2px;
+  min-height: 38px;
+  border-radius: 12px;
 }
 
 .nv-calendar-weekdays,
@@ -73,75 +62,111 @@
 .nv-calendar-year-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.35rem;
-}
-
-.nv-calendar-year {
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--nv-color-text);
-  min-height: 34px;
-  font: inherit;
-  cursor: pointer;
-}
-
-.nv-calendar-year:hover {
-  background: var(--nv-color-surface-muted);
-}
-
-.nv-calendar-year:focus-visible {
-  outline: 2px solid var(--nv-color-focus);
-  outline-offset: 1px;
-}
-
-.nv-calendar-year--active {
-  background: var(--nv-color-surface-muted);
-  color: var(--nv-color-text);
-  box-shadow: inset 0 0 0 1px var(--nv-color-border);
+  gap: 0.4rem;
 }
 
 .nv-calendar-weekday {
   text-align: center;
   color: var(--nv-color-text-muted);
   font-size: 0.75rem;
-  padding: 0.2rem 0;
+  padding: 0.25rem 0;
 }
 
+.nv-calendar-year,
 .nv-calendar-day {
+  position: relative;
   border: 0;
   background: transparent;
   color: var(--nv-color-text);
-  border-radius: 8px;
-  min-height: 34px;
+  border-radius: 12px;
+  min-height: 38px;
   cursor: pointer;
   font: inherit;
 }
 
+.nv-calendar-year:hover,
 .nv-calendar-day:hover {
-  background: var(--nv-color-surface-muted);
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-surface-soft));
 }
 
+.nv-calendar-year:focus-visible,
 .nv-calendar-day:focus-visible {
   outline: 2px solid var(--nv-color-focus);
   outline-offset: 1px;
 }
 
+.nv-calendar-year--active {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 52%, transparent), transparent 52%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+  color: var(--nv-color-text-strong);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 18%, var(--nv-color-border));
+}
+
 .nv-calendar-day--outside {
   color: var(--nv-color-text-muted);
-  opacity: 0.6;
+  opacity: 0.52;
 }
 
 .nv-calendar-day--today {
-  box-shadow: inset 0 0 0 1px var(--nv-color-border);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 28%, var(--nv-color-border));
 }
 
-.nv-calendar-day--selected {
-  background: var(--nv-color-surface-muted);
-  color: var(--nv-color-text);
-  box-shadow: inset 0 0 0 1px var(--nv-color-border);
+.nv-calendar-day--selected,
+.nv-calendar-day--range-start,
+.nv-calendar-day--range-end {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 58%, transparent), transparent 52%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+  color: var(--nv-color-text-strong);
+  box-shadow:
+    0 8px 18px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 12%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 18%, var(--nv-color-border));
 }
 
-.nv-calendar-day--selected:hover {
-  background: var(--nv-color-surface-muted);
+.nv-calendar-day--selected:hover,
+.nv-calendar-day--range-start:hover,
+.nv-calendar-day--range-end:hover {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 58%, transparent), transparent 52%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+}
+
+.nv-calendar-day--in-range {
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-surface-soft));
+  border-radius: 0;
+}
+
+.nv-calendar-day--range-start {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.nv-calendar-day--range-end {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.nv-calendar--sm {
+  width: min(100%, 308px);
+  border-radius: 20px;
+  padding: 0.75rem;
+}
+
+.nv-calendar--sm .nv-calendar-day,
+.nv-calendar--sm .nv-calendar-year {
+  min-height: 34px;
+  border-radius: 10px;
+}
+
+.nv-calendar--lg {
+  width: min(100%, 380px);
+  border-radius: 26px;
+  padding: 1rem;
+}
+
+.nv-calendar--lg .nv-calendar-day,
+.nv-calendar--lg .nv-calendar-year {
+  min-height: 42px;
+  border-radius: 14px;
 }

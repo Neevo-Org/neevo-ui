@@ -1,23 +1,153 @@
-.nv-tabs { display: grid; gap: 0.75rem; }
-.nv-tabs-list {
-  display: inline-flex;
-  gap: 0.35rem;
-  padding: 0.25rem;
-  border: 1px solid var(--nv-color-border);
-  background: var(--nv-color-surface);
-  border-radius: var(--nv-radius-md);
+.nv-tabs {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
 }
+
+.nv-tabs-list {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 28%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface) 96%, transparent);
+  border-radius: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 0;
+}
+
+.nv-tabs-list--full-width {
+  width: 100%;
+}
+
 .nv-tabs-trigger {
   border: 0;
   background: transparent;
   color: var(--nv-color-text-muted);
-  padding: 0.45rem 0.7rem;
-  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 14px;
   cursor: pointer;
+  font: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease, box-shadow 180ms ease;
 }
-.nv-tabs-trigger--active {
-  background: var(--nv-color-surface-muted);
+
+.nv-tabs-trigger--full-width {
+  flex: 1 1 0;
+}
+
+.nv-tabs-trigger:hover:not(:disabled) {
   color: var(--nv-color-text);
-  font-weight: 600;
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 16%, var(--nv-color-surface-soft));
 }
-.nv-tabs-content { display: grid; gap: 0.6rem; }
+
+.nv-tabs-trigger--active {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 58%, transparent), transparent 52%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+  color: var(--nv-color-text-strong);
+  font-weight: 600;
+  box-shadow:
+    0 10px 20px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 10%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 18%, var(--nv-color-border));
+}
+
+.nv-tabs-trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.nv-tabs-trigger:focus-visible {
+  outline: 2px solid var(--nv-color-focus);
+  outline-offset: 2px;
+}
+
+.nv-tabs-content {
+  display: grid;
+  gap: 0.7rem;
+  min-width: 0;
+  animation: nv-tabs-panel-in 180ms ease;
+}
+
+.nv-tabs--soft .nv-tabs-list {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 32%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+}
+
+.nv-tabs--tint .nv-tabs-list {
+  background:
+    radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 62%, transparent), transparent 38%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 14%, var(--nv-color-bg-elevated)),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+.nv-tabs--underline .nv-tabs-list {
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  border-radius: 0;
+  background: transparent;
+}
+
+.nv-tabs--underline .nv-tabs-trigger {
+  border-radius: 0;
+  padding-inline: 0.25rem;
+  padding-bottom: 0.8rem;
+  margin-right: 1rem;
+  color: var(--nv-color-text-muted);
+}
+
+.nv-tabs--underline .nv-tabs-trigger:hover:not(:disabled) {
+  background: transparent;
+}
+
+.nv-tabs--underline .nv-tabs-trigger--active {
+  background: transparent;
+  box-shadow: none;
+  color: var(--nv-color-text-strong);
+}
+
+.nv-tabs--underline .nv-tabs-trigger--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 82%, white 18%);
+}
+
+.nv-tabs--underline .nv-tabs-trigger {
+  position: relative;
+}
+
+.nv-tabs--sm .nv-tabs-trigger {
+  padding: 0.45rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+}
+
+.nv-tabs--lg .nv-tabs-trigger {
+  padding: 0.7rem 1rem;
+  border-radius: 16px;
+}
+
+@keyframes nv-tabs-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

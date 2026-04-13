@@ -1,60 +1,161 @@
 .nv-drawer {
-  background: var(--nv-color-surface);
-  border: 1px solid var(--nv-color-border);
-  box-shadow: 0 24px 46px rgba(15, 23, 42, 0.25);
-  width: min(420px, 94vw);
-  height: 100%;
+  --nv-drawer-width: min(520px, 96vw);
+  width: var(--nv-drawer-width);
+  max-width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  animation-duration: 180ms;
-  animation-timing-function: ease-out;
-  border-radius: 0;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 42%, transparent), transparent 40%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-bg-elevated) 98%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+  box-shadow:
+    0 24px 68px color-mix(in srgb, var(--nv-color-bg) 44%, transparent),
+    0 10px 28px color-mix(in srgb, black 10%, transparent);
+  overflow: hidden;
+  animation-duration: 240ms;
+  animation-timing-function: cubic-bezier(0.18, 0.9, 0.22, 1);
+}
+
+.nv-drawer--sm {
+  --nv-drawer-width: min(420px, 96vw);
+}
+
+.nv-drawer--md {
+  --nv-drawer-width: min(520px, 96vw);
+}
+
+.nv-drawer--lg {
+  --nv-drawer-width: min(680px, 96vw);
+}
+
+.nv-drawer--xl {
+  --nv-drawer-width: min(840px, 96vw);
+}
+
+.nv-drawer--full {
+  --nv-drawer-width: min(100vw, 100vw);
+}
+
+.nv-drawer--surface-soft {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 32%, transparent), transparent 42%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 98%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+.nv-drawer--surface-tint {
+  background:
+    radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 66%, transparent), transparent 38%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 22%, var(--nv-color-bg-elevated)),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+.nv-drawer--scroll-shell {
+  overflow: auto;
 }
 
 .nv-drawer--right {
   margin-left: auto;
   animation-name: nv-drawer-in-right;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+  border-top-left-radius: 28px;
+  border-bottom-left-radius: 28px;
 }
 
 .nv-drawer--left {
   margin-right: auto;
   animation-name: nv-drawer-in-left;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-top-right-radius: 28px;
+  border-bottom-right-radius: 28px;
+}
+
+.nv-drawer-header,
+.nv-drawer-footer {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
 }
 
 .nv-drawer-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.9rem 1rem;
-  border-bottom: 1px solid var(--nv-color-border-muted);
+  gap: 1rem;
+  padding: 1.15rem 1.15rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-border-soft));
+}
+
+.nv-drawer-header--sticky {
+  position: sticky;
+  top: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-bg-elevated) 94%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 90%, transparent)
+    );
+  backdrop-filter: blur(12px);
 }
 
 .nv-drawer-title-wrap {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.nv-drawer-title-stack {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.nv-drawer-title,
+.nv-drawer-description {
+  margin: 0;
+}
+
+.nv-drawer-meta {
   display: inline-flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.nv-drawer-header-slot {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .nv-drawer-close {
-  border: 0;
-  background: transparent;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-border));
+  background: color-mix(in srgb, var(--nv-color-surface) 94%, transparent);
   color: var(--nv-color-text);
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
 .nv-drawer-close:hover {
-  background: var(--nv-color-surface-muted);
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 24%, var(--nv-color-border));
 }
 
 .nv-drawer-close:focus-visible {
@@ -63,23 +164,70 @@
 }
 
 .nv-drawer-body {
-  padding: 1rem;
+  padding: 1rem 1.15rem 1.15rem;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.nv-drawer-body--scroll {
   overflow: auto;
-  flex: 1;
+}
+
+.nv-drawer-section {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-border-soft));
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 22%, transparent), transparent 38%),
+    color-mix(in srgb, var(--nv-color-surface) 92%, transparent);
+}
+
+.nv-drawer-section__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.nv-drawer-section__copy,
+.nv-drawer-section__body {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.nv-drawer-section__aside {
+  flex: 0 0 auto;
 }
 
 .nv-drawer-footer {
-  padding: 0.8rem 1rem 1rem;
-  border-top: 1px solid var(--nv-color-border-muted);
+  padding: 1rem 1.15rem 1.15rem;
+  border-top: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-border-soft));
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.nv-drawer-footer--sticky {
+  position: sticky;
+  bottom: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-surface) 88%, transparent),
+      color-mix(in srgb, var(--nv-color-bg-elevated) 96%, transparent)
+    );
+  backdrop-filter: blur(12px);
 }
 
 @keyframes nv-drawer-in-right {
   from {
     opacity: 0;
-    transform: translateX(14px);
+    transform: translateX(20px);
   }
   to {
     opacity: 1;
@@ -90,10 +238,54 @@
 @keyframes nv-drawer-in-left {
   from {
     opacity: 0;
-    transform: translateX(-14px);
+    transform: translateX(-20px);
   }
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .nv-drawer,
+  .nv-drawer--sm,
+  .nv-drawer--md,
+  .nv-drawer--lg,
+  .nv-drawer--xl,
+  .nv-drawer--full {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .nv-drawer--right,
+  .nv-drawer--left {
+    border-radius: 24px 24px 0 0;
+    margin: auto 0 0 0;
+    height: min(92vh, 100vh);
+    max-height: min(92vh, 100vh);
+    animation-name: nv-drawer-in-bottom;
+  }
+
+  .nv-drawer-header,
+  .nv-drawer-body,
+  .nv-drawer-footer {
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+  }
+
+  .nv-drawer-section {
+    padding: 0.85rem;
+    border-radius: 18px;
+  }
+}
+
+@keyframes nv-drawer-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

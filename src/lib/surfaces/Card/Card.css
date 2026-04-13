@@ -1,23 +1,87 @@
 .nv-card {
-  background: var(--nv-color-surface);
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-lg);
+  --nv-card-accent: var(--nv-color-theme, var(--nv-gradient-accent-border));
+  --nv-card-accent-soft: var(--nv-color-theme-soft, color-mix(in srgb, var(--nv-card-accent) 16%, transparent));
+  position: relative;
+  background:
+    radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--nv-card-accent-soft) 72%, transparent), transparent 32%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 92%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 98%, transparent)
+    );
+  border: 1px solid color-mix(in srgb, var(--nv-card-accent) 10%, var(--nv-color-border));
+  border-radius: var(--nv-radius-xl);
   box-shadow: var(--nv-shadow-sm);
-  overflow: visible;
+  overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
 }
 
 .nv-card--flat {
   box-shadow: none;
 }
 
+.nv-card--interactive:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--nv-shadow-md);
+  border-color: color-mix(in srgb, var(--nv-card-accent) 18%, var(--nv-color-border));
+}
+
+.nv-card--soft {
+  background:
+    radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--nv-card-accent-soft) 100%, transparent), transparent 36%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 100%, transparent)
+    );
+}
+
+.nv-card--tint {
+  background:
+    radial-gradient(circle at 14% 16%, color-mix(in srgb, var(--nv-card-accent-soft) 100%, transparent), transparent 38%),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--nv-card-accent) 22%, transparent), transparent 26%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-card-accent) 9%, var(--nv-color-surface)),
+      color-mix(in srgb, var(--nv-color-surface-soft) 92%, transparent)
+    );
+  border-color: color-mix(in srgb, var(--nv-card-accent) 22%, var(--nv-color-border));
+}
+
+.nv-card--primary {
+  --nv-card-accent: var(--nv-color-primary);
+  --nv-card-accent-soft: var(--nv-color-primary-soft);
+}
+
+.nv-card--success {
+  --nv-card-accent: var(--nv-color-success);
+  --nv-card-accent-soft: var(--nv-color-success-soft);
+}
+
+.nv-card--danger {
+  --nv-card-accent: var(--nv-color-danger);
+  --nv-card-accent-soft: var(--nv-color-danger-soft);
+}
+
+.nv-card--warning {
+  --nv-card-accent: var(--nv-color-warning);
+  --nv-card-accent-soft: var(--nv-color-warning-soft);
+}
+
 .nv-card-header,
 .nv-card-body,
 .nv-card-footer {
-  padding: 1rem;
+  position: relative;
+  z-index: 1;
+  padding: 1.125rem;
 }
 
 .nv-card-header {
-  border-bottom: 1px solid var(--nv-color-border-muted);
+  border-bottom: 1px solid color-mix(in srgb, var(--nv-card-accent) 8%, var(--nv-color-border-muted));
 }
 
 .nv-card-body {
@@ -25,5 +89,5 @@
 }
 
 .nv-card-footer {
-  border-top: 1px solid var(--nv-color-border-muted);
+  border-top: 1px solid color-mix(in srgb, var(--nv-card-accent) 8%, var(--nv-color-border-muted));
 }

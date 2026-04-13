@@ -1,0 +1,506 @@
+.nv-app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.nv-app-sidebar {
+  width: 280px;
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  max-height: 100vh;
+  box-sizing: border-box;
+  padding: 16px 0 16px 16px;
+  transition: width 420ms ease;
+  overflow: hidden;
+}
+
+.nv-app-sidebar.is-collapsed {
+  width: 104px;
+  flex-basis: 104px;
+}
+
+.nv-app-sidebar__main {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.nv-app-sidebar__header {
+  display: grid;
+}
+
+.nv-app-sidebar__footer {
+  display: grid;
+}
+
+.nv-app-sidebar-brand {
+  min-height: 78px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 18%, var(--nv-color-border));
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 14% 18%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 100%, transparent), transparent 36%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface) 92%, transparent),
+      color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent)
+    );
+  color: inherit;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    background 180ms ease;
+}
+
+button.nv-app-sidebar-brand {
+  cursor: pointer;
+}
+
+.nv-app-sidebar-brand:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 36%, var(--nv-color-border));
+  box-shadow:
+    0 12px 26px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 12%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent);
+}
+
+.nv-app-sidebar-brand__icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 88%, transparent), transparent 58%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 18%, var(--nv-color-border));
+}
+
+.nv-app-sidebar-brand__copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  animation: nv-app-shell-copy-in 320ms ease forwards;
+}
+
+.nv-app-sidebar-brand.is-collapsed {
+  justify-content: center;
+  gap: 0;
+}
+
+.nv-app-sidebar-brand.is-collapsed .nv-app-sidebar-brand__copy {
+  animation: nv-app-shell-copy-out 320ms ease forwards;
+}
+
+.nv-app-sidebar-nav {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 10px 0 10px;
+  padding-right: 0;
+  box-sizing: border-box;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 78%, transparent), transparent 34%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface) 92%, transparent),
+      color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent)
+    );
+}
+
+.nv-app-sidebar-nav__inner {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 10px 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+
+.nv-app-sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--nv-color-border);
+  padding-top: 16px;
+}
+
+.nv-app-sidebar-group:first-child {
+  border-top: 0;
+  padding-top: 8px;
+}
+
+.nv-app-sidebar-group__label {
+  margin: 0;
+  padding: 0 6px;
+  font-size: 0.72rem;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nv-color-text-muted);
+  overflow: hidden;
+  white-space: nowrap;
+  max-height: 18px;
+  animation: nv-app-shell-copy-in 320ms ease forwards;
+}
+
+.nv-app-sidebar-group__label.is-collapsed {
+  height: 0;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  line-height: 0;
+  animation: nv-app-shell-copy-out 320ms ease forwards;
+}
+
+.nv-app-sidebar-group__items {
+  display: grid;
+  gap: 8px;
+}
+
+.nv-app-nav-item {
+  width: 100%;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0.75rem 0.875rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  background: color-mix(in srgb, var(--nv-color-surface) 94%, transparent);
+  color: inherit;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.nv-app-nav-item:hover {
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 28%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 70%, transparent), transparent 52%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 94%, transparent);
+}
+
+.nv-app-nav-item.is-active {
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 54%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 88%, transparent), transparent 50%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+  box-shadow:
+    0 14px 30px color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 12%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent);
+}
+
+.nv-app-nav-item__icon {
+  display: inline-grid;
+  place-items: center;
+  font-size: 20px;
+}
+
+.nv-app-nav-item__copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: nv-app-shell-copy-in 320ms ease forwards;
+}
+
+.nv-app-nav-item__label,
+.nv-app-nav-item__meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nv-app-nav-item__label {
+  font-weight: 600;
+}
+
+.nv-app-nav-item__meta {
+  font-size: 0.76rem;
+  color: var(--nv-color-text-muted);
+}
+
+.nv-app-nav-item.is-collapsed {
+  grid-template-columns: auto 0fr;
+  gap: 0;
+}
+
+.nv-app-nav-item.is-collapsed .nv-app-nav-item__copy {
+  animation: nv-app-shell-copy-out 320ms ease forwards;
+}
+
+.nv-app-stage {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px;
+  padding-left: 12px;
+  box-sizing: border-box;
+}
+
+.nv-app-stage__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.nv-app-stage__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-bottom: 16px;
+  box-sizing: border-box;
+  overflow: auto;
+  animation: nv-app-stage-content-in 220ms ease;
+}
+
+.nv-app-stage-loader {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px;
+  text-align: center;
+  align-self: center;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 18%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 68%, transparent), transparent 32%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 94%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+.nv-app-stage-loader__spinner {
+  margin: 0 auto 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, transparent);
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--nv-color-surface) 82%, transparent) 0 52%, transparent 54%),
+    conic-gradient(
+      from 0deg,
+      color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, transparent),
+      color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 88%, white 12%),
+      color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, transparent)
+    );
+  animation: nv-app-stage-spin 900ms linear infinite;
+}
+
+.nv-app-stage-header {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 28%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 100%, transparent), transparent 34%),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, white 12%, transparent), transparent 28%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-surface)),
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-surface-soft))
+    );
+}
+
+.nv-app-stage-header__copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.nv-app-stage-header__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 72%, var(--nv-color-text-muted));
+}
+
+.nv-app-stage-header__actions {
+  margin-left: auto;
+}
+
+@keyframes nv-app-stage-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes nv-app-stage-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nv-app-shell-copy-in {
+  from {
+    opacity: 0;
+    max-width: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    max-width: 180px;
+    transform: translateX(0);
+  }
+}
+
+@keyframes nv-app-shell-copy-out {
+  from {
+    opacity: 1;
+    max-width: 180px;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    max-width: 0;
+    transform: translateX(-8px);
+  }
+}
+
+@media (max-width: 980px) {
+  .nv-app-shell {
+    flex-direction: column;
+    min-height: 100dvh;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .nv-app-sidebar,
+  .nv-app-sidebar.is-collapsed {
+    width: 100%;
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: none;
+    padding: 16px 16px 0;
+  }
+
+  .nv-app-sidebar__main,
+  .nv-app-sidebar__footer {
+    overflow: visible;
+  }
+
+  .nv-app-sidebar-nav {
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .nv-app-sidebar-nav__inner {
+    overflow: visible;
+  }
+
+  .nv-app-stage {
+    max-height: none;
+    min-height: 0;
+    padding: 16px;
+    padding-top: 12px;
+  }
+
+
+  .nv-app-stage-header {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 14px;
+  }
+
+  .nv-app-stage-header__actions {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .nv-app-sidebar,
+  .nv-app-sidebar.is-collapsed {
+    padding: 12px 12px 0;
+  }
+
+  .nv-app-stage {
+    padding: 12px;
+    padding-top: 10px;
+  }
+
+  .nv-app-sidebar-brand,
+  .nv-app-sidebar-nav,
+  .nv-app-stage-header {
+    border-radius: 18px;
+  }
+
+  .nv-app-sidebar-brand {
+    min-height: 68px;
+    padding: 10px 12px;
+  }
+
+  .nv-app-sidebar-brand__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .nv-app-nav-item {
+    min-height: 50px;
+    padding: 0.7rem 0.8rem;
+    border-radius: 16px;
+  }
+
+  .nv-app-stage-header {
+    padding: 16px;
+  }
+}

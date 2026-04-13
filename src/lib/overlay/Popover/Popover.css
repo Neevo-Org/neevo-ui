@@ -1,15 +1,64 @@
-.nv-popover { position: relative; display: inline-block; }
-.nv-popover-content {
-  position: absolute;
-  z-index: 30;
-  top: calc(100% + 8px);
-  min-width: 220px;
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-md);
-  background: var(--nv-color-surface);
-  box-shadow: var(--nv-shadow-sm);
-  padding: 0.65rem;
+.nv-popover {
+  position: relative;
+  display: inline-flex;
 }
-.nv-popover-content--start { left: 0; }
-.nv-popover-content--center { left: 50%; transform: translateX(-50%); }
-.nv-popover-content--end { right: 0; }
+
+.nv-popover-trigger-shell {
+  display: inline-flex;
+  align-items: center;
+}
+
+.nv-popover-content {
+  min-width: 220px;
+  max-width: min(420px, calc(100vw - 24px));
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, var(--nv-color-border));
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 34%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-bg-elevated) 96%, transparent);
+  box-shadow:
+    0 18px 42px color-mix(in srgb, var(--nv-color-bg) 34%, transparent),
+    0 8px 20px color-mix(in srgb, black 8%, transparent);
+  padding: 0.85rem;
+  z-index: 80;
+  animation: nv-popover-in 180ms cubic-bezier(0.18, 0.9, 0.22, 1);
+}
+
+.nv-popover-content--sm {
+  min-width: 200px;
+}
+
+.nv-popover-content--md {
+  min-width: 240px;
+}
+
+.nv-popover-content--lg {
+  min-width: 320px;
+}
+
+.nv-popover-content--surface-soft {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 28%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+}
+
+.nv-popover-content--surface-tint {
+  background:
+    radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 62%, transparent), transparent 38%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-bg-elevated)),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+@keyframes nv-popover-in {
+  from {
+    opacity: 0;
+    margin-top: 8px;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}

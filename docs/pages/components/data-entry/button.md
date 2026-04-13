@@ -1,53 +1,49 @@
 # Button
 
-Buttons support clear variant semantics and can be composed with icons and custom sizing classes.
+Buttons support stronger variant semantics, size presets, and full-width behavior while following the same surface language as the rest of the system.
 
 ## Examples
 
 ### Variants
 
 ```tsx
-<Column gap={8}>
-  <Text size="sm" tone="muted">Example: Variants.</Text>
-  <Column gap={8}>
-    <Column gap={8}>
-      <Text size="sm" tone="muted">Below are the primary and secondary button variants.</Text>
-      <Row>
-        <Button>Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-      </Row>
-    </Column>
-  </Column>
-</Column>
+<Row gap={8} wrap>
+  <Button>Primary</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="danger">Danger</Button>
+</Row>
 ```
 
-### With Icon
+### With Icon And Sizes
 
 ```tsx
 <Column gap={8}>
-  <Text size="sm" tone="muted">Example: With Icon.</Text>
-  <Column gap={8}>
-    <Button variant="secondary"><I>arrow</I> Continue</Button>
-  </Column>
+  <Row gap={8} wrap>
+    <Button size="sm" variant="secondary"><I>arrow_forward</I> Continue</Button>
+    <Button size="md" variant="secondary"><I>download</I> Export</Button>
+    <Button size="lg"><I>add</I> Create</Button>
+  </Row>
+  <Button fullWidth variant="secondary">Full width action</Button>
 </Column>
 ```
 
 ### Disabled
 
 ```tsx
-<Column gap={8}>
-  <Text size="sm" tone="muted">Example: Disabled.</Text>
-  <Column gap={8}>
-    <Button disabled>Disabled</Button>
-  </Column>
-</Column>
+<Row gap={8} wrap>
+  <Button disabled>Disabled</Button>
+  <Button variant="secondary" disabled>Disabled secondary</Button>
+</Row>
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| variant | "primary" \| "secondary" | "primary" | Visual style variant. |
-| type | "button" \| "submit" \| "reset" | "button" | Native button type. |
+| variant | `"primary" \| "secondary" \| "ghost" \| "danger"` | `"primary"` | Visual style variant. |
+| size | `"sm" \| "md" \| "lg"` | `"md"` | Button density preset. |
+| fullWidth | boolean | false | Makes the button stretch to its container width. |
+| type | `"button" \| "submit" \| "reset"` | `"button"` | Native button type. |
 | disabled | boolean | false | Disables interaction. |
-| className | string | "" | Custom class composition. |
+| className | string | `""` | Custom class composition. |

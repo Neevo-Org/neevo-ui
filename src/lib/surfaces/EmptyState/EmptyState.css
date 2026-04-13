@@ -1,9 +1,10 @@
-.nv-empty-state {
+﻿.nv-empty-state {
   border: 1px dashed var(--nv-color-border);
   border-radius: var(--nv-radius-lg);
   background: color-mix(in srgb, var(--nv-color-surface-muted) 40%, var(--nv-color-surface));
   display: grid;
   justify-items: center;
+  align-content: center;
   text-align: center;
   gap: 0.75rem;
   padding: 1.25rem;
@@ -28,3 +29,4 @@
   margin: 0;
   max-width: 36ch;
 }
+

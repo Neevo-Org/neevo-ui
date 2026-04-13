@@ -1,27 +1,73 @@
 .nv-select {
   position: relative;
   width: 100%;
-  max-width: 280px;
 }
 
 .nv-select-trigger {
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 12% 16%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 54%, transparent), transparent 36%),
+    color-mix(in srgb, var(--nv-color-surface) 94%, transparent);
+  color: var(--nv-color-text);
+  display: inline-flex;
   width: 100%;
-  min-height: 38px;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 42px;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.55rem 0.75rem;
-  font-weight: 500;
-  transform: none;
+  padding: 0.5rem 0.7rem;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 180ms ease;
 }
 
-.nv-select-trigger:focus-visible {
-  outline: 2px solid var(--nv-color-focus);
-  outline-offset: 2px;
+.nv-select-trigger:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 28%, var(--nv-color-border));
 }
 
-.nv-select-trigger:disabled {
+.nv-select-trigger:focus-visible,
+.nv-select-trigger[aria-expanded='true'] {
+  outline: none;
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 46%, var(--nv-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nv-color-theme-soft, transparent) 28%, transparent);
+  transform: translateY(-1px);
+}
+
+.nv-select-trigger--error {
+  border-color: var(--nv-color-danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--nv-color-danger-soft) 34%, transparent);
+}
+
+.nv-select-trigger--disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.nv-select-trigger--subtle {
+  background: color-mix(in srgb, var(--nv-color-surface-soft) 92%, transparent);
+}
+
+.nv-select-trigger--shell {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  padding: 0;
+  min-height: 28px;
+}
+
+.nv-select-trigger--shell:hover:not(:disabled),
+.nv-select-trigger--shell:focus-visible,
+.nv-select-trigger--shell[aria-expanded='true'] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
 .nv-select-placeholder {
@@ -30,6 +76,8 @@
 
 .nv-select-value {
   color: var(--nv-color-text);
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .nv-select-caret {
@@ -37,27 +85,33 @@
   font-size: 18px;
   display: inline-flex;
   align-items: center;
+  transition: transform 160ms ease, color 160ms ease;
+}
+
+.nv-select-trigger[aria-expanded='true'] .nv-select-caret {
+  transform: rotate(180deg);
+  color: var(--nv-color-text);
 }
 
 .nv-select-menu {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 0.4rem);
-  border: 1px solid var(--nv-color-border);
-  background: var(--nv-color-surface);
-  border-radius: var(--nv-radius-md);
-  box-shadow: var(--nv-shadow-sm);
-  z-index: 20;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, var(--nv-color-border));
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 42%, transparent), transparent 40%),
+    color-mix(in srgb, var(--nv-color-bg-elevated) 96%, transparent);
+  border-radius: 20px;
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--nv-color-bg) 58%, transparent);
+  overflow: hidden;
+  z-index: 95;
 }
 
 .nv-select-search {
   width: 100%;
+  box-sizing: border-box;
   border: 0;
-  border-bottom: 1px solid var(--nv-color-border-muted);
+  border-bottom: 1px solid var(--nv-color-border-soft);
   background: transparent;
   color: var(--nv-color-text);
-  padding: 0.625rem 0.75rem;
+  padding: 0.8rem 0.9rem;
   font: inherit;
   box-sizing: border-box;
 }
@@ -67,35 +121,40 @@
 }
 
 .nv-select-options {
-  max-height: 220px;
+  max-height: 260px;
   overflow: auto;
-  padding: 0.35rem;
+  padding: 0.45rem;
 }
 
 .nv-select-option {
+  appearance: none;
   width: 100%;
+  box-sizing: border-box;
   border: 0;
-  border-radius: 8px;
+  border-radius: 12px;
   background: transparent;
   color: var(--nv-color-text);
   text-align: left;
-  padding: 0.5rem 0.55rem;
+  display: inline-flex;
+  align-items: center;
   justify-content: flex-start;
-  min-height: 34px;
-  font-weight: 400;
-  transform: none;
+  padding: 0.65rem 0.7rem;
+  min-height: 38px;
+  font: inherit;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
 }
 
-.nv-select-option:hover {
-  background: var(--nv-color-surface-muted);
-}
-
-.nv-select-option:active {
-  transform: none;
+.nv-select-option:hover,
+.nv-select-option:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 28%, var(--nv-color-surface-muted));
+  transform: translateX(2px);
 }
 
 .nv-select-option--active {
-  background: var(--nv-color-surface-muted);
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 34%, var(--nv-color-surface-muted));
+  color: var(--nv-color-text-strong);
 }
 
 .nv-select-option-label {
@@ -105,5 +164,5 @@
 .nv-select-empty {
   margin: 0;
   color: var(--nv-color-text-muted);
-  padding: 0.5rem 0.55rem;
+  padding: 0.7rem;
 }

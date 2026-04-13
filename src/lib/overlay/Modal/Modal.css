@@ -1,53 +1,172 @@
 .nv-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.42);
-  backdrop-filter: blur(2px);
   display: grid;
-  place-items: center;
   z-index: 80;
+  background: color-mix(in srgb, var(--nv-color-bg) 42%, rgba(2, 6, 23, 0.54));
+  backdrop-filter: blur(10px) saturate(1.08);
+}
+
+.nv-overlay--modal {
+  padding: 24px;
+  place-items: center;
+  overflow: auto;
+}
+
+.nv-overlay--drawer {
+  padding: 0;
+  place-items: stretch;
+  overflow: hidden;
 }
 
 .nv-modal {
-  width: min(560px, 100%);
-  background: var(--nv-color-surface);
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-lg);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22);
+  --nv-modal-width: min(680px, 100%);
+  width: var(--nv-modal-width);
+  max-width: 100%;
+  max-height: min(88vh, 960px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 16%, var(--nv-color-border));
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 46%, transparent), transparent 42%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-bg-elevated) 98%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+  box-shadow:
+    0 22px 64px color-mix(in srgb, var(--nv-color-bg) 44%, transparent),
+    0 8px 24px color-mix(in srgb, black 10%, transparent);
   overflow: hidden;
-  animation: nv-modal-in 180ms ease-out;
+  animation: nv-modal-in 220ms cubic-bezier(0.18, 0.9, 0.22, 1);
+}
+
+.nv-modal--xs {
+  --nv-modal-width: min(420px, 100%);
+}
+
+.nv-modal--sm {
+  --nv-modal-width: min(520px, 100%);
+}
+
+.nv-modal--md {
+  --nv-modal-width: min(680px, 100%);
+}
+
+.nv-modal--lg {
+  --nv-modal-width: min(840px, 100%);
+}
+
+.nv-modal--xl {
+  --nv-modal-width: min(1040px, 100%);
+}
+
+.nv-modal--full {
+  --nv-modal-width: min(1280px, 100%);
+  max-height: calc(100vh - 24px);
+}
+
+.nv-modal--surface-soft {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 42%, transparent), transparent 44%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-surface-soft) 98%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+.nv-modal--surface-tint {
+  background:
+    radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 66%, transparent), transparent 42%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 22%, var(--nv-color-bg-elevated)),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
+}
+
+.nv-modal--scroll-shell {
+  overflow: auto;
+}
+
+.nv-modal-header,
+.nv-modal-footer {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
 }
 
 .nv-modal-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.9rem 1rem;
-  border-bottom: 1px solid var(--nv-color-border-muted);
+  gap: 1rem;
+  padding: 1.1rem 1.15rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-border-soft));
+}
+
+.nv-modal-header--sticky {
+  position: sticky;
+  top: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-bg-elevated) 94%, transparent),
+      color-mix(in srgb, var(--nv-color-surface) 90%, transparent)
+    );
+  backdrop-filter: blur(12px);
 }
 
 .nv-modal-title-wrap {
+  display: grid;
+  gap: 0.6rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.nv-modal-title-stack {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.nv-modal-title,
+.nv-modal-description {
+  margin: 0;
+}
+
+.nv-modal-meta {
   display: inline-flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.nv-modal-header-slot {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .nv-modal-close {
-  border: 0;
-  background: transparent;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-border));
+  background: color-mix(in srgb, var(--nv-color-surface) 94%, transparent);
   color: var(--nv-color-text);
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
 .nv-modal-close:hover {
-  background: var(--nv-color-surface-muted);
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+  border-color: color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 24%, var(--nv-color-border));
 }
 
 .nv-modal-close:focus-visible {
@@ -56,24 +175,98 @@
 }
 
 .nv-modal-body {
-  padding: 1rem;
+  padding: 1rem 1.15rem 1.15rem;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.nv-modal-body--scroll {
+  overflow: auto;
+}
+
+.nv-modal-section {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-border-soft));
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, transparent), transparent 38%),
+    color-mix(in srgb, var(--nv-color-surface) 92%, transparent);
+}
+
+.nv-modal-section__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.nv-modal-section__copy,
+.nv-modal-section__body {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.nv-modal-section__aside {
+  flex: 0 0 auto;
 }
 
 .nv-modal-footer {
-  padding: 0.8rem 1rem 1rem;
-  border-top: 1px solid var(--nv-color-border-muted);
+  padding: 0.95rem 1.15rem 1.1rem;
+  border-top: 1px solid color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, var(--nv-color-border-soft));
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.nv-modal-footer--sticky {
+  position: sticky;
+  bottom: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-surface) 88%, transparent),
+      color-mix(in srgb, var(--nv-color-bg-elevated) 96%, transparent)
+    );
+  backdrop-filter: blur(12px);
 }
 
 @keyframes nv-modal-in {
   from {
     opacity: 0;
-    transform: translateY(8px) scale(0.98);
+    transform: translateY(12px) scale(0.975);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 720px) {
+  .nv-overlay--modal {
+    padding: 12px;
+    align-items: end;
+  }
+
+  .nv-modal {
+    width: 100%;
+    max-height: calc(100vh - 12px);
+    border-radius: 24px 24px 18px 18px;
+  }
+
+  .nv-modal-header,
+  .nv-modal-body,
+  .nv-modal-footer {
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+  }
+
+  .nv-modal-section {
+    padding: 0.8rem;
+    border-radius: 18px;
   }
 }

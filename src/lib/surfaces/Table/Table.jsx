@@ -4,6 +4,10 @@ import { Text } from '../../typography/Text'
 import './Table.css'
 
 const TableSortContext = createContext(null)
+const TableStyleContext = createContext({
+  density: 'md',
+  stickyHead: false,
+})
 
 function withTextFallback(children, props) {
   if (typeof children === 'string' || typeof children === 'number') {
@@ -30,6 +34,12 @@ export function Table({
   children,
   className = '',
   compact = false,
+  density,
+  surface = 'default',
+  zebra = false,
+  hover = true,
+  stickyHead = false,
+  minWidth,
   sort,
   defaultSort = { key: null, direction: 'asc' },
   onSortChange,
@@ -56,17 +66,33 @@ export function Table({
     setSort({ key: sortKey, direction: nextDirection })
   }
 
-  const contextValue = { activeSort: activeSort ?? { key: null, direction: 'asc' }, toggleSort }
+  const resolvedDensity = density ?? (compact ? 'sm' : 'md')
+  const sortContextValue = { activeSort: activeSort ?? { key: null, direction: 'asc' }, toggleSort }
+  const styleContextValue = { density: resolvedDensity, stickyHead }
 
-  const classes = ['nv-table-wrap', compact && 'nv-table-wrap--compact', className].filter(Boolean).join(' ')
+  const classes = [
+    'nv-table-wrap',
+    `nv-table-wrap--${resolvedDensity}`,
+    `nv-table-wrap--surface-${surface}`,
+    zebra && 'nv-table-wrap--zebra',
+    hover && 'nv-table-wrap--hover',
+    stickyHead && 'nv-table-wrap--sticky-head',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  const style = minWidth ? { '--nv-table-min-width': typeof minWidth === 'number' ? `${minWidth}px` : minWidth } : undefined
 
   return (
-    <TableSortContext.Provider value={contextValue}>
-      <div className={classes}>
-        <table className="nv-table" {...props}>
-          {children}
-        </table>
-      </div>
+    <TableSortContext.Provider value={sortContextValue}>
+      <TableStyleContext.Provider value={styleContextValue}>
+        <div className={classes} style={style}>
+          <table className="nv-table" {...props}>
+            {children}
+          </table>
+        </div>
+      </TableStyleContext.Provider>
     </TableSortContext.Provider>
   )
 }
@@ -146,6 +172,7 @@ export function TableCell({
   align = 'left',
   numeric = false,
   sortable = false,
+  sticky = false,
   sortDirection,
   sortKey,
   sortValue,
@@ -154,6 +181,7 @@ export function TableCell({
   ...props
 }) {
   const sortContext = useContext(TableSortContext)
+  const styleContext = useContext(TableStyleContext)
   const isHeader = Tag === 'th'
   const resolvedSortKey = sortKey ?? columnKey
   const isActive = isHeader && sortContext?.activeSort?.key === resolvedSortKey
@@ -173,6 +201,8 @@ export function TableCell({
     `nv-table-cell--${align}`,
     numeric && 'nv-table-cell--numeric',
     sortable && 'nv-table-cell--sortable',
+    isHeader && styleContext?.stickyHead && 'nv-table-cell--sticky-head',
+    sticky && `nv-table-cell--sticky-${align === 'right' || numeric ? 'right' : 'left'}`,
     className,
   ]
     .filter(Boolean)
@@ -214,4 +244,3 @@ export function TableCaption({ children, className = '', ...props }) {
     </caption>
   )
 }
-

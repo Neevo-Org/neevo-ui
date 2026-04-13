@@ -1,5 +1,5 @@
-import { Children, isValidElement, useEffect, useMemo, useRef, useState } from 'react'
-import { Button } from '../Button'
+import { Children, isValidElement, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
 import './Select.css'
@@ -27,6 +27,9 @@ function getOptionLabel(option) {
 }
 
 export function Select({
+  label,
+  hint,
+  error,
   value,
   onChange,
   children,
@@ -35,13 +38,17 @@ export function Select({
   noResultsText = 'No options found',
   search = true,
   searchable,
+  variant = 'default',
+  shell = false,
   className = '',
   disabled = false,
   ...props
 }) {
   const rootRef = useRef(null)
+  const menuRef = useRef(null)
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [position, setPosition] = useState(null)
 
   const options = useMemo(() => {
     return Children.toArray(children).filter((child) => isValidElement(child) && child.type === Options)
@@ -72,13 +79,40 @@ export function Select({
     }
 
     function onPointerDown(event) {
-      if (!rootRef.current?.contains(event.target)) {
+      const target = event.target
+      const insideTrigger = rootRef.current?.contains(target)
+      const insideMenu = menuRef.current?.contains(target)
+      if (!insideTrigger && !insideMenu) {
         setOpen(false)
       }
     }
 
     document.addEventListener('mousedown', onPointerDown)
     return () => document.removeEventListener('mousedown', onPointerDown)
+  }, [open])
+
+  useLayoutEffect(() => {
+    if (!open || !rootRef.current) return undefined
+
+    const updatePosition = () => {
+      const rect = rootRef.current?.getBoundingClientRect()
+      if (!rect) return
+
+      setPosition({
+        top: rect.bottom + 6,
+        left: rect.left,
+        width: rect.width,
+      })
+    }
+
+    updatePosition()
+
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
   }, [open])
 
   function handleToggle() {
@@ -97,25 +131,62 @@ export function Select({
     setQuery('')
   }
 
-  const rootClassName = ['nv-select', className].filter(Boolean).join(' ')
+  const rootClassName = [
+    'nv-field',
+    'nv-select',
+    variant !== 'default' && `nv-field--${variant}`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  const triggerClassName = [
+    'nv-select-trigger',
+    variant !== 'default' && `nv-select-trigger--${variant}`,
+    shell && 'nv-select-trigger--shell',
+    error && 'nv-select-trigger--error',
+    disabled && 'nv-select-trigger--disabled',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <div className={rootClassName} ref={rootRef} {...props}>
-      <Button
-        variant="secondary"
-        className="nv-select-trigger"
+      {label && (
+        <Text as="span" size="sm" weight="semibold" className="nv-field-label">
+          {label}
+        </Text>
+      )}
+
+      <button
+        type="button"
+        className={triggerClassName}
         onClick={handleToggle}
         aria-expanded={open}
+        aria-haspopup="listbox"
         disabled={disabled}
       >
         <Text as="span" size="sm" className={selected ? 'nv-select-value' : 'nv-select-placeholder'}>
           {selected ? getOptionLabel(selected) : placeholder}
         </Text>
         <I className="nv-select-caret">expand_more</I>
-      </Button>
+      </button>
 
-      {open && (
-        <div className="nv-select-menu">
+      {open && createPortal(
+        <div
+          ref={menuRef}
+          className="nv-select-menu"
+          style={
+            position === null
+              ? undefined
+              : {
+                  position: 'fixed',
+                  top: `${position.top}px`,
+                  left: `${position.left}px`,
+                  width: `${position.width}px`,
+                }
+          }
+        >
           {isSearchEnabled && (
             <input
               className="nv-select-search"
@@ -138,20 +209,29 @@ export function Select({
                 .join(' ')
 
               return (
-                <Button
+                <button
                   key={String(option.props.value)}
-                  variant="secondary"
+                  type="button"
                   className={optionClassName}
                   onClick={() => handleSelect(option.props.value)}
+                  role="option"
+                  aria-selected={isActive}
                 >
                   <Text as="span" size="sm" className="nv-select-option-label">
                     {getOptionLabel(option)}
                   </Text>
-                </Button>
+                </button>
               )
             })}
           </div>
-        </div>
+        </div>,
+        document.body,
+      )}
+
+      {(hint || error) && (
+        <Text as="span" size="xs" tone={error ? 'default' : 'muted'} className={error ? 'nv-field-error' : ''}>
+          {error || hint}
+        </Text>
       )}
     </div>
   )

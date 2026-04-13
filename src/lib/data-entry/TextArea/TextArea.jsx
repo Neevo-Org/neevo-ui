@@ -5,13 +5,21 @@ export function TextArea({
   label,
   hint,
   error,
+  variant = 'default',
+  shell = false,
   className = '',
   textAreaClassName = '',
   rows = 4,
   ...props
 }) {
-  const wrapperClass = ['nv-field', className].filter(Boolean).join(' ')
-  const controlClass = ['nv-textarea-control', error && 'nv-textarea-control--error', textAreaClassName]
+  const wrapperClass = ['nv-field', variant !== 'default' && `nv-field--${variant}`, className].filter(Boolean).join(' ')
+  const controlClass = [
+    'nv-textarea-control',
+    variant !== 'default' && `nv-textarea-control--${variant}`,
+    shell && 'nv-textarea-control--shell',
+    error && 'nv-textarea-control--error',
+    textAreaClassName,
+  ]
     .filter(Boolean)
     .join(' ')
 

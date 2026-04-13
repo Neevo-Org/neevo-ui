@@ -1,35 +1,71 @@
 .nv-table-wrap {
+  --nv-table-min-width: 560px;
+  position: relative;
   width: 100%;
-  overflow-x: auto;
-  border: 1px solid var(--nv-color-border);
-  border-radius: var(--nv-radius-lg);
-  background: var(--nv-color-surface);
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--nv-color-theme, var(--nv-gradient-accent-border)) 14%, var(--nv-color-border));
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 24%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface) 96%, transparent);
+}
+
+.nv-table-wrap--surface-soft {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 28%, transparent), transparent 42%),
+    color-mix(in srgb, var(--nv-color-surface-soft) 96%, transparent);
+}
+
+.nv-table-wrap--surface-tint {
+  background:
+    radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 58%, transparent), transparent 38%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 14%, var(--nv-color-bg-elevated)),
+      color-mix(in srgb, var(--nv-color-surface) 96%, transparent)
+    );
 }
 
 .nv-table {
   width: 100%;
-  border-collapse: collapse;
-  min-width: 560px;
+  min-width: var(--nv-table-min-width);
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .nv-table-head .nv-table-row {
-  background: var(--nv-color-surface-muted);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-surface-soft)),
+      color-mix(in srgb, var(--nv-color-surface-muted) 94%, transparent)
+    );
 }
 
 .nv-table-cell {
-  padding: 0.75rem 0.875rem;
-  border-bottom: 1px solid var(--nv-color-border-muted);
+  position: relative;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--nv-color-border) 76%, var(--nv-color-text) 8%);
   color: var(--nv-color-text);
   text-align: left;
   vertical-align: middle;
+  background: transparent;
 }
 
-.nv-table-wrap--compact .nv-table-cell {
-  padding: 0.5rem 0.65rem;
+.nv-table-wrap--sm .nv-table-cell {
+  padding: 0.55rem 0.7rem;
 }
 
-.nv-table-body .nv-table-row:hover {
-  background: var(--nv-color-surface-muted);
+.nv-table-wrap--lg .nv-table-cell {
+  padding: 1rem 1.1rem;
+}
+
+.nv-table-wrap--hover .nv-table-body .nv-table-row:hover {
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 22%, var(--nv-color-surface-muted));
+}
+
+.nv-table-wrap--zebra .nv-table-body .nv-table-row:nth-child(even) {
+  background: color-mix(in srgb, var(--nv-color-surface-soft) 72%, transparent);
 }
 
 .nv-table-body .nv-table-row:last-child .nv-table-cell {
@@ -50,24 +86,66 @@
   padding: 0;
 }
 
+.nv-table-cell--sticky-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-bg-elevated) 94%, transparent),
+      color-mix(in srgb, var(--nv-color-surface-soft) 92%, transparent)
+    );
+}
+
+.nv-table-wrap--zebra .nv-table-cell--sticky-head {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nv-color-bg-elevated) 94%, transparent),
+      color-mix(in srgb, var(--nv-color-surface-soft) 92%, transparent)
+    );
+}
+
+.nv-table-cell--sticky-left,
+.nv-table-cell--sticky-right {
+  position: sticky;
+  z-index: 1;
+  background: inherit;
+}
+
+.nv-table-cell--sticky-left {
+  left: 0;
+}
+
+.nv-table-cell--sticky-right {
+  right: 0;
+}
+
 .nv-table-sort-trigger {
   width: 100%;
   border: 0;
   background: transparent;
   color: inherit;
-  padding: 0.75rem 0.875rem;
+  padding: 0.85rem 1rem;
   cursor: pointer;
   display: block;
   text-align: inherit;
   font: inherit;
+  transition: background 140ms ease;
 }
 
-.nv-table-wrap--compact .nv-table-sort-trigger {
-  padding: 0.5rem 0.65rem;
+.nv-table-wrap--sm .nv-table-sort-trigger {
+  padding: 0.55rem 0.7rem;
+}
+
+.nv-table-wrap--lg .nv-table-sort-trigger {
+  padding: 1rem 1.1rem;
 }
 
 .nv-table-sort-trigger:hover {
-  background: var(--nv-color-surface-muted);
+  background: color-mix(in srgb, var(--nv-color-theme-soft, transparent) 18%, var(--nv-color-surface-muted));
 }
 
 .nv-table-sort-trigger:focus-visible {
@@ -104,7 +182,7 @@
 .nv-table-sort-content {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.35rem;
 }
 
 .nv-table-cell--right .nv-table-sort-content,
@@ -154,5 +232,5 @@
 
 .nv-table-caption {
   caption-side: bottom;
-  padding: 0.55rem 0.875rem;
+  padding: 0.65rem 1rem;
 }

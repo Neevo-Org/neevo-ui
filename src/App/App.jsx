@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import {
+  AppShell,
+  AppSidebar,
+  AppSidebarBrand,
+  AppSidebarNav,
+  AppStage,
+  AppStageHeader,
   Button,
-  Content,
-  Heading,
   I,
-  Page,
-  PageBody,
-  PageHeader,
   Row,
-  Sidebar,
   Text,
   ThemeProvider,
-  Column,
 } from '../lib'
 import { PAGE_LIST, getPageFromHash, renderPage } from './Pages'
 import { MDX_NAV_TREE, getMdxAncestors } from '../../docs/registry'
+
+const DOCS_THEMES = ['mint', 'ocean', 'sunset']
 
 function getInitialMode() {
   if (typeof window === 'undefined') {
@@ -46,9 +47,19 @@ function collectFolderKeys(nodes, output = []) {
 
 const ALL_FOLDER_KEYS = collectFolderKeys(MDX_NAV_TREE)
 
+function getInitialTheme() {
+  if (typeof window === 'undefined') {
+    return 'mint'
+  }
+
+  const saved = window.localStorage.getItem('nv-docs-theme')
+  return DOCS_THEMES.includes(saved) ? saved : 'mint'
+}
+
 function App() {
   const [page, setPage] = useState(getPageFromHash())
   const [mode, setMode] = useState(getInitialMode)
+  const [theme, setTheme] = useState(getInitialTheme)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [openFolders, setOpenFolders] = useState(
     Object.fromEntries(ALL_FOLDER_KEYS.map((key) => [key, true])),
@@ -77,16 +88,21 @@ function App() {
 
   useEffect(() => {
     window.localStorage.setItem('nv-docs-mode', mode)
+    window.localStorage.setItem('nv-docs-theme', theme)
+    document.body.setAttribute('data-nv-mode', mode)
+    document.body.setAttribute('data-nv-theme', theme)
     const docsPage = document.querySelector('.docs-page')
     const themedBackground = docsPage
-      ? getComputedStyle(docsPage).getPropertyValue('--nv-color-bg').trim()
+      ? getComputedStyle(docsPage).getPropertyValue('--nv-gradient-app-bg').trim()
       : ''
     document.body.style.background = themedBackground || (mode === 'dark' ? '#111827' : '#f9fafb')
 
     return () => {
+      document.body.removeAttribute('data-nv-mode')
+      document.body.removeAttribute('data-nv-theme')
       document.body.style.background = ''
     }
-  }, [mode])
+  }, [mode, theme])
 
   const current = PAGE_LIST.find((p) => p.id === page) ?? PAGE_LIST[0]
 
@@ -146,25 +162,47 @@ function App() {
   }
 
   return (
-    <ThemeProvider mode={mode}>
-      <Page className="docs-page">
-        <PageHeader className="docs-header">
-          <Row justify="space-between" align="center" className="docs-header-row">
-            <Column gap={2}>
-              <Text className="docs-eyebrow" as="span" size="xs" weight="semibold" tone="muted">Neevo UI</Text>
-              <Heading as="h1" size="md">Component Showcase</Heading>
-            </Column>
-            <Row align="center" className="docs-header-actions">
-              <button
-                type="button"
-                className="docs-mobile-nav-toggle"
-                aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                aria-expanded={mobileNavOpen}
-                onClick={() => setMobileNavOpen((prev) => !prev)}
-              >
-                <I>{mobileNavOpen ? 'close' : 'menu'}</I>
-              </button>
-              <Text size="sm" tone="muted">{current.label}</Text>
+    <ThemeProvider mode={mode} theme={theme}>
+      <AppShell className="docs-page">
+        <AppSidebar
+          className={mobileNavOpen ? 'docs-sidebar' : 'docs-sidebar docs-sidebar--mobile-closed'}
+          header={(
+            <AppSidebarBrand
+              className="docs-brand"
+              title="Neevo UI"
+              subtitle="Component Showcase"
+              icon={
+                <div className="docs-brand__icon-wrap">
+                  <I>widgets</I>
+                  <button
+                    type="button"
+                    className="docs-brand-toggle"
+                    aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                    aria-expanded={mobileNavOpen}
+                    onClick={() => setMobileNavOpen((prev) => !prev)}
+                  >
+                    <I>{mobileNavOpen ? 'close' : 'menu'}</I>
+                  </button>
+                </div>
+              }
+            />
+          )}
+          footer={(
+            <Row align="center" className="docs-sidebar-footer" gap={8}>
+              <Row align="center" className="docs-theme-toggle" gap={6}>
+                {DOCS_THEMES.map((option) => (
+                  <button
+                    key={option}
+                    className={`docs-theme-dot docs-theme-dot--${option} ${theme === option ? 'is-active' : ''}`}
+                    onClick={() => setTheme(option)}
+                    aria-label={`Use ${option} theme`}
+                    title={option}
+                    type="button"
+                  >
+                    <span className="docs-theme-dot__swatch" aria-hidden="true" />
+                  </button>
+                ))}
+              </Row>
               <Button
                 variant="secondary"
                 className="docs-mode-toggle"
@@ -175,24 +213,33 @@ function App() {
                 {mode === 'dark' ? 'Light' : 'Dark'}
               </Button>
             </Row>
-          </Row>
-        </PageHeader>
-
-        <PageBody sidebarWidth={300}>
-          <Sidebar className={mobileNavOpen ? 'docs-sidebar' : 'docs-sidebar docs-sidebar--mobile-closed'}>
+          )}
+        >
+          <AppSidebarNav>
             <Text size="sm" tone="muted">Use the navigation to explore each component module.</Text>
             <nav className="docs-nav">
               {MDX_NAV_TREE.map((node) => renderNavNode(node))}
             </nav>
-          </Sidebar>
+          </AppSidebarNav>
+        </AppSidebar>
 
-          <Content className="docs-main" padding={20}>
-            <div className="docs-content-main">
-              {renderPage(page)}
-            </div>
-          </Content>
-        </PageBody>
-      </Page>
+        <AppStage
+          className="docs-main"
+          header={(
+            <AppStageHeader
+              className="docs-header"
+              eyebrow="Docs"
+              title={current.label}
+              description="Live component previews, tokens, and API guidance."
+              actions={<Row align="center" className="docs-header-actions" />}
+            />
+          )}
+        >
+          <div className="docs-content-main">
+            {renderPage(page)}
+          </div>
+        </AppStage>
+      </AppShell>
     </ThemeProvider>
   )
 }

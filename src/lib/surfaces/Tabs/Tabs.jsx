@@ -3,7 +3,17 @@ import './Tabs.css'
 
 const TabsContext = createContext(null)
 
-export function Tabs({ value, defaultValue, onValueChange, children, className = '', ...props }) {
+export function Tabs({
+  value,
+  defaultValue,
+  onValueChange,
+  children,
+  className = '',
+  variant = 'default',
+  size = 'md',
+  fullWidth = false,
+  ...props
+}) {
   const [internalValue, setInternalValue] = useState(defaultValue)
   const activeValue = value !== undefined ? value : internalValue
 
@@ -14,8 +24,10 @@ export function Tabs({ value, defaultValue, onValueChange, children, className =
     onValueChange?.(next)
   }, [value, onValueChange])
 
-  const contextValue = { activeValue, setValue }
-  const classes = ['nv-tabs', className].filter(Boolean).join(' ')
+  const contextValue = { activeValue, setValue, size, variant, fullWidth }
+  const classes = ['nv-tabs', `nv-tabs--${variant}`, `nv-tabs--${size}`, fullWidth && 'nv-tabs--full-width', className]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <TabsContext.Provider value={contextValue}>
@@ -25,7 +37,12 @@ export function Tabs({ value, defaultValue, onValueChange, children, className =
 }
 
 export function TabsList({ children, className = '', ...props }) {
-  const classes = ['nv-tabs-list', className].filter(Boolean).join(' ')
+  const context = useContext(TabsContext)
+  const classes = [
+    'nv-tabs-list',
+    context?.fullWidth && 'nv-tabs-list--full-width',
+    className,
+  ].filter(Boolean).join(' ')
   return <div className={classes} role="tablist" {...props}>{children}</div>
 }
 
@@ -33,7 +50,12 @@ export function TabsTrigger({ value, children, className = '', disabled = false,
   const context = useContext(TabsContext)
   if (!context) throw new Error('TabsTrigger must be used within Tabs.')
   const active = context.activeValue === value
-  const classes = ['nv-tabs-trigger', active && 'nv-tabs-trigger--active', className].filter(Boolean).join(' ')
+  const classes = [
+    'nv-tabs-trigger',
+    active && 'nv-tabs-trigger--active',
+    context.fullWidth && 'nv-tabs-trigger--full-width',
+    className,
+  ].filter(Boolean).join(' ')
 
   return (
     <button

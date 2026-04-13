@@ -21,6 +21,10 @@ export function Accordion({
   value,
   defaultValue,
   onValueChange,
+  surface = 'default',
+  tone = 'neutral',
+  compact = false,
+  flush = false,
   className = '',
   ...props
 }) {
@@ -46,7 +50,16 @@ export function Accordion({
   }, [multiple, openValues, setOpenValues])
 
   const contextValue = { openValues, toggleItem }
-  const classes = ['nv-accordion', className].filter(Boolean).join(' ')
+  const classes = [
+    'nv-accordion',
+    surface !== 'default' && `nv-accordion--${surface}`,
+    tone !== 'neutral' && `nv-accordion--${tone}`,
+    compact && 'nv-accordion--compact',
+    flush && 'nv-accordion--flush',
+    className
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <AccordionContext.Provider value={contextValue}>

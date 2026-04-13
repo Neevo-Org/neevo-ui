@@ -1,6 +1,6 @@
 # ThemeProvider
 
-ThemeProvider scopes light/dark tokens and allows runtime CSS variable overrides for full branding control.
+ThemeProvider scopes mode and theme tokens and allows runtime CSS variable overrides for full branding control.
 
 ## Examples
 
@@ -29,6 +29,23 @@ ThemeProvider scopes light/dark tokens and allows runtime CSS variable overrides
   <Column gap={8}>
     <ThemeProvider style={{ '--nv-color-primary-bg': '#22c55e' }}>
       <Button>Brand Action</Button>
+    </ThemeProvider>
+  </Column>
+</Column>
+```
+
+### Theme Preset
+
+```tsx
+<Column gap={8}>
+  <Text size="sm" tone="muted">Example: Theme preset.</Text>
+  <Column gap={8}>
+    <ThemeProvider mode="light" theme="ocean">
+      <Card surface="tint" tone="primary">
+        <CardBody>
+          <Text>Ocean preset content</Text>
+        </CardBody>
+      </Card>
     </ThemeProvider>
   </Column>
 </Column>

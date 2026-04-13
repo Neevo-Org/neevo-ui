@@ -21,11 +21,34 @@ function toSafeDate(value) {
   return null
 }
 
+function normalizeRange(value) {
+  if (!value || typeof value !== 'object') {
+    return { start: null, end: null }
+  }
+
+  const start = toSafeDate(value.start)
+  const end = toSafeDate(value.end)
+
+  if (start && end && start.getTime() > end.getTime()) {
+    return { start: end, end: start }
+  }
+
+  return { start, end }
+}
+
 function isSameDate(a, b) {
   if (!a || !b) {
     return false
   }
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
+}
+
+function isBetweenDates(date, start, end) {
+  if (!date || !start || !end) {
+    return false
+  }
+  const value = date.getTime()
+  return value > start.getTime() && value < end.getTime()
 }
 
 function addMonths(date, months) {
@@ -46,20 +69,48 @@ function buildCalendarDays(monthDate) {
   })
 }
 
-export function Calendar({ value, defaultValue, onChange, className = '', ...props }) {
+export function Calendar({
+  value,
+  defaultValue,
+  onChange,
+  className = '',
+  selectionMode = 'single',
+  surface = 'default',
+  size = 'md',
+  ...props
+}) {
   const isControlled = value !== undefined
-  const controlledValue = toSafeDate(value)
-  const controlledMonth = controlledValue
-    ? new Date(controlledValue.getFullYear(), controlledValue.getMonth(), 1)
+  const controlledSingleValue = selectionMode === 'single' ? toSafeDate(value) : null
+  const controlledRangeValue = selectionMode === 'range' ? normalizeRange(value) : { start: null, end: null }
+  const controlledAnchorDate = selectionMode === 'range'
+    ? controlledRangeValue.start ?? controlledRangeValue.end
+    : controlledSingleValue
+  const controlledMonth = controlledAnchorDate
+    ? new Date(controlledAnchorDate.getFullYear(), controlledAnchorDate.getMonth(), 1)
     : null
   const controlledMonthKey = controlledMonth ? `${controlledMonth.getFullYear()}-${controlledMonth.getMonth()}` : null
-  const [internalValue, setInternalValue] = useState(() => toSafeDate(defaultValue))
-  const selectedDate = isControlled ? controlledValue : internalValue
+
+  const [internalValue, setInternalValue] = useState(() => (
+    selectionMode === 'range' ? normalizeRange(defaultValue) : toSafeDate(defaultValue)
+  ))
+
+  const selectedDate = selectionMode === 'single'
+    ? (isControlled ? controlledSingleValue : internalValue)
+    : null
+  const selectedRange = selectionMode === 'range'
+    ? (isControlled ? controlledRangeValue : internalValue)
+    : { start: null, end: null }
+
+  const anchorDate = selectionMode === 'range'
+    ? selectedRange.start ?? selectedRange.end
+    : selectedDate
+
   const [monthViewState, setMonthViewState] = useState(() => ({
-    month: controlledMonth ?? selectedDate ?? toSafeDate(new Date()),
+    month: controlledMonth ?? anchorDate ?? toSafeDate(new Date()),
     manual: false,
     anchorControlledKey: controlledMonthKey,
   }))
+
   const [yearPickerOpen, setYearPickerOpen] = useState(false)
   const [yearRangeStart, setYearRangeStart] = useState(() => monthViewState.month.getFullYear() - 6)
   const isManualViewActive = monthViewState.manual && monthViewState.anchorControlledKey === controlledMonthKey
@@ -73,17 +124,38 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
   const yearRangeLabel = useMemo(() => `${yearRangeStart} - ${yearRangeStart + 11}`, [yearRangeStart])
   const days = useMemo(() => buildCalendarDays(displayMonth), [displayMonth])
 
-  function handleSelect(date) {
-    if (!isControlled) {
-      setInternalValue(date)
-    }
+  function updateDisplayedMonth(date) {
     setMonthViewState({
       month: new Date(date.getFullYear(), date.getMonth(), 1),
       manual: false,
       anchorControlledKey: controlledMonthKey,
     })
-    onChange?.(date)
     setYearPickerOpen(false)
+  }
+
+  function handleSelect(date) {
+    if (selectionMode === 'range') {
+      const currentRange = selectedRange
+      const nextRange =
+        !currentRange.start || (currentRange.start && currentRange.end)
+          ? { start: date, end: null }
+          : date.getTime() < currentRange.start.getTime()
+            ? { start: date, end: currentRange.start }
+            : { start: currentRange.start, end: date }
+
+      if (!isControlled) {
+        setInternalValue(nextRange)
+      }
+      onChange?.(nextRange)
+      updateDisplayedMonth(date)
+      return
+    }
+
+    if (!isControlled) {
+      setInternalValue(date)
+    }
+    onChange?.(date)
+    updateDisplayedMonth(date)
   }
 
   function selectYear(year) {
@@ -129,7 +201,9 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
     })
   }
 
-  const classes = ['nv-calendar', className].filter(Boolean).join(' ')
+  const classes = ['nv-calendar', `nv-calendar--${size}`, `nv-calendar--surface-${surface}`, className]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <div className={classes} {...props}>
@@ -191,13 +265,19 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
 
           <div className="nv-calendar-grid">
             {days.map(({ date, isCurrentMonth }) => {
-              const isSelected = isSameDate(date, selectedDate)
+              const isSelected = selectionMode === 'single' && isSameDate(date, selectedDate)
+              const isRangeStart = selectionMode === 'range' && isSameDate(date, selectedRange.start)
+              const isRangeEnd = selectionMode === 'range' && isSameDate(date, selectedRange.end)
+              const isInRange = selectionMode === 'range' && isBetweenDates(date, selectedRange.start, selectedRange.end)
               const isToday = isSameDate(date, today)
               const dayClassName = [
                 'nv-calendar-day',
                 !isCurrentMonth && 'nv-calendar-day--outside',
                 isSelected && 'nv-calendar-day--selected',
                 isToday && 'nv-calendar-day--today',
+                isRangeStart && 'nv-calendar-day--range-start',
+                isRangeEnd && 'nv-calendar-day--range-end',
+                isInRange && 'nv-calendar-day--in-range',
               ]
                 .filter(Boolean)
                 .join(' ')
@@ -221,4 +301,3 @@ export function Calendar({ value, defaultValue, onChange, className = '', ...pro
     </div>
   )
 }
-

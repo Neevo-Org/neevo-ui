@@ -16,7 +16,7 @@ import 'neevo-ui/style.css'
 
 export function Example() {
   return (
-    <ThemeProvider mode="light">
+    <ThemeProvider mode="light" theme="mint">
       <Button>Click me</Button>
     </ThemeProvider>
   )

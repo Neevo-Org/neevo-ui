@@ -1,10 +1,10 @@
 # Modal
 
-Modal is a centered portal overlay with escape handling, overlay close, scroll lock, and composable sections.
+Modal is a centered overlay for focused decisions and short-form editing. Use it when the user should pause, review, and confirm within a constrained surface.
 
 ## Examples
 
-### Action Modal
+### Decision Modal
 
 ```tsx
 import { useState } from 'react'
@@ -15,14 +15,51 @@ function ModalExample() {
   return (
     <Column gap={8}>
       <Button variant="secondary" onClick={() => setOpen(true)}>Open modal</Button>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <ModalHeader title="Delete Position" description="This action cannot be undone." />
+
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        size="lg"
+        surface="tint"
+        stickyFooter
+      >
+        <ModalHeader
+          title="Invite member"
+          description="Grant workspace access and define the initial role."
+          meta={<Badge tone="primary" variant="soft">Access control</Badge>}
+          onClose={() => setOpen(false)}
+        />
+
         <ModalBody>
-          <Text>Are you sure you want to remove this position from the watchlist?</Text>
+          <ModalSection
+            title="Identity"
+            description="Start with the member information that will be used for the invitation."
+          >
+            <Input label="Full name" placeholder="Avery Quinn" />
+            <Input label="Email address" placeholder="avery@company.com" />
+          </ModalSection>
+
+          <ModalSection
+            title="Permissions"
+            description="Set the default level of access before sending the invite."
+            aside={<Badge variant="soft">Required</Badge>}
+          >
+            <Select label="Role" placeholder="Choose a role" value="editor" onChange={() => {}}>
+              <Options value="viewer">Viewer</Options>
+              <Options value="editor">Editor</Options>
+              <Options value="admin">Admin</Options>
+            </Select>
+            <TextArea
+              label="Note"
+              rows={4}
+              placeholder="Optional onboarding note for the new member."
+            />
+          </ModalSection>
         </ModalBody>
+
         <ModalFooter>
           <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={() => setOpen(false)}>Delete</Button>
+          <Button onClick={() => setOpen(false)}>Send invite</Button>
         </ModalFooter>
       </Modal>
     </Column>
@@ -38,5 +75,20 @@ function ModalExample() {
 | --- | --- | --- | --- |
 | open | boolean | false | Visibility state. |
 | onClose | () => void | undefined | Close callback. |
+| size | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Width preset for the modal shell. |
+| surface | `'default' \| 'soft' \| 'tint'` | `'default'` | Background treatment for the modal shell. |
+| stickyHeader | boolean | false | Keeps the header pinned while the body scrolls. |
+| stickyFooter | boolean | false | Keeps the footer pinned while the body scrolls. |
+| scroll | `'body' \| 'shell'` | `'body'` | Controls whether the body region or the entire shell scrolls. |
+| locked | boolean | false | Disables backdrop and escape dismissal. |
+| closeOnBackdrop | boolean | true | Backdrop click behavior. |
 | closeOnEscape | boolean | true | ESC key behavior. |
-| closeOnOverlayClick | boolean | true | Overlay click behavior. |
+
+## Subcomponents
+
+| Component | Purpose |
+| --- | --- |
+| `ModalHeader` | Title, description, meta, and close action. |
+| `ModalBody` | Main content region. |
+| `ModalSection` | Group related fields or content blocks inside the body. |
+| `ModalFooter` | Primary and secondary actions. |
