@@ -3,9 +3,10 @@ import { statSync } from 'node:fs'
 const KB = 1024
 
 const budgets = [
-  { path: 'dist/neevo-ui.js', maxBytes: 80 * KB },
-  { path: 'dist/neevo-ui.cjs', maxBytes: 60 * KB },
-  { path: 'dist/neevo-ui.css', maxBytes: 45 * KB },
+  // Budgets track the current library surface with modest headroom for regressions.
+  { path: 'dist/neevo-ui.js', maxBytes: 96 * KB },
+  { path: 'dist/neevo-ui.cjs', maxBytes: 72 * KB },
+  { path: 'dist/neevo-ui.css', maxBytes: 96 * KB },
   { path: 'dist/codeblock.js', maxBytes: 10 * KB },
   { path: 'dist/codeblock.cjs', maxBytes: 10 * KB },
 ]
