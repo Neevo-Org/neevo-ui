@@ -3,8 +3,8 @@
 [![License][license-src]][license-href]
 [![React][react-src]][react-href]
 [![Vite][vite-src]][vite-href]
-<img src="https://raw.githubusercontent.com/Neevo-Org/neevo-ui/v0.1.0/public/neevo_ui_dark.svg#gh-dark-mode-only" alt="Neevo UI" width="420" />
-<img src="https://raw.githubusercontent.com/Neevo-Org/neevo-ui/v0.1.0/public/neevo_ui_light.svg#gh-light-mode-only" alt="Neevo UI" width="420" />
+<img src="https://raw.githubusercontent.com/Neevo-Org/neevo-ui/v1.0.0/public/neevo_ui_dark.svg#gh-dark-mode-only" alt="Neevo UI" width="420" />
+<img src="https://raw.githubusercontent.com/Neevo-Org/neevo-ui/v1.0.0/public/neevo_ui_light.svg#gh-light-mode-only" alt="Neevo UI" width="420" />
 
 # Neevo UI
 
