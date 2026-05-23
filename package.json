@@ -1,6 +1,6 @@
 {
   "name": "neevo-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modular React UI component library with an integrated docs showcase app.",
   "license": "GPL-3.0-only",
   "repository": {
