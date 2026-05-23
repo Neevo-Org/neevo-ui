@@ -40,21 +40,17 @@ function resolveFloatingPosition({ align, contentWidth, offset, rect, viewportWi
   const endLeft = rect.right - contentWidth
   const centerLeft = rect.left + (rect.width - contentWidth) / 2
 
-  let nextAlign = align
   let nextLeft = preferredLeft
 
-  if (align === 'start' && preferredLeft + contentWidth > viewportWidth - viewportPadding) {
-    nextAlign = 'end'
-    nextLeft = endLeft
-  } else if (align === 'end' && preferredLeft < viewportPadding) {
-    nextAlign = 'start'
-    nextLeft = startLeft
+  if (align === 'start' || align === 'auto') {
+    nextLeft = preferredLeft + contentWidth > viewportWidth - viewportPadding ? endLeft : startLeft
+  } else if (align === 'end') {
+    nextLeft = preferredLeft < viewportPadding ? startLeft : endLeft
   } else if (align === 'center') {
     nextLeft = centerLeft
   }
 
   return {
-    align: nextAlign,
     top: rect.bottom + offset,
     left: Math.min(Math.max(viewportPadding, nextLeft), maxLeft),
   }
@@ -63,8 +59,6 @@ function resolveFloatingPosition({ align, contentWidth, offset, rect, viewportWi
 export function Popover({ open, defaultOpen = false, onOpenChange, children, className = '', ...props }) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const rootRef = useRef(null)
-  const triggerRef = useRef(null)
-  const contentRef = useRef(null)
   const isOpen = open !== undefined ? open : internalOpen
 
   const setOpen = useCallback((next) => {
@@ -77,9 +71,9 @@ export function Popover({ open, defaultOpen = false, onOpenChange, children, cla
 
     function onPointerDown(event) {
       const target = event.target
-      const insideTrigger = rootRef.current?.contains(target)
-      const insideContent = contentRef.current?.contains(target)
-      if (!insideTrigger && !insideContent) setOpen(false)
+      const insideRoot = rootRef.current?.contains(target)
+      const insideFloating = target instanceof HTMLElement && target.closest('[data-nv-popover-floating="true"]')
+      if (!insideRoot && !insideFloating) setOpen(false)
     }
 
     function onKeyDown(event) {
@@ -94,7 +88,7 @@ export function Popover({ open, defaultOpen = false, onOpenChange, children, cla
     }
   }, [isOpen, setOpen])
 
-  const contextValue = { contentRef, isOpen, rootRef, setOpen, triggerRef }
+  const contextValue = { isOpen, rootRef, setOpen }
   const classes = ['nv-popover', className].filter(Boolean).join(' ')
 
   return (
@@ -108,22 +102,23 @@ export function PopoverTrigger({ children }) {
   const context = useContext(PopoverContext)
   if (!context) throw new Error('PopoverTrigger must be used within Popover.')
 
+  const { isOpen, setOpen } = context
   const child = getSingleElementChild(children)
 
   if (!child) {
     return (
       <span
-        ref={context.triggerRef}
+        data-nv-popover-trigger="true"
         className="nv-popover-trigger-shell"
         role="button"
         tabIndex={0}
-        aria-expanded={context.isOpen}
+        aria-expanded={isOpen}
         aria-haspopup="dialog"
-        onClick={() => context.setOpen(!context.isOpen)}
+        onClick={() => setOpen(!isOpen)}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault()
-            context.setOpen(!context.isOpen)
+            setOpen(!isOpen)
           }
         }}
       >
@@ -133,12 +128,12 @@ export function PopoverTrigger({ children }) {
   }
 
   return cloneElement(child, {
-    ref: context.triggerRef,
+    'data-nv-popover-trigger': 'true',
     onClick: (event) => {
       child.props.onClick?.(event)
-      context.setOpen(!context.isOpen)
+      setOpen(!isOpen)
     },
-    'aria-expanded': context.isOpen,
+    'aria-expanded': isOpen,
     'aria-haspopup': 'dialog',
   })
 }
@@ -155,15 +150,19 @@ export function PopoverContent({
   const context = useContext(PopoverContext)
   if (!context) throw new Error('PopoverContent must be used within Popover.')
 
+  const { isOpen, rootRef } = context
+  const contentRef = useRef(null)
   const [position, setPosition] = useState(null)
 
   useLayoutEffect(() => {
-    if (!context.isOpen || !context.triggerRef.current) return undefined
+    if (!isOpen) return undefined
 
     const updatePosition = () => {
-      const rect = context.triggerRef.current?.getBoundingClientRect()
+      const trigger = rootRef.current?.querySelector('[data-nv-popover-trigger="true"]')
+      const rect = trigger?.getBoundingClientRect()
       if (!rect) return
-      const contentWidth = context.contentRef.current?.getBoundingClientRect().width ?? POPOVER_MIN_WIDTHS[size] ?? POPOVER_MIN_WIDTHS.md
+
+      const contentWidth = contentRef.current?.getBoundingClientRect().width ?? POPOVER_MIN_WIDTHS[size] ?? POPOVER_MIN_WIDTHS.md
 
       setPosition(resolveFloatingPosition({
         align,
@@ -175,16 +174,15 @@ export function PopoverContent({
     }
 
     updatePosition()
-
     window.addEventListener('resize', updatePosition)
     window.addEventListener('scroll', updatePosition, true)
     return () => {
       window.removeEventListener('resize', updatePosition)
       window.removeEventListener('scroll', updatePosition, true)
     }
-  }, [align, context.contentRef, context.isOpen, context.triggerRef, offset, size])
+  }, [align, isOpen, offset, rootRef, size])
 
-  if (!context.isOpen) return null
+  if (!isOpen) return null
 
   const alignClass =
     align === 'end'
@@ -203,13 +201,10 @@ export function PopoverContent({
     .filter(Boolean)
     .join(' ')
 
-  const style =
-    position === null
-      ? undefined
-      : { position: 'fixed', top: `${position.top}px`, left: `${position.left}px` }
+  const style = position === null ? undefined : { position: 'fixed', top: `${position.top}px`, left: `${position.left}px` }
 
   return createPortal(
-    <div ref={context.contentRef} className={classes} style={style} {...props}>
+    <div ref={contentRef} data-nv-popover-floating="true" className={classes} style={style} {...props}>
       {children}
     </div>,
     document.body,
