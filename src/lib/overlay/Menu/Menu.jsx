@@ -6,7 +6,9 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -19,6 +21,16 @@ const MENU_MIN_WIDTHS = {
   sm: 160,
   md: 192,
   lg: 240,
+}
+
+const MENU_ITEM_SELECTOR = '[data-nv-menu-item="true"]:not([disabled])'
+
+function getEnabledItems(container) {
+  if (!(container instanceof HTMLElement)) {
+    return []
+  }
+
+  return Array.from(container.querySelectorAll(MENU_ITEM_SELECTOR))
 }
 
 function getSingleElementChild(children) {
@@ -40,21 +52,17 @@ function resolveFloatingPosition({ align, contentWidth, offset, rect, viewportWi
   const endLeft = rect.right - contentWidth
   const centerLeft = rect.left + (rect.width - contentWidth) / 2
 
-  let nextAlign = align
   let nextLeft = preferredLeft
 
-  if (align === 'start' && preferredLeft + contentWidth > viewportWidth - viewportPadding) {
-    nextAlign = 'end'
-    nextLeft = endLeft
-  } else if (align === 'end' && preferredLeft < viewportPadding) {
-    nextAlign = 'start'
-    nextLeft = startLeft
+  if (align === 'start' || align === 'auto') {
+    nextLeft = preferredLeft + contentWidth > viewportWidth - viewportPadding ? endLeft : startLeft
+  } else if (align === 'end') {
+    nextLeft = preferredLeft < viewportPadding ? startLeft : endLeft
   } else if (align === 'center') {
     nextLeft = centerLeft
   }
 
   return {
-    align: nextAlign,
     top: rect.bottom + offset,
     left: Math.min(Math.max(viewportPadding, nextLeft), maxLeft),
   }
@@ -65,6 +73,8 @@ export function Menu({ open, defaultOpen = false, onOpenChange, children, classN
   const rootRef = useRef(null)
   const triggerRef = useRef(null)
   const contentRef = useRef(null)
+  const restoreFocusRef = useRef(null)
+  const contentId = useId()
   const isOpen = open !== undefined ? open : internalOpen
 
   const setOpen = useCallback((next) => {
@@ -75,11 +85,15 @@ export function Menu({ open, defaultOpen = false, onOpenChange, children, classN
   useEffect(() => {
     if (!isOpen) return undefined
 
+    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const firstItem = getEnabledItems(contentRef.current)[0]
+    firstItem?.focus()
+
     function onPointerDown(event) {
       const target = event.target
-      const insideTrigger = rootRef.current?.contains(target)
-      const insideContent = contentRef.current?.contains(target)
-      if (!insideTrigger && !insideContent) setOpen(false)
+      const insideRoot = rootRef.current?.contains(target)
+      const insideFloating = target instanceof HTMLElement && target.closest('[data-nv-menu-floating="true"]')
+      if (!insideRoot && !insideFloating) setOpen(false)
     }
 
     function onKeyDown(event) {
@@ -91,13 +105,16 @@ export function Menu({ open, defaultOpen = false, onOpenChange, children, classN
     return () => {
       document.removeEventListener('mousedown', onPointerDown)
       document.removeEventListener('keydown', onKeyDown)
+      restoreFocusRef.current?.focus?.()
+      restoreFocusRef.current = null
     }
   }, [isOpen, setOpen])
 
   const classes = ['nv-menu', className].filter(Boolean).join(' ')
+  const contextValue = useMemo(() => ({ isOpen, rootRef, triggerRef, contentRef, setOpen, contentId }), [contentId, isOpen, setOpen])
 
   return (
-    <MenuContext.Provider value={{ contentRef, isOpen, rootRef, setOpen, triggerRef }}>
+    <MenuContext.Provider value={contextValue}>
       <div ref={rootRef} className={classes} {...props}>
         {children}
       </div>
@@ -111,22 +128,25 @@ export function MenuTrigger({ children }) {
   const context = useContext(MenuContext)
   if (!context) throw new Error('MenuTrigger must be used within Menu.')
 
+  const { isOpen, setOpen, triggerRef, contentId } = context
   const child = getSingleElementChild(children)
 
   if (!child) {
     return (
       <span
-        ref={context.triggerRef}
+        ref={triggerRef}
+        data-nv-menu-trigger="true"
         className="nv-menu-trigger-shell"
         role="button"
         tabIndex={0}
-        aria-expanded={context.isOpen}
+        aria-controls={contentId}
+        aria-expanded={isOpen}
         aria-haspopup="menu"
-        onClick={() => context.setOpen(!context.isOpen)}
+        onClick={() => setOpen(!isOpen)}
         onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
+          if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown') {
             event.preventDefault()
-            context.setOpen(!context.isOpen)
+            setOpen(true)
           }
         }}
       >
@@ -135,15 +155,26 @@ export function MenuTrigger({ children }) {
     )
   }
 
-  return cloneElement(child, {
-    ref: context.triggerRef,
-    onClick: (event) => {
-      child.props.onClick?.(event)
-      context.setOpen(!context.isOpen)
-    },
-    'aria-expanded': context.isOpen,
-    'aria-haspopup': 'menu',
-  })
+  return (
+    <span
+      ref={triggerRef}
+      data-nv-menu-trigger="true"
+      className="nv-menu-trigger-shell"
+      onClick={() => setOpen(!isOpen)}
+      onKeyDown={(event) => {
+        if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          setOpen(true)
+        }
+      }}
+    >
+      {cloneElement(child, {
+        'aria-controls': contentId,
+        'aria-expanded': isOpen,
+        'aria-haspopup': 'menu',
+      })}
+    </span>
+  )
 }
 
 export function MenuContent({
@@ -158,15 +189,18 @@ export function MenuContent({
   const context = useContext(MenuContext)
   if (!context) throw new Error('MenuContent must be used within Menu.')
 
+  const { isOpen, rootRef, contentRef, setOpen, contentId } = context
   const [position, setPosition] = useState(null)
 
   useLayoutEffect(() => {
-    if (!context.isOpen || !context.triggerRef.current) return undefined
+    if (!isOpen) return undefined
 
     const updatePosition = () => {
-      const rect = context.triggerRef.current?.getBoundingClientRect()
+      const trigger = rootRef.current?.querySelector('[data-nv-menu-trigger="true"]')
+      const rect = trigger?.getBoundingClientRect()
       if (!rect) return
-      const contentWidth = context.contentRef.current?.getBoundingClientRect().width ?? MENU_MIN_WIDTHS[size] ?? MENU_MIN_WIDTHS.md
+
+      const contentWidth = contentRef.current?.getBoundingClientRect().width ?? MENU_MIN_WIDTHS[size] ?? MENU_MIN_WIDTHS.md
 
       setPosition(resolveFloatingPosition({
         align,
@@ -178,27 +212,63 @@ export function MenuContent({
     }
 
     updatePosition()
-
     window.addEventListener('resize', updatePosition)
     window.addEventListener('scroll', updatePosition, true)
     return () => {
       window.removeEventListener('resize', updatePosition)
       window.removeEventListener('scroll', updatePosition, true)
     }
-  }, [align, context.contentRef, context.isOpen, context.triggerRef, offset, size])
+  }, [align, contentRef, isOpen, offset, rootRef, size])
 
-  if (!context.isOpen) return null
+  if (!isOpen) return null
 
   const alignClass = align === 'end' ? 'nv-menu-content--end' : align === 'center' ? 'nv-menu-content--center' : 'nv-menu-content--start'
   const classes = ['nv-menu-content', alignClass, `nv-menu-content--${size}`, `nv-menu-content--surface-${surface}`, className].filter(Boolean).join(' ')
-
-  const style =
-    position === null
-      ? undefined
-      : { position: 'fixed', top: `${position.top}px`, left: `${position.left}px` }
+  const style = position === null ? undefined : { position: 'fixed', top: `${position.top}px`, left: `${position.left}px` }
 
   return createPortal(
-    <div ref={context.contentRef} className={classes} role="menu" style={style} {...props}>
+    <div
+      id={contentId}
+      ref={contentRef}
+      data-nv-menu-floating="true"
+      className={classes}
+      role="menu"
+      style={style}
+      onKeyDown={(event) => {
+        const items = getEnabledItems(contentRef.current)
+        const activeIndex = items.findIndex((item) => item === document.activeElement)
+
+        if (event.key === 'Escape') {
+          event.preventDefault()
+          setOpen(false)
+          return
+        }
+
+        if (event.key === 'Tab') {
+          setOpen(false)
+          return
+        }
+
+        if (items.length === 0) return
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault()
+          const nextIndex = activeIndex >= 0 ? (activeIndex + 1) % items.length : 0
+          items[nextIndex].focus()
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault()
+          const nextIndex = activeIndex >= 0 ? (activeIndex - 1 + items.length) % items.length : items.length - 1
+          items[nextIndex].focus()
+        } else if (event.key === 'Home') {
+          event.preventDefault()
+          items[0].focus()
+        } else if (event.key === 'End') {
+          event.preventDefault()
+          items[items.length - 1].focus()
+        }
+      }}
+      {...props}
+    >
       {children}
     </div>,
     document.body,
@@ -213,9 +283,11 @@ export function MenuItem({ onSelect, children, className = '', disabled = false,
 
   return (
     <button
+      data-nv-menu-item="true"
       type="button"
       className={classes}
       role="menuitem"
+      tabIndex={-1}
       disabled={disabled}
       onClick={(event) => {
         onSelect?.(event)

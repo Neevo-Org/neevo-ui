@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { I } from '../../typography/I'
 import { Text } from '../../typography/Text'
@@ -9,7 +9,32 @@ const ModalContext = createContext({
   stickyHeader: false,
   stickyFooter: false,
   scroll: 'body',
+  titleId: undefined,
+  descriptionId: undefined,
+  setHasTitle: () => {},
+  setHasDescription: () => {},
 })
+
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'area[href]',
+  'button:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  '[tabindex]:not([tabindex="-1"])',
+  '[contenteditable="true"]',
+].join(', ')
+
+function getFocusableElements(container) {
+  if (!(container instanceof HTMLElement)) {
+    return []
+  }
+
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR))
+    .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true')
+}
 
 function resolveDismissPolicy({ locked, closeOnBackdrop, closeOnEscape, closeOnOverlayClick }) {
   if (locked) {
@@ -40,26 +65,78 @@ export function Modal({
   closeOnEscape,
   closeOnOverlayClick,
 }) {
+  const dialogRef = useRef(null)
+  const restoreFocusRef = useRef(null)
+  const titleId = useId()
+  const descriptionId = useId()
+  const [hasTitle, setHasTitle] = useState(false)
+  const [hasDescription, setHasDescription] = useState(false)
   const dismissPolicy = resolveDismissPolicy({
     locked,
     closeOnBackdrop,
     closeOnEscape,
     closeOnOverlayClick,
   })
+  const contextValue = useMemo(() => ({
+    stickyHeader,
+    stickyFooter,
+    scroll,
+    titleId,
+    descriptionId,
+    setHasTitle,
+    setHasDescription,
+  }), [descriptionId, scroll, stickyFooter, stickyHeader, titleId])
 
   useEffect(() => {
-    if (!open || !dismissPolicy.allowEscape) {
+    if (!open) {
       return undefined
     }
 
+    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+
+    const dialog = dialogRef.current
+    const focusable = getFocusableElements(dialog)
+    const initialTarget = focusable[0] ?? dialog
+    initialTarget?.focus()
+
     function onKeyDown(event) {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && dismissPolicy.allowEscape) {
         onClose?.()
+        return
+      }
+
+      if (event.key !== 'Tab') {
+        return
+      }
+
+      const dialogNode = dialogRef.current
+      const nextFocusable = getFocusableElements(dialogNode)
+
+      if (nextFocusable.length === 0) {
+        event.preventDefault()
+        dialogNode?.focus()
+        return
+      }
+
+      const first = nextFocusable[0]
+      const last = nextFocusable[nextFocusable.length - 1]
+      const active = document.activeElement
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault()
+        first.focus()
       }
     }
 
     document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      restoreFocusRef.current?.focus?.()
+      restoreFocusRef.current = null
+    }
   }, [dismissPolicy.allowEscape, onClose, open])
 
   useBodyScrollLock(open)
@@ -84,8 +161,17 @@ export function Modal({
       role="presentation"
       onClick={dismissPolicy.allowBackdrop ? () => onClose?.() : undefined}
     >
-      <ModalContext.Provider value={{ stickyHeader, stickyFooter, scroll }}>
-        <div className={classes} role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+      <ModalContext.Provider value={contextValue}>
+        <div
+          ref={dialogRef}
+          className={classes}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={hasTitle ? titleId : undefined}
+          aria-describedby={hasDescription ? descriptionId : undefined}
+          tabIndex={-1}
+          onClick={(event) => event.stopPropagation()}
+        >
           {children}
         </div>
       </ModalContext.Provider>
@@ -102,8 +188,18 @@ export function ModalHeader({
   children,
   className = '',
 }) {
-  const { stickyHeader } = useContext(ModalContext)
+  const { stickyHeader, titleId, descriptionId, setHasTitle, setHasDescription } = useContext(ModalContext)
   const classes = ['nv-modal-header', stickyHeader && 'nv-modal-header--sticky', className].filter(Boolean).join(' ')
+
+  useEffect(() => {
+    setHasTitle(Boolean(title))
+    setHasDescription(Boolean(description))
+
+    return () => {
+      setHasTitle(false)
+      setHasDescription(false)
+    }
+  }, [description, setHasDescription, setHasTitle, title])
 
   return (
     <header className={classes}>
@@ -112,12 +208,12 @@ export function ModalHeader({
           <div className="nv-modal-title-stack">
             {meta ? <div className="nv-modal-meta">{meta}</div> : null}
             {title ? (
-              <Text as="h3" size="md" weight="semibold" className="nv-modal-title">
+              <Text as="h3" id={titleId} size="md" weight="semibold" className="nv-modal-title">
                 {title}
               </Text>
             ) : null}
             {description ? (
-              <Text as="p" size="sm" tone="muted" className="nv-modal-description">
+              <Text as="p" id={descriptionId} size="sm" tone="muted" className="nv-modal-description">
                 {description}
               </Text>
             ) : null}

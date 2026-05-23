@@ -1,4 +1,3 @@
-
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
@@ -9,40 +8,56 @@
 
 # Neevo UI
 
-Neevo UI is a React component library built with Vite.
-
-## Modules
-
-- `data-entry`: Button, Input, Select, Checkbox, Switch, RadioGroup, TextArea, Calendar
-- `layout`: Page, PageHeader, PageBody, Sidebar, Content, Container, Grid, Row, Column, ThemeProvider
-- `overlay`: Modal, Drawer, Tooltip
-- `surfaces`: Card, Table
-- `typography`: Text, Heading, I
+Neevo UI is a modular React component library built with Vite. It ships reusable primitives for forms, layout, overlays, surfaces, typography, and a separate `codeblock` entrypoint.
 
 ## Installation
 
 ```bash
-npm install
+npm install neevo-ui react react-dom
 ```
+
+## Usage
+
+```jsx
+import 'neevo-ui/style.css'
+import { Button, Card, CardBody, CardHeader, Text } from 'neevo-ui'
+
+export function Example() {
+  return (
+    <Card>
+      <CardHeader>
+        <Text as="h2" weight="semibold">Neevo UI</Text>
+      </CardHeader>
+      <CardBody>
+        <Button>Action</Button>
+      </CardBody>
+    </Card>
+  )
+}
+```
+
+## Package Surface
+
+- `data-entry`: Button, Calendar, Checkbox, Input, RadioGroup, Select, Slider, Switch, TagInput, TextArea
+- `layout`: AppShell, Breadcrumbs, Column, Container, Content, Divider, Grid, Page, PageBody, PageHeader, Row, Sidebar, Stepper, ThemeProvider
+- `overlay`: CommandPalette, Drawer, Menu, Modal, Popover, Toast, Tooltip
+- `surfaces`: Accordion, Avatar, Badge, Card, EmptyState, Pagination, Progress, Skeleton, Table, Tabs, Timeline
+- `typography`: Text, Heading, I
+- `codeblock`: `import { CodeBlock } from 'neevo-ui/codeblock'`
 
 ## Development
 
 ```bash
-npm run dev
-```
-
-## Build
-
-```bash
+npm run lint
 npm run build
+npm run build:docs
 ```
 
-## Contribution
+## Publishing Notes
 
-Thank you for considering contributing to Nuxt UI. Here are a few ways you can get involved:
-
-- Reporting Bugs: If you come across any bugs or issues, please submit a bug report.
-- Suggestions: Have any thoughts to enhance Neevo UI? We'd love to hear them!
+- The npm package publishes only the `dist/` output.
+- The release workflow publishes with npm provenance.
+- Type declarations are included for the root package and the `codeblock` subpath.
 
 ## License
 

@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "A modular React UI component library with an integrated docs showcase app.",
   "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neevo-Org/neevo-ui.git"
+  },
+  "homepage": "https://github.com/Neevo-Org/neevo-ui#readme",
+  "bugs": {
+    "url": "https://github.com/Neevo-Org/neevo-ui/issues"
+  },
   "keywords": [
     "react",
     "ui",
@@ -12,14 +20,22 @@
     "neevo-ui"
   ],
   "type": "module",
+  "packageManager": "npm@11.12.1",
   "main": "./dist/neevo-ui.cjs",
   "module": "./dist/neevo-ui.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/neevo-ui.js",
       "require": "./dist/neevo-ui.cjs"
     },
     "./codeblock": {
+      "types": "./dist/codeblock.d.ts",
       "import": "./dist/codeblock.js",
       "require": "./dist/codeblock.cjs"
     },
@@ -34,9 +50,9 @@
   "scripts": {
     "generate:raw-docs": "node scripts/generate-raw-docs.mjs",
     "dev": "npm run generate:raw-docs && vite",
-    "build:lib": "vite build",
+    "build:lib": "vite build && node scripts/copy-types.mjs",
     "build:docs": "npm run generate:raw-docs && vite build --config vite.docs.config.js",
-    "build": "vite build",
+    "build": "vite build && node scripts/copy-types.mjs",
     "check:size": "node scripts/check-bundle-size.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
