@@ -150,6 +150,14 @@ body[data-nv-theme='mint'] {
   --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(77, 164, 149, 0.96), rgba(56, 133, 121, 0.96));
 }
 
+.nv-theme[data-nv-mode='dark'][data-nv-theme='mint'],
+body[data-nv-mode='dark'][data-nv-theme='mint'] {
+  --nv-gradient-app-bg:
+    radial-gradient(circle at 12% 10%, rgba(46, 103, 92, 0.34), transparent 38%),
+    radial-gradient(circle at 86% 9%, rgba(34, 68, 103, 0.3), transparent 34%),
+    linear-gradient(180deg, #0d1518 0%, #111b20 100%);
+}
+
 .nv-theme[data-nv-theme='ocean'],
 body[data-nv-theme='ocean'] {
   --nv-gradient-app-bg:
@@ -168,6 +176,14 @@ body[data-nv-theme='ocean'] {
   --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(88, 144, 192, 0.96), rgba(67, 118, 162, 0.96));
 }
 
+.nv-theme[data-nv-mode='dark'][data-nv-theme='ocean'],
+body[data-nv-mode='dark'][data-nv-theme='ocean'] {
+  --nv-gradient-app-bg:
+    radial-gradient(circle at 14% 12%, rgba(48, 88, 128, 0.34), transparent 40%),
+    radial-gradient(circle at 84% 8%, rgba(35, 64, 101, 0.28), transparent 36%),
+    linear-gradient(180deg, #0d1621 0%, #111b28 100%);
+}
+
 .nv-theme[data-nv-theme='sunset'],
 body[data-nv-theme='sunset'] {
   --nv-gradient-app-bg:
@@ -184,4 +200,32 @@ body[data-nv-theme='sunset'] {
   --nv-color-primary-soft: color-mix(in srgb, var(--nv-color-primary) 18%, transparent);
   --nv-scrollbar-thumb: linear-gradient(180deg, rgba(210, 144, 107, 0.92), rgba(188, 122, 85, 0.92));
   --nv-scrollbar-thumb-hover: linear-gradient(180deg, rgba(201, 136, 100, 0.96), rgba(176, 112, 77, 0.96));
+}
+
+.nv-theme[data-nv-mode='dark'][data-nv-theme='sunset'],
+body[data-nv-mode='dark'][data-nv-theme='sunset'] {
+  --nv-gradient-app-bg:
+    radial-gradient(circle at 12% 10%, rgba(120, 70, 44, 0.32), transparent 40%),
+    radial-gradient(circle at 86% 9%, rgba(96, 53, 37, 0.28), transparent 34%),
+    linear-gradient(180deg, #17110f 0%, #1c1512 100%);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--nv-scrollbar-track, #d7e4e1);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--nv-scrollbar-thumb, #8ea2aa);
+  border-radius: 999px;
+  border: 2px solid var(--nv-scrollbar-thumb-border, #d7e4e1);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--nv-scrollbar-thumb-hover, #7a9098);
 }

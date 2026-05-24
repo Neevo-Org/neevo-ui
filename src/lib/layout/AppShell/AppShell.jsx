@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Heading, Text } from '../../index.js'
 import './AppShell.css'
 
@@ -13,16 +14,62 @@ export function AppShell({ children, className = '', ...props }) {
   )
 }
 
-export function AppSidebar({ header, children, footer, collapsed = false, className = '', ...props }) {
+export function AppSidebar({
+  header,
+  children,
+  footer,
+  collapsed = false,
+  mobileCollapsible = false,
+  mobileOpen = true,
+  onMobileClose,
+  className = '',
+  ...props
+}) {
+  useEffect(() => {
+    if (!mobileCollapsible || !mobileOpen || typeof window === 'undefined') {
+      return undefined
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        onMobileClose?.()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [mobileCollapsible, mobileOpen, onMobileClose])
+
   return (
-    <aside
-      className={joinClasses('nv-app-sidebar', collapsed && 'is-collapsed', className)}
-      {...props}
-    >
-      {header ? <div className="nv-app-sidebar__header">{header}</div> : null}
-      <div className="nv-app-sidebar__main">{children}</div>
-      {footer ? <div className="nv-app-sidebar__footer">{footer}</div> : null}
-    </aside>
+    <>
+      {mobileCollapsible ? (
+        <button
+          type="button"
+          className={joinClasses(
+            'nv-app-sidebar-backdrop',
+            !mobileOpen && 'is-hidden',
+          )}
+          aria-label="Close navigation menu"
+          aria-hidden={!mobileOpen}
+          tabIndex={mobileOpen ? 0 : -1}
+          onClick={() => onMobileClose?.()}
+        />
+      ) : null}
+      <aside
+        className={joinClasses(
+          'nv-app-sidebar',
+          collapsed && 'is-collapsed',
+          mobileCollapsible && 'is-mobile-collapsible',
+          mobileCollapsible && !mobileOpen && 'is-mobile-closed',
+          className,
+        )}
+        {...props}
+      >
+        {header ? <div className="nv-app-sidebar__header">{header}</div> : null}
+        <div className="nv-app-sidebar__main">{children}</div>
+        {footer ? <div className="nv-app-sidebar__footer">{footer}</div> : null}
+      </aside>
+    </>
   )
 }
 
@@ -30,6 +77,7 @@ export function AppSidebarBrand({
   icon,
   title,
   subtitle,
+  actions,
   collapsed = false,
   onClick,
   className = '',
@@ -54,6 +102,7 @@ export function AppSidebarBrand({
           </Text>
         ) : null}
       </span>
+      {actions ? <span className="nv-app-sidebar-brand__actions">{actions}</span> : null}
     </Component>
   )
 }
