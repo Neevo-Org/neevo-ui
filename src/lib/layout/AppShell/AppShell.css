@@ -3,7 +3,10 @@
   width: 100%;
   min-height: 100vh;
   max-height: 100vh;
-  overflow: hidden;
+  color: var(--nv-color-text);
+  background:
+    var(--nv-gradient-overlay),
+    var(--nv-gradient-app-bg);
 }
 
 .nv-app-sidebar {
@@ -13,11 +16,14 @@
   flex-direction: column;
   gap: 10px;
   min-height: 0;
-  max-height: 100vh;
   box-sizing: border-box;
   padding: 16px 0 16px 16px;
   transition: width 420ms ease;
   overflow: hidden;
+}
+
+.nv-app-sidebar-backdrop {
+  display: none;
 }
 
 .nv-app-sidebar.is-collapsed {
@@ -27,7 +33,7 @@
 
 .nv-app-sidebar__main {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1;
   min-height: 0;
   flex-direction: column;
   gap: 10px;
@@ -103,12 +109,25 @@ button.nv-app-sidebar-brand {
   animation: nv-app-shell-copy-in 320ms ease forwards;
 }
 
+.nv-app-sidebar-brand__actions {
+  margin-left: auto;
+  flex: 0 0 auto;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.nv-app-sidebar-brand__actions:empty {
+  display: none;
+}
+
 .nv-app-sidebar-brand.is-collapsed {
   justify-content: center;
   gap: 0;
 }
 
-.nv-app-sidebar-brand.is-collapsed .nv-app-sidebar-brand__copy {
+.nv-app-sidebar-brand.is-collapsed .nv-app-sidebar-brand__copy,
+.nv-app-sidebar-brand.is-collapsed .nv-app-sidebar-brand__actions {
   animation: nv-app-shell-copy-out 320ms ease forwards;
 }
 
@@ -118,7 +137,6 @@ button.nv-app-sidebar-brand {
   min-height: 0;
   min-width: 0;
   overflow: hidden;
-  padding: 0 10px 0 10px;
   padding-right: 0;
   box-sizing: border-box;
   border-radius: 22px;
@@ -139,11 +157,12 @@ button.nv-app-sidebar-brand {
   min-width: 0;
   flex-direction: column;
   gap: 16px;
-  padding: 10px 0;
+  padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 5px;
+  padding-left: 5px;
 }
 
 .nv-app-sidebar-group {
@@ -278,6 +297,7 @@ button.nv-app-sidebar-brand {
   padding: 16px;
   padding-left: 12px;
   box-sizing: border-box;
+  gap: 10px;
 }
 
 .nv-app-stage__main {
@@ -289,12 +309,24 @@ button.nv-app-sidebar-brand {
 }
 
 .nv-app-stage__content {
+  display: block;
+  padding: 10px;
   flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
+  height: 100%;
   padding-bottom: 16px;
   box-sizing: border-box;
   overflow: auto;
   animation: nv-app-stage-content-in 220ms ease;
+}
+
+.nv-app-stage__content > * {
+  min-width: 0;
+}
+
+.nv-app-stage__content > * + * {
+  margin-top: 10px;
 }
 
 .nv-app-stage-loader {
@@ -417,9 +449,8 @@ button.nv-app-sidebar-brand {
 @media (max-width: 980px) {
   .nv-app-shell {
     flex-direction: column;
-    min-height: 100dvh;
-    max-height: none;
-    overflow: visible;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .nv-app-sidebar,
@@ -432,75 +463,149 @@ button.nv-app-sidebar-brand {
     padding: 16px 16px 0;
   }
 
-  .nv-app-sidebar__main,
-  .nv-app-sidebar__footer {
+  .nv-app-sidebar.is-mobile-collapsible {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    width: 100%;
+    height: auto;
+    padding: 16px 16px 0;
+    gap: 10px;
+    background: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition:
+      max-height 260ms ease,
+      opacity 180ms ease,
+      transform 220ms ease;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible:not(.is-mobile-closed) {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    padding: 16px;
+    gap: 12px;
+    opacity: 1;
+    background:
+      radial-gradient(circle at top left, color-mix(in srgb, var(--nv-color-theme-soft, transparent) 100%, transparent), transparent 32%),
+      linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--nv-color-surface) 98%, transparent),
+        color-mix(in srgb, var(--nv-color-surface-soft) 100%, transparent)
+      );
+    transition:
+      transform 260ms ease,
+      opacity 180ms ease,
+      visibility 180ms ease;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible .nv-app-sidebar__main,
+  .nv-app-sidebar.is-mobile-collapsible .nv-app-sidebar__footer {
+    transition: opacity 180ms ease, transform 220ms ease;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible.is-mobile-closed {
+    max-height: 96px;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible.is-mobile-closed .nv-app-sidebar__main,
+  .nv-app-sidebar.is-mobile-collapsible.is-mobile-closed .nv-app-sidebar__footer {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible.is-mobile-closed .nv-app-sidebar-nav,
+  .nv-app-sidebar.is-mobile-collapsible.is-mobile-closed .nv-app-sidebar__footer {
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible:not(.is-mobile-closed) .nv-app-sidebar__main {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible:not(.is-mobile-closed) .nv-app-sidebar__footer {
     overflow: visible;
   }
 
   .nv-app-sidebar-nav {
     min-height: auto;
     overflow: visible;
+    border-radius: 28px;
+  }
+
+  .nv-app-sidebar.is-mobile-collapsible:not(.is-mobile-closed) .nv-app-sidebar-nav {
+    min-height: 0;
+    overflow: hidden;
   }
 
   .nv-app-sidebar-nav__inner {
     overflow: visible;
   }
 
+  .nv-app-sidebar.is-mobile-collapsible:not(.is-mobile-closed) .nv-app-sidebar-nav__inner {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .nv-app-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: block;
+    border: 0;
+    padding: 0;
+    background: color-mix(in srgb, var(--nv-color-overlay, rgba(0, 0, 0, 0.5)) 78%, transparent);
+    backdrop-filter: blur(10px);
+    opacity: 1;
+    transition:
+      opacity 180ms ease,
+      visibility 180ms ease;
+  }
+
+  .nv-app-sidebar-backdrop.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
   .nv-app-stage {
-    max-height: none;
-    min-height: 0;
     padding: 16px;
     padding-top: 12px;
+    height: 100%;
   }
 
-
-  .nv-app-stage-header {
-    grid-template-columns: 1fr;
-    align-items: start;
-    gap: 14px;
+  .nv-app-sidebar-brand__actions button,
+  .nv-app-sidebar-brand__actions .nv-button {
+    min-width: 38px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 12px;
+    justify-content: center;
   }
 
-  .nv-app-stage-header__actions {
-    width: 100%;
-    margin-left: 0;
-  }
-}
-
-@media (max-width: 720px) {
-  .nv-app-sidebar,
-  .nv-app-sidebar.is-collapsed {
-    padding: 12px 12px 0;
+  .nv-app-sidebar.is-mobile-collapsible .nv-app-sidebar-brand__actions {
+    display: inline-flex;
   }
 
-  .nv-app-stage {
-    padding: 12px;
-    padding-top: 10px;
-  }
-
-  .nv-app-sidebar-brand,
-  .nv-app-sidebar-nav,
-  .nv-app-stage-header {
-    border-radius: 18px;
-  }
-
-  .nv-app-sidebar-brand {
-    min-height: 68px;
-    padding: 10px 12px;
-  }
-
-  .nv-app-sidebar-brand__icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-  }
-
-  .nv-app-nav-item {
-    min-height: 50px;
-    padding: 0.7rem 0.8rem;
-    border-radius: 16px;
-  }
-
-  .nv-app-stage-header {
-    padding: 16px;
+  .nv-app-sidebar.is-mobile-collapsible .nv-app-sidebar-brand__actions .docs-brand-toggle {
+    display: inline-flex;
   }
 }

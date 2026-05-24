@@ -91,16 +91,10 @@ function App() {
     window.localStorage.setItem('nv-docs-theme', theme)
     document.body.setAttribute('data-nv-mode', mode)
     document.body.setAttribute('data-nv-theme', theme)
-    const docsPage = document.querySelector('.docs-page')
-    const themedBackground = docsPage
-      ? getComputedStyle(docsPage).getPropertyValue('--nv-gradient-app-bg').trim()
-      : ''
-    document.body.style.background = themedBackground || (mode === 'dark' ? '#111827' : '#f9fafb')
 
     return () => {
       document.body.removeAttribute('data-nv-mode')
       document.body.removeAttribute('data-nv-theme')
-      document.body.style.background = ''
     }
   }, [mode, theme])
 
@@ -165,26 +159,28 @@ function App() {
     <ThemeProvider mode={mode} theme={theme}>
       <AppShell className="docs-page">
         <AppSidebar
-          className={mobileNavOpen ? 'docs-sidebar' : 'docs-sidebar docs-sidebar--mobile-closed'}
+          className="docs-sidebar"
+          mobileCollapsible
+          mobileOpen={mobileNavOpen}
+          onMobileClose={() => setMobileNavOpen(false)}
           header={(
             <AppSidebarBrand
               className="docs-brand"
               title="Neevo UI"
               subtitle="Component Showcase"
-              icon={
-                <div className="docs-brand__icon-wrap">
-                  <I>widgets</I>
-                  <button
-                    type="button"
-                    className="docs-brand-toggle"
-                    aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                    aria-expanded={mobileNavOpen}
-                    onClick={() => setMobileNavOpen((prev) => !prev)}
-                  >
-                    <I>{mobileNavOpen ? 'close' : 'menu'}</I>
-                  </button>
-                </div>
-              }
+              icon={<I>widgets</I>}
+              actions={(
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="docs-brand-toggle"
+                  aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                  aria-expanded={mobileNavOpen}
+                  onClick={() => setMobileNavOpen((prev) => !prev)}
+                >
+                  <I>{mobileNavOpen ? 'close' : 'menu'}</I>
+                </Button>
+              )}
             />
           )}
           footer={(

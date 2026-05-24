@@ -1,8 +1,5 @@
 .docs-page {
   color: var(--nv-color-text);
-  background:
-    var(--nv-gradient-overlay),
-    var(--nv-gradient-app-bg);
   --docs-scrollbar-thumb: rgba(100, 116, 139, 0.28);
   --docs-scrollbar-thumb-hover: rgba(100, 116, 139, 0.48);
 }
@@ -129,32 +126,8 @@
   font-size: 24px;
 }
 
-.docs-brand__icon-wrap {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  position: relative;
-}
-
 .docs-brand-toggle {
   display: none;
-  position: absolute;
-  inset: 50% auto auto 50%;
-  transform: translate(-50%, -50%);
-  width: 38px;
-  height: 38px;
-  border: 1px solid color-mix(in srgb, var(--nv-gradient-accent-border) 22%, var(--nv-color-border));
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--nv-color-surface) 92%, transparent);
-  color: var(--nv-color-text);
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.docs-brand-toggle:hover {
-  background: color-mix(in srgb, var(--nv-color-primary-soft) 54%, var(--nv-color-surface-soft));
 }
 
 .docs-mobile-nav-toggle {
@@ -289,7 +262,7 @@
 }
 
 .docs-content-main {
-  height: 100%;
+  min-width: 0;
   padding: 16px 16px 24px;
 }
 
@@ -409,13 +382,6 @@
 }
 
 @media (max-width: 980px) {
-  .docs-sidebar.docs-sidebar--mobile-closed {
-    display: flex;
-    max-height: 96px;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
   .docs-mode-toggle {
     min-width: 0;
   }
@@ -427,40 +393,12 @@
   .docs-sidebar {
     display: flex;
     padding-right: 0;
-    max-height: 70vh;
-    opacity: 1;
-    overflow: hidden;
-    transition:
-      max-height 260ms ease,
-      opacity 180ms ease,
-      margin 220ms ease,
-      padding 220ms ease,
-      border-width 180ms ease;
-  }
-
-  .docs-sidebar .nv-app-sidebar__main,
-  .docs-sidebar .nv-app-sidebar__footer {
-    transition: opacity 180ms ease, transform 220ms ease;
   }
 
   .docs-brand-toggle {
     display: inline-flex;
-  }
-
-  .docs-sidebar.docs-sidebar--mobile-closed .nv-app-sidebar__main,
-  .docs-sidebar.docs-sidebar--mobile-closed .nv-app-sidebar__footer {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  .docs-sidebar.docs-sidebar--mobile-closed .nv-app-sidebar-nav,
-  .docs-sidebar.docs-sidebar--mobile-closed .nv-app-sidebar__footer {
-    max-height: 0;
-    overflow: hidden;
-    margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-width: 0;
+    align-items: center;
+    justify-content: center;
   }
 
   .docs-main {
